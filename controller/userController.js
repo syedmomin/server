@@ -4,12 +4,9 @@ const user = {
     newRegistration: async function (req, res) {
         try {
             const { first_name, last_name, mob, email, password, confirm_password, role } = req.body;
-            const existingUser = await db.query(
-                'SELECT * FROM users WHERE email = ?',
-                [email]
-            );
-            console.log('check exist', existingUser)
-            if (existingUser.length > 0) {
+            const results = db.query(`SELECT COUNT(*) AS count FROM users WHERE email='${email}'`);
+            console.log('sds', results);
+            if (results > 0) {
                 res.status(400).send({
                     status: false,
                     code: 400,
@@ -26,6 +23,18 @@ const user = {
                     message: "Success",
                 });
             }
+        } catch (error) {
+            console.error(error);
+            res.status(500).send({
+                status: false,
+                code: 500,
+                message: error.message,
+            });
+        }
+    },
+    loginUser: async function (req, res) {
+        try {
+
         } catch (error) {
             console.error(error);
             res.status(500).send({
