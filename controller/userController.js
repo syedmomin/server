@@ -72,9 +72,6 @@ const user = {
                 } else {
                     if (results.length > 0) {
                         const comparison = await bcrypt.compare(password, results[0].password)
-                        const payLoad = {
-                            data: results[0], "ACCESS_TOKEN_SECRET": process.env.ACCESS_TOKEN_SECRET,
-                        };
                         const secretKey = 'd0a28cb05d1ee1b0a21b14c1e05d12f2075c3f5de5d4a4fb7e2f6b4e6b5b44e3';
                         const token = jwt.sign({ id: results[0].id }, secretKey, { expiresIn: '24h' });
                         // console.log('');
@@ -83,7 +80,7 @@ const user = {
                                 code: 200,
                                 status: true,
                                 message: "login successful",
-                                userDetail: results[0],
+                                userDetail: { ...results[0], token: token },
                                 token: token
                             })
                         } else {
