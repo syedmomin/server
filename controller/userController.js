@@ -88,7 +88,7 @@ const user = {
               const secretKey =
                 "d0a28cb05d1ee1b0a21b14c1e05d12f2075c3f5de5d4a4fb7e2f6b4e6b5b44e3";
               const token = jwt.sign({ id: results[0].id }, secretKey, {
-                expiresIn: "24h",
+                expiresIn: "5d",
               });
               // console.log('');
               if (comparison) {
@@ -172,6 +172,30 @@ const user = {
   },
   deleteUser: async function (req, res) {
     try {
+      await db.query("DELETE FROM users WHERE id = ?",
+        [req.body.id], async (error, results) => {
+          if (error) {
+            res.status(500).send({
+              code: 500,
+              status: false,
+              message: error,
+            });
+          } else {
+            if (results.affectedRows > 0) {
+              res.status(200).send({
+                code: 200,
+                status: true,
+                message: "Delete User Succssfully",
+              });
+            } else {
+              res.status(206).send({
+                code: 206,
+                status: false,
+                message: "This Id Not Exist!",
+              });
+            }
+          }
+        });
     } catch (error) {
       res.status(500).send({
         status: false,
@@ -182,6 +206,31 @@ const user = {
   },
   getUserById: async function (req, res) {
     try {
+      await db.query("SELECT * FROM users WHERE id = ?",
+        [req.body.id], async (error, results) => {
+          if (error) {
+            res.status(500).send({
+              code: 500,
+              status: false,
+              message: error,
+            });
+          } else {
+            if (results.length > 0) {
+              res.status(200).send({
+                code: 200,
+                status: true,
+                message: "Get user",
+                data: results,
+              });
+            } else {
+              res.status(206).send({
+                code: 206,
+                status: false,
+                message: "This Id Not Exist!",
+              });
+            }
+          }
+        });
     } catch (error) {
       res.status(500).send({
         status: false,
