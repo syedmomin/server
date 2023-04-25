@@ -162,6 +162,37 @@ const user = {
   },
   updateUser: async function (req, res) {
     try {
+      const id = req.body.id;
+      const updateColumns = req.body;
+      delete updateColumns.id;
+      delete updateColumns.email;
+      delete updateColumns.password;
+      const updateSql = `UPDATE users SET ${Object.keys(updateColumns).map(key => `${key} = ?`).join(', ')} WHERE id = ?`;
+      const updateValues = [...Object.values(updateColumns), id];
+
+      await db.query(updateSql, updateValues, (error, results) => {
+        if (error) {
+          res.status(500).send({
+            code: 500,
+            status: false,
+            message: error,
+          });
+        } else {
+          if (results.affectedRows > 0) {
+            res.status(200).send({
+              code: 200,
+              status: true,
+              message: "Update User Succssfully",
+            });
+          } else {
+            res.status(206).send({
+              code: 206,
+              status: false,
+              message: "This Id Not Exist!",
+            });
+          }
+        }
+      });
     } catch (error) {
       res.status(500).send({
         status: false,
@@ -220,7 +251,7 @@ const user = {
                 code: 200,
                 status: true,
                 message: "Get user",
-                data: results,
+                data: results[0],
               });
             } else {
               res.status(206).send({
@@ -239,6 +270,15 @@ const user = {
       });
     }
   },
+  verify: async function (req, res) {
+    try { } catch (error) {
+      res.status(500).send({
+        status: false,
+        code: 500,
+        message: error.message,
+      });
+    }
+  }
 };
 
 module.exports = user;

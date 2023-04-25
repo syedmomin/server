@@ -2,7 +2,8 @@ const express = require("express");
 const router = express.Router();
 //---------------------index-routes----------------------------
 // ROUTES IMPORT
-router.use("/user", require("./userRoute"));
+router.use("/users", require("./userRoute"));
+router.use("/collections", require("./collectionRoute"));
 
 
 
