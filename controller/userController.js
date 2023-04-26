@@ -47,7 +47,7 @@ const user = {
           } else {
             db.query(
               "INSERT INTO users (first_name, last_name, mob, email, password, role, is_active, is_verify) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
-              [first_name, last_name, mob, email, encryptedPassword, role, 0, 0]
+              [first_name, last_name, mob, email, encryptedPassword, role, 1, 0]
             );
             res.status(200).send({
               success: true,
