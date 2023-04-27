@@ -1,6 +1,6 @@
 const db = require("../config/dbConnection");
 
-const collection = {
+const product = {
     create: async function (req, res) {
         try {
             const { image, name, description } = req.body;
@@ -46,37 +46,7 @@ const collection = {
         }
     },
     update: async function (req, res) {
-        try {
-            const id = req.body.id;
-            const updateColumns = req.body;
-            delete updateColumns.id;
-            const updateSql = `UPDATE collection SET ${Object.keys(updateColumns).map(key => `${key} = ?`).join(', ')} WHERE id = ?`;
-            const updateValues = [...Object.values(updateColumns), id];
-
-            await db.query(updateSql, updateValues, (error, results) => {
-                if (error) {
-                    res.status(500).send({
-                        code: 500,
-                        status: false,
-                        message: error,
-                    });
-                } else {
-                    if (results.affectedRows > 0) {
-                        res.status(200).send({
-                            code: 200,
-                            status: true,
-                            message: "Update Collection Succssfully",
-                        });
-                    } else {
-                        res.status(206).send({
-                            code: 206,
-                            status: false,
-                            message: "This Id Not Exist!",
-                        });
-                    }
-                }
-            });
-        } catch (error) {
+        try { } catch (error) {
             res.status(500).send({
                 status: false,
                 code: 500,
@@ -190,6 +160,4 @@ const collection = {
 
 }
 
-module.exports = collection;
-
-
+module.exports = product;
