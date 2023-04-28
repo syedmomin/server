@@ -1,6 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 const bodyParser = require('body-parser');
+const path = require('path');
 
 const port = process.env.PORT || 8080;
 const corsOption = {
@@ -19,6 +20,10 @@ const app = express()
 app.use(cors(corsOption));
 app.use(bodyParser.json({ limit: "50mb" }));
 app.use(require("./routes/indexRoute"));
+
+const dirname = path.resolve();
+app.use('/', express.static(path.join(dirname, './dist')))
+app.use('*', express.static(path.join(dirname, './dist')))
 
 app.listen(port, () => {
     console.log(`Express server listening on port ${port}`);
