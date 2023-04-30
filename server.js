@@ -19,6 +19,7 @@ const corsOption = {
 const app = express()
 app.use(cors(corsOption));
 app.use(bodyParser.json({ limit: "50mb" }));
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(require("./routes/indexRoute"));
 
 const dirname = path.resolve();

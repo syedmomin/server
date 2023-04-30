@@ -13,8 +13,6 @@ router.route("/user-delete").post(verifyToken, (req, res) => user.deleteUser(req
 router.route("/user-update").post(verifyToken, (req, res) => user.updateUser(req, res));
 router.route("/user-verification").post((req, res) => user.verify(req, res));
 
-// router.route("/user-profile").post(verifyToken, (req, res) => user.profile(req, res));
-
 // router.route("/user-confirmation-link-resend").post(verifyToken, (req, res) => user.resendlink(req, res));
 // router.route("/change-user-password").post(verifyToken, (req, res) => user.changepassword(req, res));
 // router.route("/forget-password").post((req, res) => user.forgetpassword(req, res));
