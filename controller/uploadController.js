@@ -3,7 +3,7 @@ const fs = require('fs');
 const uploadFile = {
     collectionImage: async function (req, res) {
         try {
-            const path = `./dist/assets/images/${req.body.filePath}${Date.now()}.png`;
+            const path = `./dist/assets/images/${req.body.filePath}${req.body.imageName}.png`;
             const imgdata = req.body.file;
             const base64Data = imgdata.replace(/^data:([A-Za-z-+/]+);base64,/, '');
             fs.writeFileSync(path, base64Data, { encoding: 'base64' });
