@@ -20,3 +20,17 @@ router
   .post(verifyToken, (req, res) => measurement.delete(req, res));
 
 module.exports = router;
+
+// CREATE TABLE `measurement` (
+//   `id` int(11) NOT NULL,
+//   `size` varchar(50) NOT NULL,
+//   `symbol` varchar(50) NOT NULL,
+//   `meter` varchar(50) NOT NULL,
+//   `length` varchar(50) NOT NULL,
+//   `shoulder` varchar(50) NOT NULL,
+//   `chest` varchar(50) NOT NULL,
+//   `sleeve` varchar(50) NOT NULL,
+//   `neck` varchar(50) NOT NULL,
+//   `status` tinyint(1) NOT NULL DEFAULT 1,
+//   `created_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
+// ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
