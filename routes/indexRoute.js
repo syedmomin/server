@@ -4,9 +4,8 @@ const router = express.Router();
 // ROUTES IMPORT
 router.use("/users", require("./userRoute"));
 router.use("/collections", require("./collectionRoute"));
-router.use("/produts", require("./productRoute"));
+router.use("/products", require("./productRoute"));
+router.use("/measurements", require("./measurementRoute"));
 router.use("/upload", require("./uploadRoute"));
-
-
 
 module.exports = router;
