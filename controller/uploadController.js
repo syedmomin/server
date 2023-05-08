@@ -1,7 +1,7 @@
 const fs = require('fs');
 
 const uploadFile = {
-    collectionImage: async function (req, res) {
+    assetsImage: async function (req, res) {
         try {
             const path = `./website/assets/images/${req.body.filePath}${req.body.imageName}.png`;
             const imgdata = req.body.file;
