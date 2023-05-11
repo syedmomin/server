@@ -3,22 +3,22 @@ const db = require("../config/dbConnection");
 const product = {
     create: async function (req, res) {
         try {
-            const { image, name, description } = req.body;
+            const { product_name, product_description, product_image, product_price, product_brand, product_color, product_size, collection_id } = req.body;
             await db.query(
-                "SELECT COUNT(*) AS count FROM collection WHERE name = ?",
-                [name],
+                "SELECT COUNT(*) AS count FROM product WHERE product_name = ?",
+                [product_name],
                 (error, results) => {
                     const count = results[0].count;
                     if (count > 0) {
                         res.status(400).send({
                             status: false,
                             code: 400,
-                            message: "This name already Exist!",
+                            message: "This product already Exist!",
                         });
                     } else {
                         db.query(
-                            "INSERT INTO collection (image,name,description,status) VALUES (?, ?, ?, ?)",
-                            [image, name, description, 1],
+                            "INSERT INTO product (product_name, product_description, product_image, product_price, product_brand, product_color, product_size, collection_id ) VALUES (?, ?, ?, ?,?,?,?,?)",
+                            [product_name, product_description, product_image, product_price, product_brand, product_color, product_size, collection_id],
                             (error, results) => {
                                 if (error) {
                                     res.status(500).send({
