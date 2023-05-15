@@ -7,5 +7,6 @@ router.use("/collections", require("./collectionRoute"));
 router.use("/products", require("./productRoute"));
 router.use("/measurements", require("./measurementRoute"));
 router.use("/upload", require("./uploadRoute"));
+router.use("/accounts", require("./ledgerRoute"));
 
 module.exports = router;

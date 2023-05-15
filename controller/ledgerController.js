@@ -1,42 +1,32 @@
 const db = require("../config/dbConnection");
 
-const product = {
+const collection = {
     create: async function (req, res) {
         try {
-            const { product_name, product_description, product_image, product_price, product_brand, product_color, product_size, collection_name } = req.body;
+
+            const { date, description, reference, transaction, amount } =
+                req.body;
             await db.query(
-                "SELECT COUNT(*) AS count FROM product WHERE product_name = ?",
-                [product_name],
+                "INSERT INTO ledger (date, description, reference, transaction, amount) VALUES (?,?, ?, ?, ?)",
+                [date, description, reference, transaction, amount],
                 (error, results) => {
-                    const count = results[0].count;
-                    if (count > 0) {
-                        res.status(400).send({
+                    if (error) {
+                        res.status(500).send({
+                            code: 500,
                             status: false,
-                            code: 400,
-                            message: "This product already Exist!",
+                            message: error,
                         });
                     } else {
-                        db.query(
-                            "INSERT INTO product (product_name, product_description, product_image, product_price, product_brand, product_color, product_size, collection_name ) VALUES (?, ?, ?, ?,?,?,?,?)",
-                            [product_name, product_description, product_image, product_price, product_brand, product_color, product_size, collection_name],
-                            (error, results) => {
-                                if (error) {
-                                    res.status(500).send({
-                                        code: 500,
-                                        status: false,
-                                        message: error,
-                                    });
-                                } else {
-                                    res.status(200).send({
-                                        code: 200,
-                                        status: true,
-                                        message: "Create Collection Successfully",
-                                        data: results[0],
-                                    });
-                                }
-                            })
+                        res.status(200).send({
+                            code: 200,
+                            status: true,
+                            message: "Add Ledger Successfully",
+                            data: results[0],
+                        });
                     }
-                });
+                }
+            );
+
         } catch (error) {
             res.status(500).send({
                 status: false,
@@ -46,7 +36,39 @@ const product = {
         }
     },
     update: async function (req, res) {
-        try { } catch (error) {
+        try {
+            const id = req.body.id;
+            const updateColumns = req.body;
+            delete updateColumns.id;
+            const updateSql = `UPDATE ledger SET ${Object.keys(updateColumns)
+                .map((key) => `${key} = ?`)
+                .join(", ")} WHERE id = ?`;
+            const updateValues = [...Object.values(updateColumns), id];
+
+            await db.query(updateSql, updateValues, (error, results) => {
+                if (error) {
+                    res.status(500).send({
+                        code: 500,
+                        status: false,
+                        message: error,
+                    });
+                } else {
+                    if (results.affectedRows > 0) {
+                        res.status(200).send({
+                            code: 200,
+                            status: true,
+                            message: "Update ledger Successfully",
+                        });
+                    } else {
+                        res.status(206).send({
+                            code: 206,
+                            status: false,
+                            message: "This Id Not Exist!",
+                        });
+                    }
+                }
+            });
+        } catch (error) {
             res.status(500).send({
                 status: false,
                 code: 500,
@@ -56,8 +78,10 @@ const product = {
     },
     delete: async function (req, res) {
         try {
-            await db.query("DELETE FROM collection WHERE id = ?",
-                [req.body.id], async (error, results) => {
+            await db.query(
+                "DELETE FROM ledger WHERE id = ?",
+                [req.body.id],
+                async (error, results) => {
                     if (error) {
                         res.status(500).send({
                             code: 500,
@@ -69,7 +93,7 @@ const product = {
                             res.status(200).send({
                                 code: 200,
                                 status: true,
-                                message: "Delete Collection Succssfully",
+                                message: "Delete Details Successfully",
                             });
                         } else {
                             res.status(206).send({
@@ -79,7 +103,8 @@ const product = {
                             });
                         }
                     }
-                });
+                }
+            );
         } catch (error) {
             res.status(500).send({
                 status: false,
@@ -90,7 +115,7 @@ const product = {
     },
     getAll: async function (req, res) {
         try {
-            await db.query("SELECT * FROM product", async (error, results) => {
+            await db.query("SELECT * FROM ledger", async (error, results) => {
                 if (error) {
                     res.status(500).send({
                         code: 500,
@@ -102,14 +127,14 @@ const product = {
                         res.status(200).send({
                             code: 200,
                             status: true,
-                            message: "Get all Products",
+                            message: "Get all Accounts Details",
                             data: results,
                         });
                     } else {
                         res.status(206).send({
                             code: 206,
                             status: false,
-                            message: "Products Not Exist!",
+                            message: "Measurement Not Exist!",
                         });
                     }
                 }
@@ -124,8 +149,10 @@ const product = {
     },
     getById: async function (req, res) {
         try {
-            await db.query("SELECT * FROM product WHERE id = ?",
-                [req.body.id], async (error, results) => {
+            await db.query(
+                "SELECT * FROM ledger WHERE id = ?",
+                [req.body.id],
+                async (error, results) => {
                     if (error) {
                         res.status(500).send({
                             code: 500,
@@ -137,7 +164,7 @@ const product = {
                             res.status(200).send({
                                 code: 200,
                                 status: true,
-                                message: "Get Product",
+                                message: "Get Account Ledger",
                                 data: results[0],
                             });
                         } else {
@@ -148,7 +175,8 @@ const product = {
                             });
                         }
                     }
-                });
+                }
+            );
         } catch (error) {
             res.status(500).send({
                 status: false,
@@ -157,7 +185,6 @@ const product = {
             });
         }
     },
+};
 
-}
-
-module.exports = product;
+module.exports = collection;
