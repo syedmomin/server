@@ -24,9 +24,9 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(require("./routes/indexRoute"));
 
 const dirname = path.resolve();
-app.use('/', express.static(path.join(dirname, './assets')));
-// app.use('/', express.static(path.join(dirname, './website')))
-// app.use('*', express.static(path.join(dirname, './website')))
+// app.use('/image', express.static(path.join(dirname, 'assets/images/collection')));
+app.use('/', express.static(path.join(dirname, './website')))
+app.use('*', express.static(path.join(dirname, './website')))
 
 app.listen(port, () => {
     console.log(`Express server listening on port ${port}`);
