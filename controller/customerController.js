@@ -1,24 +1,25 @@
 const db = require("../config/dbConnection");
 
-const product = {
+const collection = {
     create: async function (req, res) {
         try {
-            const { product_name, product_description, product_image, product_price, product_brand, product_color, product_size, collection_name } = req.body;
+            const { full_name, email, phone } =
+                req.body;
             await db.query(
-                "SELECT COUNT(*) AS count FROM product WHERE product_name = ?",
-                [product_name],
+                "SELECT COUNT(*) AS count FROM customer WHERE email = ?",
+                [email],
                 (error, results) => {
                     const count = results[0].count;
                     if (count > 0) {
                         res.status(400).send({
                             status: false,
                             code: 400,
-                            message: "This product already Exist!",
+                            message: "This Customer Already Exist!",
                         });
                     } else {
                         db.query(
-                            "INSERT INTO product (product_name, product_description, product_image, product_price, product_brand, product_color, product_size, collection_name ) VALUES (?, ?, ?, ?,?,?,?,?)",
-                            [product_name, product_description, product_image, product_price, product_brand, product_color, product_size, collection_name],
+                            "INSERT INTO customer (full_name, email, phone) VALUES (?,?, ?)",
+                            [full_name, email, phone],
                             (error, results) => {
                                 if (error) {
                                     res.status(500).send({
@@ -30,13 +31,15 @@ const product = {
                                     res.status(200).send({
                                         code: 200,
                                         status: true,
-                                        message: "Create Collection Successfully",
+                                        message: "Add customer Successfully",
                                         data: results[0],
                                     });
                                 }
-                            })
+                            }
+                        );
                     }
-                });
+                }
+            );
         } catch (error) {
             res.status(500).send({
                 status: false,
@@ -46,7 +49,39 @@ const product = {
         }
     },
     update: async function (req, res) {
-        try { } catch (error) {
+        try {
+            const id = req.body.id;
+            const updateColumns = req.body;
+            delete updateColumns.id;
+            const updateSql = `UPDATE customer SET ${Object.keys(updateColumns)
+                .map((key) => `${key} = ?`)
+                .join(", ")} WHERE id = ?`;
+            const updateValues = [...Object.values(updateColumns), id];
+
+            await db.query(updateSql, updateValues, (error, results) => {
+                if (error) {
+                    res.status(500).send({
+                        code: 500,
+                        status: false,
+                        message: error,
+                    });
+                } else {
+                    if (results.affectedRows > 0) {
+                        res.status(200).send({
+                            code: 200,
+                            status: true,
+                            message: "Update customer Successfully",
+                        });
+                    } else {
+                        res.status(206).send({
+                            code: 206,
+                            status: false,
+                            message: "This Id Not Exist!",
+                        });
+                    }
+                }
+            });
+        } catch (error) {
             res.status(500).send({
                 status: false,
                 code: 500,
@@ -56,8 +91,10 @@ const product = {
     },
     delete: async function (req, res) {
         try {
-            await db.query("DELETE FROM collection WHERE id = ?",
-                [req.body.id], async (error, results) => {
+            await db.query(
+                "DELETE FROM customer WHERE id = ?",
+                [req.body.id],
+                async (error, results) => {
                     if (error) {
                         res.status(500).send({
                             code: 500,
@@ -69,7 +106,7 @@ const product = {
                             res.status(200).send({
                                 code: 200,
                                 status: true,
-                                message: "Delete Collection Succssfully",
+                                message: "Delete customer Successfully",
                             });
                         } else {
                             res.status(206).send({
@@ -79,7 +116,8 @@ const product = {
                             });
                         }
                     }
-                });
+                }
+            );
         } catch (error) {
             res.status(500).send({
                 status: false,
@@ -90,7 +128,7 @@ const product = {
     },
     getAll: async function (req, res) {
         try {
-            await db.query("SELECT * FROM product", async (error, results) => {
+            await db.query("SELECT * FROM customer", async (error, results) => {
                 if (error) {
                     res.status(500).send({
                         code: 500,
@@ -102,14 +140,14 @@ const product = {
                         res.status(200).send({
                             code: 200,
                             status: true,
-                            message: "Get all Products",
+                            message: "Get all customer",
                             data: results,
                         });
                     } else {
                         res.status(206).send({
                             code: 206,
                             status: false,
-                            message: "Products Not Exist!",
+                            message: "customer Not Exist!",
                         });
                     }
                 }
@@ -124,8 +162,10 @@ const product = {
     },
     getById: async function (req, res) {
         try {
-            await db.query("SELECT * FROM product WHERE id = ?",
-                [req.body.id], async (error, results) => {
+            await db.query(
+                "SELECT * FROM customer WHERE id = ?",
+                [req.body.id],
+                async (error, results) => {
                     if (error) {
                         res.status(500).send({
                             code: 500,
@@ -137,7 +177,7 @@ const product = {
                             res.status(200).send({
                                 code: 200,
                                 status: true,
-                                message: "Get Product",
+                                message: "Get customer",
                                 data: results[0],
                             });
                         } else {
@@ -148,7 +188,8 @@ const product = {
                             });
                         }
                     }
-                });
+                }
+            );
         } catch (error) {
             res.status(500).send({
                 status: false,
@@ -157,7 +198,6 @@ const product = {
             });
         }
     },
+};
 
-}
-
-module.exports = product;
+module.exports = collection;
