@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const controllerPath = require("../controller/pocketController");
+const controllerPath = require("../controller/collarTypeController");
 const verifyToken = require("../middleware/auth").verifyToken;
 
 router

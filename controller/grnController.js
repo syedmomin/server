@@ -3,42 +3,62 @@ const db = require("../config/dbConnection");
 const collection = {
   create: async function (req, res) {
     try {
-      const { symbol, name } = req.body;
-      await db.query(
-        "SELECT COUNT(*) AS count FROM pocket WHERE symbol = ?",
-        [symbol],
+      const {
+        transaction_date,
+        reciving_date,
+        supplier_name,
+        supplier_number,
+        logastic_cost,
+        misc_cost,
+        total_cost,
+        total_amount,
+        note,
+      } = req.body;
+      //   await db.query(
+      //     "SELECT COUNT(*) AS count FROM grn_master WHERE name = ?",
+      //     [name],
+      //     (error, results) => {
+      //       const count = results[0].count;
+      //       if (count > 0) {
+      //         res.status(400).send({
+      //           status: false,
+      //           code: 400,
+      //           message: "This Type Already Exist!",
+      //         });
+      //       } else {
+      db.query(
+        "INSERT INTO grn_master (transaction_date,reciving_date,supplier_name,supplier_number,logastic_cost,misc_cost,total_cost,total_amount,note ) VALUES (?,?,?,?,?,?,?,?,?)",
+        [
+          transaction_date,
+          reciving_date,
+          supplier_name,
+          supplier_number,
+          logastic_cost,
+          misc_cost,
+          total_cost,
+          total_amount,
+          note,
+        ],
         (error, results) => {
-          const count = results[0].count;
-          if (count > 0) {
-            res.status(400).send({
+          if (error) {
+            res.status(500).send({
+              code: 500,
               status: false,
-              code: 400,
-              message: "This Design Already Exist!",
+              message: error,
             });
           } else {
-            db.query(
-              "INSERT INTO pocket (symbol, name,status ) VALUES (?,?, ?)",
-              [symbol, name, 0],
-              (error, results) => {
-                if (error) {
-                  res.status(500).send({
-                    code: 500,
-                    status: false,
-                    message: error,
-                  });
-                } else {
-                  res.status(200).send({
-                    code: 200,
-                    status: true,
-                    message: "Add Measurement Successfully",
-                    data: results[0],
-                  });
-                }
-              }
-            );
+            res.status(200).send({
+              code: 200,
+              status: true,
+              message: "Add GRN Successfully",
+              data: results[0],
+            });
           }
         }
       );
+      //   }
+      // }
+      //   );
     } catch (error) {
       res.status(500).send({
         status: false,
@@ -52,7 +72,7 @@ const collection = {
       const id = req.body.id;
       const updateColumns = req.body;
       delete updateColumns.id;
-      const updateSql = `UPDATE pocket SET ${Object.keys(updateColumns)
+      const updateSql = `UPDATE grn_master SET ${Object.keys(updateColumns)
         .map((key) => `${key} = ?`)
         .join(", ")} WHERE id = ?`;
       const updateValues = [...Object.values(updateColumns), id];
@@ -91,7 +111,7 @@ const collection = {
   delete: async function (req, res) {
     try {
       await db.query(
-        "DELETE FROM pocket WHERE id = ?",
+        "DELETE FROM grn_master WHERE id = ?",
         [req.body.id],
         async (error, results) => {
           if (error) {
@@ -127,7 +147,7 @@ const collection = {
   },
   getAll: async function (req, res) {
     try {
-      await db.query("SELECT * FROM pocket", async (error, results) => {
+      await db.query("SELECT * FROM grn_master", async (error, results) => {
         if (error) {
           res.status(500).send({
             code: 500,
@@ -162,7 +182,7 @@ const collection = {
   getById: async function (req, res) {
     try {
       await db.query(
-        "SELECT * FROM pocket WHERE id = ?",
+        "SELECT * FROM grn_master WHERE id = ?",
         [req.body.id],
         async (error, results) => {
           if (error) {
