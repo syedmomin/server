@@ -15,5 +15,7 @@ router.use("/placket-type", require("./placketTypeRoute"));
 router.use("/item-master", require("./itemMasterRoute"));
 router.use("/grn", require("./itemMasterRoute"));
 router.use("/order", require("./orderRoute"));
+router.use("/karigar-salary", require("./karigarSalaryRoute"));
+router.use("/expenses-ledger", require("./expensesLedgerRoute"));
 
 module.exports = router;
