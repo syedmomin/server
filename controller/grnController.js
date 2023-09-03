@@ -4,61 +4,78 @@ const collection = {
   create: async function (req, res) {
     try {
       const {
-        transaction_date,
-        reciving_date,
-        supplier_name,
-        supplier_number,
-        logastic_cost,
-        misc_cost,
-        total_cost,
-        total_amount,
+        transactionDate,
+        receivingDate,
+        supplierName,
+        supplierNumber,
+        totalShipmentCost,
+        totalMiscCost,
+        totalCost,
+        totalNetAmount,
         note,
+        details,
       } = req.body;
-      //   await db.query(
-      //     "SELECT COUNT(*) AS count FROM grn_master WHERE name = ?",
-      //     [name],
-      //     (error, results) => {
-      //       const count = results[0].count;
-      //       if (count > 0) {
-      //         res.status(400).send({
-      //           status: false,
-      //           code: 400,
-      //           message: "This Type Already Exist!",
-      //         });
-      //       } else {
-      db.query(
-        "INSERT INTO grn_master (transaction_date,reciving_date,supplier_name,supplier_number,logastic_cost,misc_cost,total_cost,total_amount,note ) VALUES (?,?,?,?,?,?,?,?,?)",
+
+      await db.query(
+        "INSERT INTO grn_master (transactionDate,receivingDate,supplierName,supplierNumber,totalShipmentCost,totalMiscCost,totalCost,totalNetAmount,note) VALUES (?,?,?,?,?,?,?,?,?)",
         [
-          transaction_date,
-          reciving_date,
-          supplier_name,
-          supplier_number,
-          logastic_cost,
-          misc_cost,
-          total_cost,
-          total_amount,
+          transactionDate,
+          receivingDate,
+          supplierName,
+          supplierNumber,
+          totalShipmentCost,
+          totalMiscCost,
+          totalCost,
+          totalNetAmount,
           note,
         ],
-        (error, results) => {
+        async (error, results) => {
           if (error) {
             res.status(500).send({
               code: 500,
               status: false,
               message: error,
             });
-          } else {
-            res.status(200).send({
+          }
+          const masterId = results.insertId;
+          try {
+            await Promise.all(
+              details.map(async (detail) => {
+                await db.query(
+                  "INSERT INTO grn_detail (masterId,itemMaster,itemUOM,itemArticle,itemColor,itemQuantity,itemRate,itemAmount,itemShipment,itemMiscCost,itemNetRate,itemNetAmount,itemImage) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)",
+                  [
+                    masterId,
+                    detail.itemMaster,
+                    detail.itemUOM,
+                    detail.itemArticle,
+                    detail.itemColor,
+                    detail.itemQuantity,
+                    detail.itemRate,
+                    detail.itemAmount,
+                    detail.itemShipment,
+                    detail.itemMiscCost,
+                    detail.itemNetRate,
+                    detail.itemNetAmount,
+                    detail.itemImage,
+                  ]
+                );
+              })
+            );
+
+            return res.status(200).send({
               code: 200,
               status: true,
               message: "Add GRN Successfully",
-              data: results[0],
+            });
+          } catch (error) {
+            return res.status(500).send({
+              code: 500,
+              status: false,
+              message: error,
             });
           }
         }
       );
-      //   }
-      // }
-      //   );
     } catch (error) {
       res.status(500).send({
         status: false,
@@ -70,35 +87,73 @@ const collection = {
   update: async function (req, res) {
     try {
       const id = req.body.id;
+      const detail = req.body.details;
       const updateColumns = req.body;
       delete updateColumns.id;
+      delete updateColumns.details;
       const updateSql = `UPDATE grn_master SET ${Object.keys(updateColumns)
         .map((key) => `${key} = ?`)
         .join(", ")} WHERE id = ?`;
       const updateValues = [...Object.values(updateColumns), id];
 
-      await db.query(updateSql, updateValues, (error, results) => {
+      await db.query(updateSql, updateValues, async (error, results) => {
         if (error) {
           res.status(500).send({
             code: 500,
             status: false,
             message: error,
           });
-        } else {
-          if (results.affectedRows > 0) {
-            res.status(200).send({
-              code: 200,
-              status: true,
-              message: "Update record successfully",
-            });
-          } else {
-            res.status(206).send({
-              code: 206,
-              status: false,
-              message: "This Id Not Exist!",
-            });
-          }
         }
+        await Promise.all(
+          detail.map(async (update) => {
+            await db.query(
+              `UPDATE grn_detail SET itemMaster = ?, itemUOM = ?, itemArticle = ?, itemColor = ?,itemQuantity = ?,itemRate = ?,itemAmount = ?,itemShipment = ?,itemMiscCost = ?,itemNetRate = ?,itemNetAmount = ?,itemImage = ? WHERE id = ?`,
+              [
+                update.itemMaster,
+                update.itemUOM,
+                update.itemArticle,
+                update.itemColor,
+                update.itemQuantity,
+                update.itemRate,
+                update.itemAmount,
+                update.itemShipment,
+                update.itemMiscCost,
+                update.itemNetRate,
+                update.itemNetAmount,
+                update.itemImage,
+                update.id,
+              ]
+            );
+          })
+        );
+        if (results.affectedRows > 0) {
+          res.status(200).send({
+            code: 200,
+            status: true,
+            message: "Update record successfully",
+          });
+        } else {
+          res.status(206).send({
+            code: 206,
+            status: false,
+            message: "This Id Not Exist!",
+          });
+        }
+        // else {
+        //   if (results.affectedRows > 0) {
+        //     res.status(200).send({
+        //       code: 200,
+        //       status: true,
+        //       message: "Update record successfully",
+        //     });
+        //   } else {
+        //     res.status(206).send({
+        //       code: 206,
+        //       status: false,
+        //       message: "This Id Not Exist!",
+        //     });
+        //   }
+        // }
       });
     } catch (error) {
       res.status(500).send({
@@ -120,20 +175,33 @@ const collection = {
               status: false,
               message: error,
             });
-          } else {
-            if (results.affectedRows > 0) {
-              res.status(200).send({
-                code: 200,
-                status: true,
-                message: "Delete record successfully",
-              });
-            } else {
-              res.status(206).send({
-                code: 206,
-                status: false,
-                message: "This Id Not Exist!",
-              });
+          }
+          await db.query(
+            "DELETE FROM grn_detail WHERE masterId = ?",
+            [req.body.id],
+            (error, allDelete) => {
+              if (error) {
+                res.status(500).send({
+                  code: 500,
+                  status: false,
+                  message: error,
+                });
+              }
             }
+          );
+
+          if (results.affectedRows > 0) {
+            res.status(200).send({
+              code: 200,
+              status: true,
+              message: "Delete record successfully",
+            });
+          } else {
+            res.status(206).send({
+              code: 206,
+              status: false,
+              message: "This Id Not Exist!",
+            });
           }
         }
       );
@@ -191,22 +259,34 @@ const collection = {
               status: false,
               message: error,
             });
-          } else {
-            if (results.length > 0) {
-              res.status(200).send({
-                code: 200,
-                status: true,
-                message: "Get details by id",
-                data: results[0],
-              });
-            } else {
-              res.status(206).send({
-                code: 206,
-                status: false,
-                message: "This Id Not Exist!",
-              });
-            }
           }
+          await db.query(
+            "SELECT * FROM grn_detail WHERE masterId = ?",
+            [req.body.id],
+            (error, detailOrder) => {
+              if (error) {
+                res.status(500).send({
+                  code: 500,
+                  status: false,
+                  message: error,
+                });
+              }
+              if (results.length > 0) {
+                res.status(200).send({
+                  code: 200,
+                  status: true,
+                  message: "Get details by id",
+                  data: { ...results[0], details: detailOrder },
+                });
+              } else {
+                res.status(206).send({
+                  code: 206,
+                  status: false,
+                  message: "This Id Not Exist!",
+                });
+              }
+            }
+          );
         }
       );
     } catch (error) {
