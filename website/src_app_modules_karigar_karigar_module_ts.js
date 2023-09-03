@@ -200,7 +200,7 @@ var CrudComponent = /*#__PURE__*/function () {
       var imageUpload = {
         file: this.avatarImage,
         imageName: this.imageName,
-        filePath: "karigar-image/"
+        filePath: "karigar/"
       };
       if (this.avatarImage !== undefined) {
         this._serviceData.uploadImage(imageUpload).subscribe();
@@ -300,7 +300,7 @@ var CrudComponent = /*#__PURE__*/function () {
           designation: res.data.designation
         });
         debugger;
-        _this4.avatarImage = res.data.karigar_image == "" ? undefined : "upload/karigar-image/".concat(res.data.karigar_image);
+        _this4.avatarImage = res.data.karigar_image == "" ? undefined : "assets/images/karigar/".concat(res.data.karigar_image);
       });
     }
   }, {
