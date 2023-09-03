@@ -393,7 +393,6 @@ var FormGrnComponent = /*#__PURE__*/function () {
   }, {
     key: "getDetailFormGroup",
     value: function getDetailFormGroup(item) {
-      debugger;
       var detailFormGroup = this.fb.group({
         id: [item.id],
         itemMaster: [item.itemMaster],
@@ -487,7 +486,6 @@ var FormGrnComponent = /*#__PURE__*/function () {
   }, {
     key: "onSubmit",
     value: function onSubmit(formData) {
-      console.log(formData);
       this.submitted = true;
       if (this.GRNForm.invalid) {
         return;

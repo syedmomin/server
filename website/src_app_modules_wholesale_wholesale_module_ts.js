@@ -297,7 +297,7 @@ function FormWholeSaleComponent_div_51_Template(rf, ctx) {
   }
 }
 var FormWholeSaleComponent = /*#__PURE__*/function () {
-  function FormWholeSaleComponent(_itemMaster, _colorType, _customerService, fb, _router, modalService, _sw, _grnService, route) {
+  function FormWholeSaleComponent(_itemMaster, _colorType, _customerService, fb, _router, modalService, _sw, _wholeSaleService, route) {
     var _this = this;
     (0,F_project_development_node_modules_babel_runtime_helpers_esm_classCallCheck__WEBPACK_IMPORTED_MODULE_0__["default"])(this, FormWholeSaleComponent);
     this._itemMaster = _itemMaster;
@@ -307,7 +307,7 @@ var FormWholeSaleComponent = /*#__PURE__*/function () {
     this._router = _router;
     this.modalService = modalService;
     this._sw = _sw;
-    this._grnService = _grnService;
+    this._wholeSaleService = _wholeSaleService;
     this.route = route;
     this.submitted = false;
     this.editable = false;
@@ -336,13 +336,8 @@ var FormWholeSaleComponent = /*#__PURE__*/function () {
   (0,F_project_development_node_modules_babel_runtime_helpers_esm_createClass__WEBPACK_IMPORTED_MODULE_1__["default"])(FormWholeSaleComponent, [{
     key: "getItemDetail",
     value: function getItemDetail(value, index) {
-      // debugger 
-      // this.itemMaster.filter((res) => {
-      // if (res.name === value) {
       this.items[index].itemUOM = value.UOM;
       this.items[index].itemArticle = value.article;
-      // }
-      // });
     }
   }, {
     key: "ngOnInit",
@@ -357,7 +352,7 @@ var FormWholeSaleComponent = /*#__PURE__*/function () {
       this.getUserDetails();
       this.makeReactiveForm();
       this.contentHeader = {
-        headerTitle: "GRN",
+        headerTitle: "Whole Sale",
         actionButton: true,
         breadcrumb: {
           type: "",
@@ -376,10 +371,10 @@ var FormWholeSaleComponent = /*#__PURE__*/function () {
     key: "getDetailById",
     value: function getDetailById() {
       var _this2 = this;
-      this._grnService.getDetailById({
+      this._wholeSaleService.getDetailById({
         id: this.id
       }).subscribe(function (res) {
-        _this2.GRNForm.patchValue({
+        _this2.wholeSaleForm.patchValue({
           transactionDate: res.data.transactionDate,
           receivingDate: res.data.receivingDate,
           supplierName: res.data.supplierName,
@@ -398,7 +393,6 @@ var FormWholeSaleComponent = /*#__PURE__*/function () {
   }, {
     key: "getDetailFormGroup",
     value: function getDetailFormGroup(item) {
-      debugger;
       var detailFormGroup = this.fb.group({
         id: [item.id],
         itemMaster: [item.itemMaster],
@@ -413,18 +407,18 @@ var FormWholeSaleComponent = /*#__PURE__*/function () {
         itemNetRate: [item.itemNetRate],
         itemNetAmount: [item.itemNetAmount]
       });
-      this.GRNForm.get("details").push(detailFormGroup);
+      this.wholeSaleForm.get("details").push(detailFormGroup);
       this.items.push(detailFormGroup.value);
     }
   }, {
     key: "f",
     get: function get() {
-      return this.GRNForm.controls;
+      return this.wholeSaleForm.controls;
     }
   }, {
     key: "makeReactiveForm",
     value: function makeReactiveForm() {
-      this.GRNForm = this.fb.group({
+      this.wholeSaleForm = this.fb.group({
         transactionDate: ["", [_angular_forms__WEBPACK_IMPORTED_MODULE_12__.Validators.required]],
         receivingDate: ["", [_angular_forms__WEBPACK_IMPORTED_MODULE_12__.Validators.required]],
         supplierName: [null, [_angular_forms__WEBPACK_IMPORTED_MODULE_12__.Validators.required]],
@@ -445,7 +439,7 @@ var FormWholeSaleComponent = /*#__PURE__*/function () {
   }, {
     key: "addItem",
     value: function addItem() {
-      var itemsArray = this.GRNForm.get("details");
+      var itemsArray = this.wholeSaleForm.get("details");
       this.items.push(this.createItemFormGroup().value);
       itemsArray.push(this.createItemFormGroup());
     }
@@ -471,7 +465,7 @@ var FormWholeSaleComponent = /*#__PURE__*/function () {
   }, {
     key: "details",
     get: function get() {
-      return this.GRNForm.get("details");
+      return this.wholeSaleForm.get("details");
     }
     /**
      * DeleteItem
@@ -492,9 +486,8 @@ var FormWholeSaleComponent = /*#__PURE__*/function () {
   }, {
     key: "onSubmit",
     value: function onSubmit(formData) {
-      console.log(formData);
       this.submitted = true;
-      if (this.GRNForm.invalid) {
+      if (this.wholeSaleForm.invalid) {
         return;
       }
       if (this.editable) {
@@ -507,10 +500,10 @@ var FormWholeSaleComponent = /*#__PURE__*/function () {
     key: "insertFormDetail",
     value: function insertFormDetail(formData) {
       var _this3 = this;
-      this._grnService.create(formData).subscribe(function (res) {
-        _this3._sw.fire("success", "GRN Invoice", "Record Successfully Add..");
+      this._wholeSaleService.create(formData).subscribe(function (res) {
+        _this3._sw.fire("success", "Whole Sale Invoice", "Record Successfully Add..");
         _this3.submitted = false;
-        _this3.GRNForm.reset();
+        _this3.wholeSaleForm.reset();
       }, function (err) {
         _this3._sw.fire("error", "Item Master", err.error.message);
       });
@@ -519,13 +512,13 @@ var FormWholeSaleComponent = /*#__PURE__*/function () {
     key: "updateFormDetail",
     value: function updateFormDetail(formData) {
       var _this4 = this;
-      this._grnService.update(Object.assign({
+      this._wholeSaleService.update(Object.assign({
         id: this.id
       }, formData)).subscribe(function (res) {
-        _this4._sw.fire("success", "GRN Invoice", "Record Successfully Update..");
+        _this4._sw.fire("success", "Whole Sale Invoice", "Record Successfully Update..");
         _this4.editable = false;
         _this4.submitted = false;
-        _this4._router.navigate(["/grn"]);
+        _this4._router.navigate(["/whole-sale"]);
       }, function (err) {
         _this4._sw.fire("error", "Item Master", err.error.message);
       });
@@ -533,7 +526,7 @@ var FormWholeSaleComponent = /*#__PURE__*/function () {
   }, {
     key: "navigateToBack",
     value: function navigateToBack() {
-      this._router.navigate(["/grn"]);
+      this._router.navigate(["/whole-sale"]);
     }
   }, {
     key: "getUserDetails",
@@ -767,7 +760,7 @@ FormWholeSaleComponent.ɵcmp = /*@__PURE__*/_angular_core__WEBPACK_IMPORTED_MODU
       _angular_core__WEBPACK_IMPORTED_MODULE_11__["ɵɵelementStart"](63, "div", 33);
       _angular_core__WEBPACK_IMPORTED_MODULE_11__["ɵɵelementStart"](64, "button", 34);
       _angular_core__WEBPACK_IMPORTED_MODULE_11__["ɵɵlistener"]("click", function FormWholeSaleComponent_Template_button_click_64_listener() {
-        return ctx.onSubmit(ctx.GRNForm.value);
+        return ctx.onSubmit(ctx.wholeSaleForm.value);
       });
       _angular_core__WEBPACK_IMPORTED_MODULE_11__["ɵɵtext"](65, " Save ");
       _angular_core__WEBPACK_IMPORTED_MODULE_11__["ɵɵelementEnd"]();
@@ -790,7 +783,7 @@ FormWholeSaleComponent.ɵcmp = /*@__PURE__*/_angular_core__WEBPACK_IMPORTED_MODU
       _angular_core__WEBPACK_IMPORTED_MODULE_11__["ɵɵadvance"](2);
       _angular_core__WEBPACK_IMPORTED_MODULE_11__["ɵɵproperty"]("contentHeader", ctx.contentHeader);
       _angular_core__WEBPACK_IMPORTED_MODULE_11__["ɵɵadvance"](5);
-      _angular_core__WEBPACK_IMPORTED_MODULE_11__["ɵɵproperty"]("formGroup", ctx.GRNForm);
+      _angular_core__WEBPACK_IMPORTED_MODULE_11__["ɵɵproperty"]("formGroup", ctx.wholeSaleForm);
       _angular_core__WEBPACK_IMPORTED_MODULE_11__["ɵɵadvance"](17);
       _angular_core__WEBPACK_IMPORTED_MODULE_11__["ɵɵproperty"]("items", ctx.userDetail)("searchable", true)("addTag", ctx.AddCustomer)("ngModel", ctx.customerData.customerName);
       _angular_core__WEBPACK_IMPORTED_MODULE_11__["ɵɵadvance"](5);

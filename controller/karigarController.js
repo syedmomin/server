@@ -19,7 +19,7 @@ const collection = {
           } else {
             db.query(
               "INSERT INTO karigar (karigar_image,name, phone, cnic,address,status,designation ) VALUES (?,?,?,?,?,?,?)",
-              [karigar_image, name, phone, cnic, address, 0, designation],
+              [karigar_image, name, phone, cnic, address, 1, designation],
               (error, results) => {
                 if (error) {
                   res.status(500).send({

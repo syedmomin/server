@@ -366,7 +366,6 @@ var LoginComponent = /*#__PURE__*/function () {
       // Login
       this.loading = true;
       this._authService.login(this.loginForm.value).subscribe(function (res) {
-        // console.log("check res", res.role);
         _this._toastrService.success("You have successfully logged in as an " + res.userDetail.role + " user to Vuexy. Now you can start to explore. Enjoy! 🎉", "👋 Welcome, " + res.userDetail.first_name + "!", {
           toastClass: "toast ngx-toastr",
           closeButton: true
@@ -376,7 +375,6 @@ var LoginComponent = /*#__PURE__*/function () {
           _this._router.navigate(["/customer"]);
         }, 100);
       }, function (err) {
-        console.log(err);
         _this._toastrService.error(err.error.message, "Ooops!", {
           progressBar: true,
           toastClass: "toast ngx-toastr",

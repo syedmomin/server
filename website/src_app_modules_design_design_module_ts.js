@@ -523,7 +523,6 @@ var CollarComponent = /*#__PURE__*/function () {
   (0,F_project_development_node_modules_babel_runtime_helpers_esm_createClass__WEBPACK_IMPORTED_MODULE_1__["default"])(CollarComponent, [{
     key: "onSubmit",
     value: function onSubmit(formData) {
-      console.log(formData);
       this.submitted = true;
       if (this.collarTypeForm.invalid) {
         return;
@@ -976,7 +975,6 @@ var ColorsComponent = /*#__PURE__*/function () {
   (0,F_project_development_node_modules_babel_runtime_helpers_esm_createClass__WEBPACK_IMPORTED_MODULE_1__["default"])(ColorsComponent, [{
     key: "onSubmit",
     value: function onSubmit(formData) {
-      console.log(formData);
       this.submitted = true;
       if (this.colorTypeForm.invalid) {
         return;
@@ -1429,7 +1427,6 @@ var CuffComponent = /*#__PURE__*/function () {
   (0,F_project_development_node_modules_babel_runtime_helpers_esm_createClass__WEBPACK_IMPORTED_MODULE_1__["default"])(CuffComponent, [{
     key: "onSubmit",
     value: function onSubmit(formData) {
-      console.log(formData);
       this.submitted = true;
       if (this.cuffTypeForm.invalid) {
         return;
@@ -1929,7 +1926,6 @@ var PlacketComponent = /*#__PURE__*/function () {
   (0,F_project_development_node_modules_babel_runtime_helpers_esm_createClass__WEBPACK_IMPORTED_MODULE_1__["default"])(PlacketComponent, [{
     key: "onSubmit",
     value: function onSubmit(formData) {
-      console.log(formData);
       this.submitted = true;
       if (this.placketTypeForm.invalid) {
         return;
@@ -2382,7 +2378,6 @@ var StichComponent = /*#__PURE__*/function () {
   (0,F_project_development_node_modules_babel_runtime_helpers_esm_createClass__WEBPACK_IMPORTED_MODULE_1__["default"])(StichComponent, [{
     key: "onSubmit",
     value: function onSubmit(formData) {
-      console.log(formData);
       this.submitted = true;
       if (this.stichTypeForm.invalid) {
         return;

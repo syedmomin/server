@@ -5301,10 +5301,7 @@ var CryptoService = /*#__PURE__*/function () {
           iv: "secret1234561456"
         });
         if (json === true) {
-          // console.log('JSON',json);
           var data = bytes.toString(crypto_js__WEBPACK_IMPORTED_MODULE_2__.enc.Utf8);
-          //console.log(key);
-          //console.log('data',data);
           return JSON.parse(data);
         } else return bytes.toString(crypto_js__WEBPACK_IMPORTED_MODULE_2__.enc.Utf8);
       }
@@ -7369,7 +7366,6 @@ var NavbarComponent = /*#__PURE__*/function () {
       var _this3 = this;
       // get the currentUser details from localStorage
       this.currentUser = JSON.parse(this.aes.getItem("currentUser"));
-      // console.log(this.currentUser);
       // Subscribe to the config changes
       this._coreConfigService.config.pipe((0,rxjs_operators__WEBPACK_IMPORTED_MODULE_10__.takeUntil)(this._unsubscribeAll)).subscribe(function (config) {
         _this3.coreConfig = config;
@@ -8624,10 +8620,8 @@ var SweetalertComponent = /*#__PURE__*/function () {
                 cancelButtonColor: "#E42728",
                 confirmButtonText: "Yes, delete it!"
               }).then(function (result) {
-                // console.log(result);
                 /* Read more about isConfirmed, isDenied below */
                 if (result.isConfirmed) {
-                  // console.log("sw");
                   fn();
                   _this.fire("success", "deleted", "Sucessfully deleted");
                 }
@@ -8657,10 +8651,8 @@ var SweetalertComponent = /*#__PURE__*/function () {
                 cancelButtonColor: "#E42728",
                 confirmButtonText: "Yes, delete it!"
               }).then(function (result) {
-                // console.log(result);
                 /* Read more about isConfirmed, isDenied below */
                 if (result.isConfirmed) {
-                  // console.log("sw");
                   fn();
                   _this2.fire("success", "".concat(heading), "Sucessfully deleted");
                 }

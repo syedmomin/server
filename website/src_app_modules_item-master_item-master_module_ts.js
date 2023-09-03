@@ -347,9 +347,9 @@ function DetailItemMasterComponent_option_57_Template(rf, ctx) {
     _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementEnd"]();
   }
   if (rf & 2) {
-    var item_r3 = ctx.$implicit;
+    var item_r2 = ctx.$implicit;
     _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵadvance"](1);
-    _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵtextInterpolate1"](" ", item_r3.name, " ");
+    _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵtextInterpolate1"](" ", item_r2.name, " ");
   }
 }
 function DetailItemMasterComponent_div_63_Template(rf, ctx) {
@@ -376,19 +376,9 @@ function DetailItemMasterComponent_div_63_Template(rf, ctx) {
     _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵproperty"]("ngClass", ctx_r1.submitted && ctx_r1.f.status.errors ? "is-invalid" : ctx_r1.f.status.errors ? " " : "is-valid");
   }
 }
-function DetailItemMasterComponent_button_66_Template(rf, ctx) {
-  if (rf & 1) {
-    var _r5 = _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵgetCurrentView"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementStart"](0, "button", 38);
-    _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵlistener"]("click", function DetailItemMasterComponent_button_66_Template_button_click_0_listener() {
-      _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵrestoreView"](_r5);
-      var ctx_r4 = _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵnextContext"]();
-      return ctx_r4.navigateToBack();
-    });
-    _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵtext"](1, " Cancel ");
-    _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementEnd"]();
-  }
-}
+var _c0 = function _c0() {
+  return ["/item-master"];
+};
 var DetailItemMasterComponent = /*#__PURE__*/function () {
   function DetailItemMasterComponent(_sw, route, fb, _serviceData, _colorService, _router) {
     (0,F_project_development_node_modules_babel_runtime_helpers_esm_classCallCheck__WEBPACK_IMPORTED_MODULE_0__["default"])(this, DetailItemMasterComponent);
@@ -414,7 +404,6 @@ var DetailItemMasterComponent = /*#__PURE__*/function () {
   }, {
     key: "onSubmit",
     value: function onSubmit(formData) {
-      console.log(formData);
       this.submitted = true;
       if (this.ItemMasterForm.invalid) {
         return;
@@ -525,9 +514,9 @@ DetailItemMasterComponent.ɵfac = function DetailItemMasterComponent_Factory(t) 
 DetailItemMasterComponent.ɵcmp = /*@__PURE__*/_angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵdefineComponent"]({
   type: DetailItemMasterComponent,
   selectors: [["app-detail-item-master"]],
-  decls: 69,
-  vars: 8,
-  consts: [[1, "content-wrapper", "container-xxl", "p-0"], [1, "content-body"], [3, "contentHeader"], [1, "card"], [1, "card-header"], [1, "card-body"], [1, "form", "form-vertical", 3, "formGroup"], [1, "row"], [1, "col-12", "col-md-4"], [1, "form-group"], ["for", "name"], ["type", "text", "id", "name", "formControlName", "name", "placeholder", "Item Name", "required", "", 1, "form-control", 3, "ngClass"], ["for", "shortName"], ["type", "text", "id", "shortName", "formControlName", "shortName", "placeholder", "Item Short Name", 1, "form-control"], ["formControlName", "itemType", "required", "", 1, "form-control", 3, "ngClass"], ["hidden", "", "value", "-1"], ["value", "Stich"], ["value", "Unstich"], ["formControlName", "UOM", "required", "", 1, "form-control", 3, "ngClass"], ["hidden", ""], ["value", "No"], ["value", "MTR"], ["value", "KG"], ["for", "article"], ["type", "text", "id", "article", "formControlName", "article", "placeholder", "Article", 1, "form-control"], ["formControlName", "color", 1, "form-control"], [4, "ngFor", "ngForOf"], ["for", "closing-Quantity"], ["type", "text", "readonly", "", "id", "closing-Quantity", "formControlName", "closingQuantity", "placeholder", "Closing Quantity", 1, "form-control"], ["class", "col-12 col-md-4", 4, "ngIf"], [1, "col-12"], [1, "float-right"], ["type", "submit", "rippleEffect", "", "class", "btn btn-danger mr-1", 3, "click", 4, "ngIf"], ["type", "submit", "rippleEffect", "", 1, "btn", "btn-primary", "mr-1", 3, "click"], ["for", "status"], ["formControlName", "status", "id", "status", 1, "form-control", "mb-1", 3, "ngClass"], ["value", "1"], ["value", "0"], ["type", "submit", "rippleEffect", "", 1, "btn", "btn-danger", "mr-1", 3, "click"]],
+  decls: 70,
+  vars: 9,
+  consts: [[1, "content-wrapper", "container-xxl", "p-0"], [1, "content-body"], [3, "contentHeader"], [1, "card"], [1, "card-header"], [1, "card-body"], [1, "form", "form-vertical", 3, "formGroup"], [1, "row"], [1, "col-12", "col-md-4"], [1, "form-group"], ["for", "name"], ["type", "text", "id", "name", "formControlName", "name", "placeholder", "Item Name", "required", "", 1, "form-control", 3, "ngClass"], ["for", "shortName"], ["type", "text", "id", "shortName", "formControlName", "shortName", "placeholder", "Item Short Name", 1, "form-control"], ["formControlName", "itemType", "required", "", 1, "form-control", 3, "ngClass"], ["hidden", "", "value", "-1"], ["value", "Stich"], ["value", "Unstich"], ["formControlName", "UOM", "required", "", 1, "form-control", 3, "ngClass"], ["hidden", ""], ["value", "No"], ["value", "MTR"], ["value", "KG"], ["for", "article"], ["type", "text", "id", "article", "formControlName", "article", "placeholder", "Article", 1, "form-control"], ["formControlName", "color", 1, "form-control"], [4, "ngFor", "ngForOf"], ["for", "closing-Quantity"], ["type", "text", "readonly", "", "id", "closing-Quantity", "formControlName", "closingQuantity", "placeholder", "Closing Quantity", 1, "form-control"], ["class", "col-12 col-md-4", 4, "ngIf"], [1, "col-12"], [1, "float-right"], ["type", "submit", "rippleEffect", "", 1, "btn", "btn-primary", "mr-1", 3, "click"], ["type", "button", "rippleEffect", "", 1, "btn", "btn-outline-secondary", 3, "routerLink"], ["for", "status"], ["formControlName", "status", "id", "status", 1, "form-control", "mb-1", 3, "ngClass"], ["value", "1"], ["value", "0"]],
   template: function DetailItemMasterComponent_Template(rf, ctx) {
     if (rf & 1) {
       _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementStart"](0, "div", 0);
@@ -630,12 +619,14 @@ DetailItemMasterComponent.ɵcmp = /*@__PURE__*/_angular_core__WEBPACK_IMPORTED_M
       _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵtemplate"](63, DetailItemMasterComponent_div_63_Template, 9, 1, "div", 29);
       _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementStart"](64, "div", 30);
       _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementStart"](65, "div", 31);
-      _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵtemplate"](66, DetailItemMasterComponent_button_66_Template, 2, 0, "button", 32);
-      _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementStart"](67, "button", 33);
-      _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵlistener"]("click", function DetailItemMasterComponent_Template_button_click_67_listener() {
+      _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementStart"](66, "button", 32);
+      _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵlistener"]("click", function DetailItemMasterComponent_Template_button_click_66_listener() {
         return ctx.onSubmit(ctx.ItemMasterForm.value);
       });
-      _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵtext"](68, " Save ");
+      _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵtext"](67, " Save ");
+      _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementEnd"]();
+      _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementStart"](68, "button", 33);
+      _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵtext"](69, " Cancel ");
       _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementEnd"]();
       _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementEnd"]();
       _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementEnd"]();
@@ -662,11 +653,11 @@ DetailItemMasterComponent.ɵcmp = /*@__PURE__*/_angular_core__WEBPACK_IMPORTED_M
       _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵproperty"]("ngForOf", ctx.getColors);
       _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵadvance"](6);
       _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵproperty"]("ngIf", ctx.editable);
-      _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵadvance"](3);
-      _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵproperty"]("ngIf", ctx.editable);
+      _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵadvance"](5);
+      _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵproperty"]("routerLink", _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵpureFunction0"](8, _c0));
     }
   },
-  directives: [app_layout_components_content_header_content_header_component__WEBPACK_IMPORTED_MODULE_5__.ContentHeaderComponent, _angular_forms__WEBPACK_IMPORTED_MODULE_8__["ɵNgNoValidate"], _angular_forms__WEBPACK_IMPORTED_MODULE_8__.NgControlStatusGroup, _angular_forms__WEBPACK_IMPORTED_MODULE_8__.FormGroupDirective, _angular_forms__WEBPACK_IMPORTED_MODULE_8__.DefaultValueAccessor, _angular_forms__WEBPACK_IMPORTED_MODULE_8__.NgControlStatus, _angular_forms__WEBPACK_IMPORTED_MODULE_8__.FormControlName, _angular_forms__WEBPACK_IMPORTED_MODULE_8__.RequiredValidator, _angular_common__WEBPACK_IMPORTED_MODULE_10__.NgClass, _angular_flex_layout_extended__WEBPACK_IMPORTED_MODULE_11__.DefaultClassDirective, _angular_forms__WEBPACK_IMPORTED_MODULE_8__.SelectControlValueAccessor, _angular_forms__WEBPACK_IMPORTED_MODULE_8__.NgSelectOption, _angular_forms__WEBPACK_IMPORTED_MODULE_8__["ɵNgSelectMultipleOption"], _angular_common__WEBPACK_IMPORTED_MODULE_10__.NgForOf, _angular_common__WEBPACK_IMPORTED_MODULE_10__.NgIf, _core_directives_core_ripple_effect_core_ripple_effect_directive__WEBPACK_IMPORTED_MODULE_6__.RippleEffectDirective],
+  directives: [app_layout_components_content_header_content_header_component__WEBPACK_IMPORTED_MODULE_5__.ContentHeaderComponent, _angular_forms__WEBPACK_IMPORTED_MODULE_8__["ɵNgNoValidate"], _angular_forms__WEBPACK_IMPORTED_MODULE_8__.NgControlStatusGroup, _angular_forms__WEBPACK_IMPORTED_MODULE_8__.FormGroupDirective, _angular_forms__WEBPACK_IMPORTED_MODULE_8__.DefaultValueAccessor, _angular_forms__WEBPACK_IMPORTED_MODULE_8__.NgControlStatus, _angular_forms__WEBPACK_IMPORTED_MODULE_8__.FormControlName, _angular_forms__WEBPACK_IMPORTED_MODULE_8__.RequiredValidator, _angular_common__WEBPACK_IMPORTED_MODULE_10__.NgClass, _angular_flex_layout_extended__WEBPACK_IMPORTED_MODULE_11__.DefaultClassDirective, _angular_forms__WEBPACK_IMPORTED_MODULE_8__.SelectControlValueAccessor, _angular_forms__WEBPACK_IMPORTED_MODULE_8__.NgSelectOption, _angular_forms__WEBPACK_IMPORTED_MODULE_8__["ɵNgSelectMultipleOption"], _angular_common__WEBPACK_IMPORTED_MODULE_10__.NgForOf, _angular_common__WEBPACK_IMPORTED_MODULE_10__.NgIf, _core_directives_core_ripple_effect_core_ripple_effect_directive__WEBPACK_IMPORTED_MODULE_6__.RippleEffectDirective, _angular_router__WEBPACK_IMPORTED_MODULE_9__.RouterLink],
   styles: ["\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IiIsImZpbGUiOiJkZXRhaWwtaXRlbS1tYXN0ZXIuY29tcG9uZW50LnNjc3MifQ== */"]
 });
 
