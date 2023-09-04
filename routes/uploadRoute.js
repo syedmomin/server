@@ -7,4 +7,7 @@ router
   .route("/save-image")
   .post(verifyToken, (req, res) => uploadFile.assetsImage(req, res));
 
+router
+  .route("/multiImage")
+  .post(verifyToken, (req, res) => uploadFile.multiImage(req, res));
 module.exports = router;
