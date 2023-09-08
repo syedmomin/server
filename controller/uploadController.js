@@ -21,20 +21,31 @@ const uploadFile = {
       });
     }
   },
+  multiImage: async function (req, res) {
+    try {
+      const uploadedFiles = req.body;
+      if (!uploadedFiles || uploadedFiles.length === 0) {
+        return res.status(400).json({ message: "No files were uploaded." });
+      }
+
+      uploadedFiles.file.forEach((file, index) => {
+        const filePath = `./website/assets/images/order/${req.body.imageName[index]}`;
+        const base64Data = file.replace(/^data:([A-Za-z-+/]+);base64,/, "");
+        fs.writeFileSync(filePath, base64Data, { encoding: "base64" });
+      });
+      return res.status(200).json({
+        code: 200,
+        status: true,
+        message: "Files are uploaded successfully!",
+      });
+    } catch (error) {
+      return res.status(500).json({
+        status: false,
+        code: 500,
+        message: error.message,
+      });
+    }
+  },
 };
 
 module.exports = uploadFile;
-
-// CREATE TABLE `product` (
-//     `id` int(11) NOT NULL,
-//     `product_name` varchar(300) NOT NULL,
-//     `product_description` text NOT NULL,
-//     `product_image` varchar(300) NOT NULL,
-//     `product_price` varchar(100) NOT NULL,
-//     `product_brand` varchar(200) NOT NULL,
-//     `product_color` varchar(500) NOT NULL,
-//     `product_size` varchar(500) NOT NULL,
-//     `collection_name` varchar(50) NOT NULL,
-//     `product_status` tinyint(1) NOT NULL DEFAULT 1,
-//     `created_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
-//   ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;

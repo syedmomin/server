@@ -338,7 +338,6 @@ const collection = {
                   message: error,
                 });
               }
-
               if (results.length > 0) {
                 res.status(200).send({
                   code: 200,
