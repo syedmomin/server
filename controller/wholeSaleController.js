@@ -5,27 +5,29 @@ const collection = {
     try {
       const {
         transactionDate,
-        receivingDate,
+        deliveryDate,
         supplierName,
         supplierNumber,
-        totalShipmentCost,
-        totalMiscCost,
-        totalCost,
+        personName,
+        totalDeliveryCost,
+        amountReceived,
+        netBalanceAmount,
         totalNetAmount,
         note,
         details,
       } = req.body;
 
       await db.query(
-        "INSERT INTO wholesale_master (transactionDate,receivingDate,supplierName,supplierNumber,totalShipmentCost,totalMiscCost,totalCost,totalNetAmount,note) VALUES (?,?,?,?,?,?,?,?,?)",
+        "INSERT INTO wholesale_master (transactionDate,deliveryDate,supplierName,supplierNumber,personName,totalDeliveryCost,amountReceived,netBalanceAmount,totalNetAmount,note) VALUES (?,?,?,?,?,?,?,?,?,?)",
         [
           transactionDate,
-          receivingDate,
+          deliveryDate,
           supplierName,
           supplierNumber,
-          totalShipmentCost,
-          totalMiscCost,
-          totalCost,
+          personName,
+          totalDeliveryCost,
+          amountReceived,
+          netBalanceAmount,
           totalNetAmount,
           note,
         ],
@@ -42,7 +44,7 @@ const collection = {
             await Promise.all(
               details.map(async (detail) => {
                 await db.query(
-                  "INSERT INTO wholesale_detail (masterId,itemMaster,itemUOM,itemArticle,itemColor,itemQuantity,itemRate,itemAmount,itemShipment,itemMiscCost,itemNetRate,itemNetAmount,itemImage) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)",
+                  "INSERT INTO wholesale_detail (masterId,itemMaster,itemUOM,itemArticle,itemColor,itemQuantity,itemPrice,itemAmount,itemDelivery,itemNetSalePrice,itemNetAmount,itemImage) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)",
                   [
                     masterId,
                     detail.itemMaster,
@@ -50,11 +52,10 @@ const collection = {
                     detail.itemArticle,
                     detail.itemColor,
                     detail.itemQuantity,
-                    detail.itemRate,
+                    detail.itemPrice,
                     detail.itemAmount,
-                    detail.itemShipment,
-                    detail.itemMiscCost,
-                    detail.itemNetRate,
+                    detail.itemDelivery,
+                    detail.itemNetSalePrice,
                     detail.itemNetAmount,
                     detail.itemImage,
                   ]
@@ -109,18 +110,17 @@ const collection = {
         await Promise.all(
           detail.map(async (update) => {
             await db.query(
-              `UPDATE wholesale_detail SET itemMaster = ?, itemUOM = ?, itemArticle = ?, itemColor = ?,itemQuantity = ?,itemRate = ?,itemAmount = ?,itemShipment = ?,itemMiscCost = ?,itemNetRate = ?,itemNetAmount = ?,itemImage = ? WHERE id = ?`,
+              `UPDATE wholesale_detail SET itemMaster = ?, itemUOM = ?, itemArticle = ?, itemColor = ?,itemQuantity = ?,itemPrice = ?,itemAmount = ?,itemDelivery = ?,itemNetSalePrice = ?,itemNetAmount = ?,itemImage = ? WHERE id = ?`,
               [
                 update.itemMaster,
                 update.itemUOM,
                 update.itemArticle,
                 update.itemColor,
                 update.itemQuantity,
-                update.itemRate,
+                update.itemPrice,
                 update.itemAmount,
-                update.itemShipment,
-                update.itemMiscCost,
-                update.itemNetRate,
+                update.itemDelivery,
+                update.itemNetSalePrice,
                 update.itemNetAmount,
                 update.itemImage,
                 update.id,
@@ -141,21 +141,6 @@ const collection = {
             message: "This Id Not Exist!",
           });
         }
-        // else {
-        //   if (results.affectedRows > 0) {
-        //     res.status(200).send({
-        //       code: 200,
-        //       status: true,
-        //       message: "Update record successfully",
-        //     });
-        //   } else {
-        //     res.status(206).send({
-        //       code: 206,
-        //       status: false,
-        //       message: "This Id Not Exist!",
-        //     });
-        //   }
-        // }
       });
     } catch (error) {
       res.status(500).send({

@@ -29,4 +29,8 @@ router
   .route("/getCustomerTotalBalance")
   .post(verifyToken, (req, res) => ledgerPath.customerTotalBalance(req, res));
 
+router
+  .route("/getCustomerLastRecord")
+  .post(verifyToken, (req, res) => controllerPath.customerLastRecord(req, res));
+
 module.exports = router;

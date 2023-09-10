@@ -554,6 +554,20 @@ var OrderService = /*#__PURE__*/function () {
         return res;
       }));
     }
+  }, {
+    key: "uploadMultipleImage",
+    value: function uploadMultipleImage(orderImage) {
+      return this._http.post("".concat(this.baseUrl, "/upload/multiImage"), orderImage).pipe((0,rxjs_operators__WEBPACK_IMPORTED_MODULE_3__.tap)(function (res) {
+        return res;
+      }));
+    }
+  }, {
+    key: "getCustomerLastRecord",
+    value: function getCustomerLastRecord(customerDetail) {
+      return this._http.post("".concat(this.baseUrl, "/").concat(this.path, "/getCustomerLastRecord"), customerDetail).pipe((0,rxjs_operators__WEBPACK_IMPORTED_MODULE_3__.tap)(function (res) {
+        return res;
+      }));
+    }
   }]);
   return OrderService;
 }();

@@ -405,6 +405,39 @@ const collection = {
       });
     }
   },
+
+  customerLastRecord: async function (req, res) {
+    try {
+      const customerName = req.body.customer_name;
+      const personName = req.body.person_name;
+      await db.query(
+        "SELECT * FROM order_master WHERE customer_name = ? and person_name = ? ORDER BY id DESC LIMIT 1",
+        [customerName, personName],
+        async (error, results) => {
+          if (error) {
+            res.status(500).send({
+              code: 500,
+              status: false,
+              message: error,
+            });
+          } else {
+            res.status(200).send({
+              code: 200,
+              status: true,
+              message: "Get details by Last Order",
+              data: results,
+            });
+          }
+        }
+      );
+    } catch (error) {
+      res.status(500).send({
+        status: false,
+        code: 500,
+        message: error.message,
+      });
+    }
+  },
 };
 
 module.exports = collection;
