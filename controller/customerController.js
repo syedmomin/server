@@ -26,7 +26,7 @@ const collection = {
             });
           } else {
             db.query(
-              "INSERT INTO customer (full_name, email, phone,alternate_number,country,city,customer_type,address) VALUES (?,?,?,?,?,?,?,?)",
+              "INSERT INTO customer (full_name, email, phone,alternateNumber,country,city,customerType,address) VALUES (?,?,?,?,?,?,?,?)",
               [
                 full_name,
                 email,

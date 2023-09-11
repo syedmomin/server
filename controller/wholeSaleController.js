@@ -291,6 +291,47 @@ const collection = {
       });
     }
   },
+  getByCustomer: async function (req, res) {
+    try {
+      const ledgerAmount = await wholeSaleLedger.ledgerByCustomer(req);
+      await db.query(
+        "SELECT * FROM wholesale_master WHERE supplierName = ? and supplierNumber = ?",
+        [req.body.supplierName, req.body.supplierNumber],
+        async (error, results) => {
+          if (error) {
+            res.status(500).send({
+              code: 500,
+              status: false,
+              message: error,
+            });
+          }
+          if (results.length > 0) {
+            res.status(200).send({
+              code: 200,
+              status: true,
+              message: "Get details by customer",
+              data: {
+                results: results,
+                amount: ledgerAmount,
+              },
+            });
+          } else {
+            res.status(206).send({
+              code: 206,
+              status: false,
+              message: "This Customer Not Exist!",
+            });
+          }
+        }
+      );
+    } catch (error) {
+      res.status(500).send({
+        status: false,
+        code: 500,
+        message: error.message,
+      });
+    }
+  },
 };
 
 module.exports = collection;

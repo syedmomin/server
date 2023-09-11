@@ -200,24 +200,11 @@ const customerLedger = {
   },
   customerLedgerUpdate: async function (req, res) {
     try {
-      const {
-        id,
-        totalAmount,
-        totalReceived,
-        totalBalance,
-        collectedAmount,
-        advancePayment,
-      } = req.body;
+      const { id, totalOrderAmount, totalAmountReceived, totalNetBalance } =
+        req.body;
       db.query(
-        "UPDATE customer_wholesale_ledger SET total_amount = ?, total_received = ?, total_balance = ?, collected_amount = ?, advance_payment = ? WHERE id = ?",
-        [
-          totalAmount,
-          totalReceived,
-          totalBalance,
-          collectedAmount,
-          advancePayment,
-          id,
-        ],
+        "UPDATE customer_wholesale_ledger SET totalOrderAmount = ?, totalAmountReceived = ?, totalNetBalance = ? WHERE id = ?",
+        [totalOrderAmount, totalAmountReceived, totalNetBalance, id],
         (error, ledgerAmount) => {
           if (error) {
             res.status(500).send({

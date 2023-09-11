@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const controllerPath = require("../controller/wholeSaleController");
+const wholeSalePath = require("../controller/customerWholesaleLedgerController");
 const verifyToken = require("../middleware/auth").verifyToken;
 
 router
@@ -18,5 +19,13 @@ router
 router
   .route("/delete")
   .post(verifyToken, (req, res) => controllerPath.delete(req, res));
+router
+  .route("/getWholeSaleLedger")
+  .post(verifyToken, (req, res) => controllerPath.getByCustomer(req, res));
+router
+  .route("/updateWholeSaleLedger")
+  .post(verifyToken, (req, res) =>
+    wholeSalePath.customerLedgerUpdate(req, res)
+  );
 
 module.exports = router;
