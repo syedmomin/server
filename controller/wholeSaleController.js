@@ -1,4 +1,5 @@
 const db = require("../config/dbConnection");
+const wholeSaleLedger = require("../controller/customerWholesaleLedgerController");
 
 const collection = {
   create: async function (req, res) {
@@ -39,6 +40,7 @@ const collection = {
               message: error,
             });
           }
+          await wholeSaleLedger.create(req, res);
           const masterId = results.insertId;
           try {
             await Promise.all(
@@ -87,6 +89,7 @@ const collection = {
   },
   update: async function (req, res) {
     try {
+      await wholeSaleLedger.update(req, res);
       const id = req.body.id;
       const detail = req.body.details;
       const updateColumns = req.body;
@@ -152,6 +155,7 @@ const collection = {
   },
   delete: async function (req, res) {
     try {
+      await wholeSaleLedger.delete(req, res);
       await db.query(
         "DELETE FROM wholesale_master WHERE id = ?",
         [req.body.id],
