@@ -8075,6 +8075,12 @@ var menu = [{
     type: "item",
     icon: "circle",
     url: "ledger/expenses-ledger"
+  }, {
+    id: "customerWholeSaleLedger",
+    title: "Customer WholeSale Ledger",
+    type: "item",
+    icon: "circle",
+    url: "ledger/customer-wholesale-ledger"
   }]
 }
 // {
@@ -8686,7 +8692,7 @@ var SweetalertComponent = /*#__PURE__*/function () {
                 text: "You won't be able to revert this!",
                 icon: "warning",
                 showCancelButton: true,
-                confirmButtonColor: "#C21858",
+                confirmButtonColor: "#e46226",
                 cancelButtonColor: "#E42728",
                 confirmButtonText: "Yes, delete it!"
               }).then(function (result) {
@@ -8717,7 +8723,7 @@ var SweetalertComponent = /*#__PURE__*/function () {
                 text: text,
                 icon: "warning",
                 showCancelButton: true,
-                confirmButtonColor: "#C21858",
+                confirmButtonColor: "#e46226",
                 cancelButtonColor: "#E42728",
                 confirmButtonText: "Yes, delete it!"
               }).then(function (result) {

@@ -111,10 +111,9 @@ function FormGrnComponent_div_51_Template(rf, ctx) {
       var objModel_r2 = restoredCtx.$implicit;
       return objModel_r2.itemQuantity = $event;
     })("input", function FormGrnComponent_div_51_Template_input_input_19_listener() {
-      var restoredCtx = _angular_core__WEBPACK_IMPORTED_MODULE_11__["ɵɵrestoreView"](_r5);
-      var i_r3 = restoredCtx.index;
+      _angular_core__WEBPACK_IMPORTED_MODULE_11__["ɵɵrestoreView"](_r5);
       var ctx_r11 = _angular_core__WEBPACK_IMPORTED_MODULE_11__["ɵɵnextContext"]();
-      ctx_r11.detailCalculator(i_r3);
+      ctx_r11.detailCalculator();
       return ctx_r11.getTotalQuantity();
     });
     _angular_core__WEBPACK_IMPORTED_MODULE_11__["ɵɵelementEnd"]();
@@ -129,10 +128,9 @@ function FormGrnComponent_div_51_Template(rf, ctx) {
       var objModel_r2 = restoredCtx.$implicit;
       return objModel_r2.itemRate = $event;
     })("input", function FormGrnComponent_div_51_Template_input_input_23_listener() {
-      var restoredCtx = _angular_core__WEBPACK_IMPORTED_MODULE_11__["ɵɵrestoreView"](_r5);
-      var i_r3 = restoredCtx.index;
+      _angular_core__WEBPACK_IMPORTED_MODULE_11__["ɵɵrestoreView"](_r5);
       var ctx_r13 = _angular_core__WEBPACK_IMPORTED_MODULE_11__["ɵɵnextContext"]();
-      return ctx_r13.detailCalculator(i_r3);
+      return ctx_r13.detailCalculator();
     });
     _angular_core__WEBPACK_IMPORTED_MODULE_11__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_11__["ɵɵelementStart"](24, "label", 44);
@@ -361,7 +359,7 @@ var FormGrnComponent = /*#__PURE__*/function () {
             isLink: true,
             link: "/"
           }, {
-            name: "Form",
+            name: "Entry",
             isLink: false
           }]
         }
@@ -477,6 +475,7 @@ var FormGrnComponent = /*#__PURE__*/function () {
     value: function deleteItem(id) {
       for (var i = 0; i < this.details.controls.length; i++) {
         if (this.details.controls.indexOf(this.details.controls[i]) === id) {
+          this.details.value.splice(i, 1);
           this.details.controls.splice(i, 1);
           this.items.splice(i, 1);
           break;
@@ -534,7 +533,10 @@ var FormGrnComponent = /*#__PURE__*/function () {
       var _this5 = this;
       this._customerService.getAll().subscribe(function (res) {
         if (res.data) {
-          _this5.userDetail = res.data;
+          debugger;
+          _this5.userDetail = res.data.filter(function (type) {
+            return type.customerType == 'Wholesale Fabric Customer';
+          });
         }
       });
     }
@@ -585,20 +587,23 @@ var FormGrnComponent = /*#__PURE__*/function () {
     }
   }, {
     key: "detailCalculator",
-    value: function detailCalculator(i) {
-      this.items[i].itemAmount = this.items[i].itemRate * this.items[i].itemQuantity;
-      this.items[i].itemNetRate = (this.items[i].itemAmount + +this.items[i].itemShipment + +this.items[i].itemMiscCost) / this.items[i].itemQuantity;
-      this.items[i].itemNetAmount = this.items[i].itemAmount + +this.items[i].itemShipment + +this.items[i].itemMiscCost;
+    value: function detailCalculator() {
+      var _this8 = this;
+      this.items.forEach(function (x, i) {
+        _this8.items[i].itemAmount = _this8.items[i].itemRate * _this8.items[i].itemQuantity;
+        _this8.items[i].itemNetRate = (_this8.items[i].itemAmount + +_this8.items[i].itemShipment + +_this8.items[i].itemMiscCost) / _this8.items[i].itemQuantity;
+        _this8.items[i].itemNetAmount = _this8.items[i].itemAmount + +_this8.items[i].itemShipment + +_this8.items[i].itemMiscCost;
+      });
       this.getTotalNetAmount();
     }
   }, {
     key: "shipmentCalculator",
     value: function shipmentCalculator() {
-      var _this8 = this;
+      var _this9 = this;
       this.items.forEach(function (x, i) {
-        _this8.items[i].itemShipment = Math.round(_this8.totalAmount.totalShipmentCost / _this8.totalQuantity * _this8.items[i].itemQuantity);
+        _this9.items[i].itemShipment = Math.round(_this9.totalAmount.totalShipmentCost / _this9.totalQuantity * _this9.items[i].itemQuantity);
         // ).toFixed(2);
-        _this8.items[i].itemMiscCost = Math.round(_this8.totalAmount.totalMiscCost / _this8.totalQuantity * _this8.items[i].itemQuantity);
+        _this9.items[i].itemMiscCost = Math.round(_this9.totalAmount.totalMiscCost / _this9.totalQuantity * _this9.items[i].itemQuantity);
         // ).toFixed(2);
       });
     }
@@ -930,16 +935,16 @@ var ListGrnComponent = /*#__PURE__*/function () {
     value: function ngOnInit() {
       this.getAllDetail();
       this.contentHeader = {
-        headerTitle: "Design",
+        headerTitle: "GRN",
         actionButton: true,
         breadcrumb: {
           type: "",
           links: [{
-            name: "Item Master",
+            name: "Good Receiving Note",
             isLink: true,
             link: "/"
           }, {
-            name: "List",
+            name: "Entry",
             isLink: false
           }]
         }

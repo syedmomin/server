@@ -1,5 +1,6 @@
 const db = require("../config/dbConnection");
 const wholeSaleLedger = require("../controller/customerWholesaleLedgerController");
+const updateQuantity = require("./itemMasterController");
 
 const collection = {
   create: async function (req, res) {
@@ -64,7 +65,7 @@ const collection = {
                 );
               })
             );
-
+            updateQuantity.getQuantityByLedger();
             return res.status(200).send({
               code: 200,
               status: true,
@@ -132,6 +133,7 @@ const collection = {
           })
         );
         if (results.affectedRows > 0) {
+          updateQuantity.getQuantityByLedger();
           res.status(200).send({
             code: 200,
             status: true,
@@ -182,6 +184,7 @@ const collection = {
           );
 
           if (results.affectedRows > 0) {
+            updateQuantity.getQuantityByLedger();
             res.status(200).send({
               code: 200,
               status: true,

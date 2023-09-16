@@ -926,6 +926,7 @@ var OrderFormComponent = /*#__PURE__*/function () {
     value: function deleteItem(id) {
       for (var i = 0; i < this.details.controls.length; i++) {
         if (this.details.controls.indexOf(this.details.controls[i]) === id) {
+          this.details.value.splice(i, 1);
           this.details.controls.splice(i, 1);
           this.items.splice(i, 1);
           break;
@@ -975,7 +976,7 @@ var OrderFormComponent = /*#__PURE__*/function () {
       this._customerService.getAll().subscribe(function (res) {
         if (res.data) {
           _this7.userDetail = res.data.filter(function (type) {
-            return type.customer_type == "Stitching";
+            return type.customerType == "Stitching";
           });
         }
       });

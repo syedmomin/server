@@ -198,6 +198,44 @@ const collection = {
       });
     }
   },
+  getQuantityByLedger: async function (res) {
+    try {
+      await db.query(
+        `SELECT itemMaster,itemUOM,
+              SUM(grn_total) - SUM(wholesale_total) AS total_quantity
+              FROM
+              (
+                  SELECT itemMaster,itemUOM,SUM(itemQuantity) AS grn_total,NULL AS wholesale_total
+                  FROM grn_detail GROUP BY itemMaster
+                  UNION ALL
+                  SELECT itemMaster,itemUOM,NULL AS grn_total,SUM(itemQuantity) AS wholesale_total
+                  FROM wholesale_detail GROUP BY itemMaster
+              ) AS combined_data
+              GROUP BY itemMaster`,
+        (error, results) => {
+          if (error) {
+            res.status(500).send({
+              code: 500,
+              status: false,
+              message: error,
+            });
+          }
+          results.forEach(async (element) => {
+            await db.query(
+              "UPDATE item_master SET closingQuantity = ? where name = ? and UOM = ?",
+              [element.total_quantity, element.itemMaster, element.itemUOM]
+            );
+          });
+        }
+      );
+    } catch (error) {
+      res.status(500).send({
+        status: false,
+        code: 500,
+        message: error.message,
+      });
+    }
+  },
 };
 
 module.exports = collection;

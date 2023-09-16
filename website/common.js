@@ -580,6 +580,98 @@ OrderService.ɵprov = /*@__PURE__*/_angular_core__WEBPACK_IMPORTED_MODULE_4__["�
   providedIn: 'root'
 });
 
+/***/ }),
+
+/***/ 934:
+/*!****************************************************************!*\
+  !*** ./src/app/modules/wholesale/service/wholeSale.service.ts ***!
+  \****************************************************************/
+/***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "WholeSaleService": function() { return /* binding */ WholeSaleService; }
+/* harmony export */ });
+/* harmony import */ var F_project_development_node_modules_babel_runtime_helpers_esm_classCallCheck__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./node_modules/@babel/runtime/helpers/esm/classCallCheck */ 5960);
+/* harmony import */ var F_project_development_node_modules_babel_runtime_helpers_esm_createClass__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./node_modules/@babel/runtime/helpers/esm/createClass */ 9367);
+/* harmony import */ var environments_environment__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! environments/environment */ 8260);
+/* harmony import */ var rxjs_operators__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! rxjs/operators */ 5029);
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @angular/core */ 4001);
+/* harmony import */ var _angular_common_http__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @angular/common/http */ 6781);
+
+
+
+
+
+
+var WholeSaleService = /*#__PURE__*/function () {
+  function WholeSaleService(_http) {
+    (0,F_project_development_node_modules_babel_runtime_helpers_esm_classCallCheck__WEBPACK_IMPORTED_MODULE_0__["default"])(this, WholeSaleService);
+    this._http = _http;
+    this.baseUrl = environments_environment__WEBPACK_IMPORTED_MODULE_2__.environment.apiUrl;
+    this.path = "wholeSale";
+  }
+  (0,F_project_development_node_modules_babel_runtime_helpers_esm_createClass__WEBPACK_IMPORTED_MODULE_1__["default"])(WholeSaleService, [{
+    key: "create",
+    value: function create(addData) {
+      return this._http.post("".concat(this.baseUrl, "/").concat(this.path, "/create"), addData).pipe((0,rxjs_operators__WEBPACK_IMPORTED_MODULE_3__.tap)(function (res) {
+        return res;
+      }));
+    }
+  }, {
+    key: "getAll",
+    value: function getAll() {
+      return this._http.post("".concat(this.baseUrl, "/").concat(this.path, "/get-all"), {}).pipe((0,rxjs_operators__WEBPACK_IMPORTED_MODULE_3__.tap)(function (res) {
+        return res;
+      }));
+    }
+  }, {
+    key: "getDetailById",
+    value: function getDetailById(UserId) {
+      return this._http.post("".concat(this.baseUrl, "/").concat(this.path, "/get-by-id"), UserId).pipe((0,rxjs_operators__WEBPACK_IMPORTED_MODULE_3__.tap)(function (res) {
+        return res;
+      }));
+    }
+  }, {
+    key: "delete",
+    value: function _delete(UserId) {
+      return this._http.post("".concat(this.baseUrl, "/").concat(this.path, "/delete"), UserId).pipe((0,rxjs_operators__WEBPACK_IMPORTED_MODULE_3__.tap)(function (res) {
+        return res;
+      }));
+    }
+  }, {
+    key: "update",
+    value: function update(updateData) {
+      return this._http.post("".concat(this.baseUrl, "/").concat(this.path, "/update"), updateData).pipe((0,rxjs_operators__WEBPACK_IMPORTED_MODULE_3__.tap)(function (res) {
+        return res;
+      }));
+    }
+  }, {
+    key: "getByCustomerLedger",
+    value: function getByCustomerLedger(customerDetail) {
+      return this._http.post("".concat(this.baseUrl, "/").concat(this.path, "/getWholeSaleLedger"), customerDetail).pipe((0,rxjs_operators__WEBPACK_IMPORTED_MODULE_3__.tap)(function (res) {
+        return res;
+      }));
+    }
+  }, {
+    key: "updateCustomerWholeSaleLedger",
+    value: function updateCustomerWholeSaleLedger(wholeSaleLedger) {
+      return this._http.post("".concat(this.baseUrl, "/").concat(this.path, "/updateWholeSaleLedger"), wholeSaleLedger).pipe((0,rxjs_operators__WEBPACK_IMPORTED_MODULE_3__.tap)(function (res) {
+        return res;
+      }));
+    }
+  }]);
+  return WholeSaleService;
+}();
+WholeSaleService.ɵfac = function WholeSaleService_Factory(t) {
+  return new (t || WholeSaleService)(_angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵinject"](_angular_common_http__WEBPACK_IMPORTED_MODULE_5__.HttpClient));
+};
+WholeSaleService.ɵprov = /*@__PURE__*/_angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵdefineInjectable"]({
+  token: WholeSaleService,
+  factory: WholeSaleService.ɵfac,
+  providedIn: "root"
+});
+
 /***/ })
 
 }]);
