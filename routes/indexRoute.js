@@ -18,5 +18,6 @@ router.use("/wholeSale", require("./wholeSaleRoute"));
 router.use("/order", require("./orderRoute"));
 router.use("/karigar-salary", require("./karigarSalaryRoute"));
 router.use("/expenses-ledger", require("./expensesLedgerRoute"));
+router.use("/report", require("./reportRoute"));
 
 module.exports = router;
