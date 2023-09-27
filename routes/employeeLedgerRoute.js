@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const controllerPath = require("../controller/karigarSalaryController");
+const controllerPath = require("../controller/employeeLedgerController");
 const verifyToken = require("../middleware/auth").verifyToken;
 
 router

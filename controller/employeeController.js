@@ -3,10 +3,10 @@ const db = require("../config/dbConnection");
 const collection = {
   create: async function (req, res) {
     try {
-      const { karigar_image, name, phone, cnic, address, designation } =
+      const { employeeImage, name, phone, cnic, address, designation } =
         req.body;
       await db.query(
-        "SELECT COUNT(*) AS count FROM karigar WHERE phone = ?",
+        "SELECT COUNT(*) AS count FROM employee WHERE phone = ?",
         [phone],
         (error, results) => {
           const count = results[0].count;
@@ -14,12 +14,12 @@ const collection = {
             res.status(400).send({
               status: false,
               code: 400,
-              message: "This Karigar Already Exist!",
+              message: "This employee Already Exist!",
             });
           } else {
             db.query(
-              "INSERT INTO karigar (karigar_image,name, phone, cnic,address,status,designation ) VALUES (?,?,?,?,?,?,?)",
-              [karigar_image, name, phone, cnic, address, 1, designation],
+              "INSERT INTO employee (employeeImage,name, phone, cnic,address,status,designation ) VALUES (?,?,?,?,?,?,?)",
+              [employeeImage, name, phone, cnic, address, 1, designation],
               (error, results) => {
                 if (error) {
                   res.status(500).send({
@@ -53,7 +53,7 @@ const collection = {
       const id = req.body.id;
       const updateColumns = req.body;
       delete updateColumns.id;
-      const updateSql = `UPDATE karigar SET ${Object.keys(updateColumns)
+      const updateSql = `UPDATE employee SET ${Object.keys(updateColumns)
         .map((key) => `${key} = ?`)
         .join(", ")} WHERE id = ?`;
       const updateValues = [...Object.values(updateColumns), id];
@@ -92,7 +92,7 @@ const collection = {
   delete: async function (req, res) {
     try {
       await db.query(
-        "DELETE FROM karigar WHERE id = ?",
+        "DELETE FROM employee WHERE id = ?",
         [req.body.id],
         async (error, results) => {
           if (error) {
@@ -128,7 +128,7 @@ const collection = {
   },
   getAll: async function (req, res) {
     try {
-      await db.query("SELECT * FROM karigar", async (error, results) => {
+      await db.query("SELECT * FROM employee", async (error, results) => {
         if (error) {
           res.status(500).send({
             code: 500,
@@ -163,7 +163,7 @@ const collection = {
   getById: async function (req, res) {
     try {
       await db.query(
-        "SELECT * FROM karigar WHERE id = ?",
+        "SELECT * FROM employee WHERE id = ?",
         [req.body.id],
         async (error, results) => {
           if (error) {

@@ -4,7 +4,7 @@ const collection = {
   create: async function (req, res) {
     try {
       const {
-        full_name,
+        fullName,
         email,
         phone,
         address,
@@ -26,9 +26,9 @@ const collection = {
             });
           } else {
             db.query(
-              "INSERT INTO customer (full_name, email, phone,alternateNumber,country,city,customerType,address) VALUES (?,?,?,?,?,?,?,?)",
+              "INSERT INTO customer (fullName, email, phone,alternateNumber,country,city,customerType,address) VALUES (?,?,?,?,?,?,?,?)",
               [
-                full_name,
+                fullName,
                 email,
                 phone,
                 alternateNumber,

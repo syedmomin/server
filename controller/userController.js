@@ -30,12 +30,12 @@ const user = {
   },
   newRegistration: async function (req, res) {
     try {
-      const { first_name, last_name, mob, email, password, role } = req.body;
+      const { fullName, phone, email, password, role } = req.body;
       const encryptedPassword = await bcrypt.hash(password, saltRounds);
 
       await db.query(
-        "SELECT COUNT(*) AS count FROM users WHERE email = ?",
-        [email],
+        "SELECT COUNT(*) AS count FROM users WHERE email = ? and phone = ?",
+        [email, phone],
         (error, results) => {
           const count = results[0].count;
           if (count > 0) {
@@ -46,8 +46,8 @@ const user = {
             });
           } else {
             db.query(
-              "INSERT INTO users (first_name, last_name, mob, email, password, role, is_active, is_verify) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
-              [first_name, last_name, mob, email, encryptedPassword, role, 1, 0]
+              "INSERT INTO users (fullName, phone, email, password, role, is_active, is_verify) VALUES ( ?, ?, ?, ?, ?, ?, ?)",
+              [fullName, phone, email, encryptedPassword, role, 1, 0]
             );
             res.status(200).send({
               success: true,
@@ -167,7 +167,9 @@ const user = {
       delete updateColumns.id;
       delete updateColumns.email;
       delete updateColumns.password;
-      const updateSql = `UPDATE users SET ${Object.keys(updateColumns).map(key => `${key} = ?`).join(', ')} WHERE id = ?`;
+      const updateSql = `UPDATE users SET ${Object.keys(updateColumns)
+        .map((key) => `${key} = ?`)
+        .join(", ")} WHERE id = ?`;
       const updateValues = [...Object.values(updateColumns), id];
 
       await db.query(updateSql, updateValues, (error, results) => {
@@ -203,8 +205,10 @@ const user = {
   },
   deleteUser: async function (req, res) {
     try {
-      await db.query("DELETE FROM users WHERE id = ?",
-        [req.body.id], async (error, results) => {
+      await db.query(
+        "DELETE FROM users WHERE id = ?",
+        [req.body.id],
+        async (error, results) => {
           if (error) {
             res.status(500).send({
               code: 500,
@@ -226,7 +230,8 @@ const user = {
               });
             }
           }
-        });
+        }
+      );
     } catch (error) {
       res.status(500).send({
         status: false,
@@ -237,8 +242,10 @@ const user = {
   },
   getUserById: async function (req, res) {
     try {
-      await db.query("SELECT * FROM users WHERE id = ?",
-        [req.body.id], async (error, results) => {
+      await db.query(
+        "SELECT * FROM users WHERE id = ?",
+        [req.body.id],
+        async (error, results) => {
           if (error) {
             res.status(500).send({
               code: 500,
@@ -261,7 +268,8 @@ const user = {
               });
             }
           }
-        });
+        }
+      );
     } catch (error) {
       res.status(500).send({
         status: false,
@@ -271,14 +279,15 @@ const user = {
     }
   },
   verify: async function (req, res) {
-    try { } catch (error) {
+    try {
+    } catch (error) {
       res.status(500).send({
         status: false,
         code: 500,
         message: error.message,
       });
     }
-  }
+  },
 };
 
 module.exports = user;

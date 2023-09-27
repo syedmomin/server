@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const controllerPath = require("../controller/karigarController");
+const controllerPath = require("../controller/employeeController");
 const verifyToken = require("../middleware/auth").verifyToken;
 
 router
