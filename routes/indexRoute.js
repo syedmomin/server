@@ -19,5 +19,6 @@ router.use("/order", require("./orderRoute"));
 router.use("/employeeLedger", require("./employeeLedgerRoute"));
 router.use("/expenses-ledger", require("./expensesLedgerRoute"));
 router.use("/report", require("./reportRoute"));
+router.use("/event", require("./eventRoute"));
 
 module.exports = router;
