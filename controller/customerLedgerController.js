@@ -187,7 +187,7 @@ const customerLedger = {
   ledgerByCustomer: async function (req) {
     return new Promise((resolve, reject) => {
       db.query(
-        "SELECT id, total_amount, total_received, total_balance, collected_amount,advance_payment FROM customer_ledger WHERE customer_name = ? and customer_phone = ?",
+        "SELECT * FROM customer_ledger WHERE customer_name = ? and customer_phone = ?",
         [req.body.customer_name, req.body.customer_phone],
         (error, ledgerAmount) => {
           if (error) {
@@ -203,13 +203,16 @@ const customerLedger = {
     try {
       const {
         id,
+        customer_name,
+        customer_phone,
+        collectedNow,
         totalAmount,
         totalReceived,
         totalBalance,
         collectedAmount,
         advancePayment,
       } = req.body;
-      db.query(
+      await db.query(
         "UPDATE customer_ledger SET total_amount = ?, total_received = ?, total_balance = ?, collected_amount = ?, advance_payment = ? WHERE id = ?",
         [
           totalAmount,
@@ -228,6 +231,10 @@ const customerLedger = {
             });
           }
           if (ledgerAmount.affectedRows > 0) {
+            db.query(
+              "INSERT INTO customer_ledger_history (customer_name,customer_phone,collectedAmount) VALUES (?,?,?)",
+              [customer_name, customer_phone, collectedNow]
+            );
             res.status(200).send({
               code: 200,
               status: true,
