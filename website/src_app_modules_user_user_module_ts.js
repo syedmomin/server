@@ -573,7 +573,7 @@ var AddUserComponent = /*#__PURE__*/function () {
             isLink: true,
             link: "/"
           }, {
-            name: "CRUD",
+            name: "Information",
             isLink: false
           }]
         }
@@ -669,7 +669,7 @@ AddUserComponent.ɵcmp = /*@__PURE__*/_angular_core__WEBPACK_IMPORTED_MODULE_7__
       _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementStart"](6, "div", 5);
       _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementStart"](7, "div", 6);
       _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementStart"](8, "h4", 7);
-      _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵtext"](9, "Customer CRUD");
+      _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵtext"](9, "Customer Information");
       _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementEnd"]();
       _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementEnd"]();
       _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementStart"](10, "div", 8);

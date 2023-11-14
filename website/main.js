@@ -4840,7 +4840,7 @@ var appRoutes = [{
 }, {
   path: "order",
   loadChildren: function loadChildren() {
-    return Promise.all(/*! import() */[__webpack_require__.e("default-node_modules_ng-select_ng-select___ivy_ngcc___fesm2015_ng-select-ng-select_js-src_app-78665f"), __webpack_require__.e("default-src_app_shared_reports_orderFrom_service_ts"), __webpack_require__.e("common"), __webpack_require__.e("src_app_modules_order_order_module_ts")]).then(__webpack_require__.bind(__webpack_require__, /*! ./modules/order/order.module */ 6714)).then(function (m) {
+    return Promise.all(/*! import() */[__webpack_require__.e("default-node_modules_ng-select_ng-select___ivy_ngcc___fesm2015_ng-select-ng-select_js-src_app-78665f"), __webpack_require__.e("default-src_app_modules_reports_services_report_service_ts-src_app_shared_reports_measurement-f6c1cb"), __webpack_require__.e("common"), __webpack_require__.e("src_app_modules_order_order_module_ts")]).then(__webpack_require__.bind(__webpack_require__, /*! ./modules/order/order.module */ 6714)).then(function (m) {
       return m.OrderModule;
     });
   },
@@ -4864,7 +4864,7 @@ var appRoutes = [{
 }, {
   path: "reports",
   loadChildren: function loadChildren() {
-    return Promise.all(/*! import() */[__webpack_require__.e("default-src_app_shared_reports_orderFrom_service_ts"), __webpack_require__.e("src_app_modules_reports_report_module_ts")]).then(__webpack_require__.bind(__webpack_require__, /*! ./modules/reports/report.module */ 4536)).then(function (m) {
+    return Promise.all(/*! import() */[__webpack_require__.e("default-node_modules_ng-select_ng-select___ivy_ngcc___fesm2015_ng-select-ng-select_js-src_app-78665f"), __webpack_require__.e("default-src_app_modules_reports_services_report_service_ts-src_app_shared_reports_measurement-f6c1cb"), __webpack_require__.e("src_app_modules_reports_report_module_ts")]).then(__webpack_require__.bind(__webpack_require__, /*! ./modules/reports/report.module */ 4536)).then(function (m) {
       return m.ReportModule;
     });
   },
