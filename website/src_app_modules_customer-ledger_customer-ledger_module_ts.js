@@ -4945,10 +4945,12 @@ var CustomerLedgerComponent = /*#__PURE__*/function () {
     key: "onSubmit",
     value: function onSubmit(formValue) {
       var _this = this;
-      if (this.paymentCM.collectedAmount == null || this.paymentCM.collectedAmount == 0) {
+      if (this.paymentCM.collectedNow == null || this.paymentCM.collectedNow == 0) {
         return false;
       }
-      this._orderService.updateCustomerLedger(formValue).subscribe(function (res) {
+      this._orderService.updateCustomerLedger(Object.assign({
+        collectedNow: this.paymentCM.collectedNow
+      }, formValue)).subscribe(function (res) {
         _this._sw.fire("success", "Ledger Amount", "Record Successfully Update..");
         _this.submitted = false;
       }, function (err) {
@@ -4975,8 +4977,11 @@ var CustomerLedgerComponent = /*#__PURE__*/function () {
       this._orderService.getByCustomer(getOj).subscribe(function (res) {
         if (res.data) {
           _this2.customerTableData = res.data.results;
+          debugger;
           _this2.ledgerFrom.patchValue({
             id: res.data.amount.id,
+            customer_name: res.data.amount.customer_name,
+            customer_phone: res.data.amount.customer_phone,
             totalAmount: res.data.amount.total_amount,
             totalReceived: res.data.amount.total_received,
             totalBalance: res.data.amount.total_balance,
@@ -5024,6 +5029,8 @@ var CustomerLedgerComponent = /*#__PURE__*/function () {
     value: function makeReactiveForm() {
       this.ledgerFrom = this.fb.group({
         id: [],
+        customer_name: [],
+        customer_phone: [],
         totalAmount: ["", [_angular_forms__WEBPACK_IMPORTED_MODULE_8__.Validators.required]],
         totalReceived: [],
         totalBalance: [],
@@ -5286,7 +5293,7 @@ CustomerLedgerComponent.ɵcmp = /*@__PURE__*/_angular_core__WEBPACK_IMPORTED_MOD
       _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵadvance"](5);
       _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵproperty"]("ngModel", ctx.paymentCM.collectedNow)("ngModelOptions", _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵpureFunction0"](21, _c1));
       _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵadvance"](2);
-      _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵproperty"]("disabled", ctx.paymentCM.balanceAmount < 0);
+      _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵproperty"]("disabled", ctx.paymentCM.balanceAmount <= 0 && ctx.paymentCM.collectedNow > 0);
       _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵadvance"](19);
       _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵproperty"]("ngIf", ctx.customerTableData.length == 0);
       _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵadvance"](1);
@@ -6378,9 +6385,9 @@ ExpensesLedgerService.ɵprov = /*@__PURE__*/_angular_core__WEBPACK_IMPORTED_MODU
 /***/ }),
 
 /***/ 1794:
-/*!********************************************************************!*\
-  !*** ./node_modules/ng2-flatpickr/node_modules/tslib/tslib.es6.js ***!
-  \********************************************************************/
+/*!*************!*\
+  !*** tslib ***!
+  \*************/
 /***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 __webpack_require__.r(__webpack_exports__);

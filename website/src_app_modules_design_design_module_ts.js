@@ -585,7 +585,7 @@ var CollarComponent = /*#__PURE__*/function () {
             isLink: true,
             link: "/"
           }, {
-            name: "CRUD",
+            name: "Information",
             isLink: false
           }]
         }
@@ -683,7 +683,7 @@ CollarComponent.ɵcmp = /*@__PURE__*/_angular_core__WEBPACK_IMPORTED_MODULE_7__[
       _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementStart"](6, "div", 5);
       _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementStart"](7, "div", 6);
       _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementStart"](8, "h4", 7);
-      _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵtext"](9, "Collar Type CRUD");
+      _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵtext"](9, "Collar Type Information");
       _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementEnd"]();
       _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementEnd"]();
       _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementStart"](10, "div", 8);
@@ -1037,7 +1037,7 @@ var ColorsComponent = /*#__PURE__*/function () {
             isLink: true,
             link: "/"
           }, {
-            name: "CRUD",
+            name: "Information",
             isLink: false
           }]
         }
@@ -1135,7 +1135,7 @@ ColorsComponent.ɵcmp = /*@__PURE__*/_angular_core__WEBPACK_IMPORTED_MODULE_7__[
       _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementStart"](6, "div", 5);
       _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementStart"](7, "div", 6);
       _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementStart"](8, "h4", 7);
-      _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵtext"](9, "Color CRUD");
+      _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵtext"](9, "Color Information");
       _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementEnd"]();
       _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementEnd"]();
       _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementStart"](10, "div", 8);
@@ -1489,7 +1489,7 @@ var CuffComponent = /*#__PURE__*/function () {
             isLink: true,
             link: "/"
           }, {
-            name: "CRUD",
+            name: "Information",
             isLink: false
           }]
         }
@@ -1587,7 +1587,7 @@ CuffComponent.ɵcmp = /*@__PURE__*/_angular_core__WEBPACK_IMPORTED_MODULE_7__["�
       _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementStart"](6, "div", 5);
       _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementStart"](7, "div", 6);
       _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementStart"](8, "h4", 7);
-      _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵtext"](9, "Cuff Type CRUD");
+      _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵtext"](9, "Cuff Type Information");
       _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementEnd"]();
       _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementEnd"]();
       _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementStart"](10, "div", 8);
@@ -1988,7 +1988,7 @@ var PlacketComponent = /*#__PURE__*/function () {
             isLink: true,
             link: "/"
           }, {
-            name: "CRUD",
+            name: "Information",
             isLink: false
           }]
         }
@@ -2086,7 +2086,7 @@ PlacketComponent.ɵcmp = /*@__PURE__*/_angular_core__WEBPACK_IMPORTED_MODULE_7__
       _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementStart"](6, "div", 5);
       _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementStart"](7, "div", 6);
       _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementStart"](8, "h4", 7);
-      _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵtext"](9, "Placket Type CRUD");
+      _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵtext"](9, "Placket Type Information");
       _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementEnd"]();
       _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementEnd"]();
       _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementStart"](10, "div", 8);
@@ -2440,7 +2440,7 @@ var StichComponent = /*#__PURE__*/function () {
             isLink: true,
             link: "/"
           }, {
-            name: "CRUD",
+            name: "Information",
             isLink: false
           }]
         }
@@ -2538,7 +2538,7 @@ StichComponent.ɵcmp = /*@__PURE__*/_angular_core__WEBPACK_IMPORTED_MODULE_7__["
       _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementStart"](6, "div", 5);
       _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementStart"](7, "div", 6);
       _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementStart"](8, "h4", 7);
-      _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵtext"](9, "Stich Type CRUD");
+      _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵtext"](9, "Stich Type Information");
       _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementEnd"]();
       _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementEnd"]();
       _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementStart"](10, "div", 8);
