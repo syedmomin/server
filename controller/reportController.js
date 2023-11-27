@@ -1,6 +1,40 @@
 const db = require("../config/dbConnection");
 
 const report = {
+  getAllReportList: async function (req, res) {
+    try {
+      await db.query("SELECT * FROM reports_list", async (error, results) => {
+        if (error) {
+          res.status(500).send({
+            code: 500,
+            status: false,
+            message: error,
+          });
+        } else {
+          if (results.length > 0) {
+            res.status(200).send({
+              code: 200,
+              status: true,
+              message: "Get all records",
+              data: results,
+            });
+          } else {
+            res.status(206).send({
+              code: 206,
+              status: false,
+              message: "Record Not Exist!",
+            });
+          }
+        }
+      });
+    } catch (error) {
+      res.status(500).send({
+        status: false,
+        code: 500,
+        message: error.message,
+      });
+    }
+  },
   OrderInvoiceReport: async function (req, res) {
     try {
       await db.query(

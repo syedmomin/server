@@ -185,6 +185,7 @@ const user = {
               code: 200,
               status: true,
               message: "Update User Succssfully",
+              data: results,
             });
           } else {
             res.status(206).send({
