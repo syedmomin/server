@@ -11,5 +11,6 @@ router
   .post(verifyToken, (req, res) =>
     controllerPath.customerLedgerReport(req, res)
   );
-
+router.route("/customerInvoice").post(verifyToken, (req, res) => controllerPath.customerInvoiceReport(req, res));
+// router.route("/goodReceivingNote").post(verifyToken, (req, res) => controllerPath.goodsReceivingReport(req, res));
 module.exports = router;
