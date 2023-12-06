@@ -4,7 +4,7 @@ const report = {
   customerInvoiceReport: async function (req, res) {
     try {
       await db.query(
-        "SELECT o.*, c.city,c.email,c.address FROM wholesale_master AS o INNER JOIN customer AS c ON o.supplierName = c.full_name and o.supplierNumber = c.phone WHERE o.id  ?",
+        "SELECT o.*, c.city,c.email,c.address FROM wholesale_master AS o INNER JOIN customer AS c ON o.supplierName = c.full_name and o.supplierNumber = c.phone WHERE o.id = ?",
         [req.body.invoiceId],
         async (error, results) => {
           if (error) {
