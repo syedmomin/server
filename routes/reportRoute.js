@@ -11,5 +11,15 @@ router
   .post(verifyToken, (req, res) =>
     controllerPath.customerLedgerReport(req, res)
   );
+router
+  .route("/expenseDetail")
+  .post(verifyToken, (req, res) =>
+    controllerPath.expenseDetailReport(req, res)
+  );
+router
+  .route("/expenseSummary")
+  .post(verifyToken, (req, res) =>
+    controllerPath.expenseSummaryReport(req, res)
+  );
 
 module.exports = router;

@@ -181,6 +181,37 @@ ORDER BY
       });
     }
   },
+  expenseDetailReport: async function (req, res) {
+    try {
+      const { businessType, expensesType, fromDate, toDate } = req.body;
+      await db.query(
+        `SELECT * FROM expenses_ledger WHERE businessType = ? AND expensesType = ? AND fromDate >= ?  AND toDate <= ?`,
+        [businessType, expensesType, fromDate, toDate],
+        (error, results) => {
+          if (error) {
+            res.status(500).send({
+              code: 500,
+              status: false,
+              message: error,
+            });
+          } else {
+            res.status(200).send({
+              code: 200,
+              status: true,
+              message: "Add Measurement Successfully",
+              data: results[0],
+            });
+          }
+        }
+      );
+    } catch (error) {
+      res.status(500).send({
+        status: false,
+        code: 500,
+        message: error.message,
+      });
+    }
+  },
 };
 
 module.exports = report;
