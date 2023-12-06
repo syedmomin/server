@@ -21,7 +21,6 @@ router
   .post(verifyToken, (req, res) =>
     controllerPath.expenseSummaryReport(req, res)
   );
-
 router
   .route("/customerInvoice")
   .post(verifyToken, (req, res) =>
