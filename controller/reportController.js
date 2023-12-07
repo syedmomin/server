@@ -155,100 +155,78 @@ const report = {
     try {
       const { customerName, customerMobile, fromDate, toDate } = req.body;
 
-      const sqlQuery = `WITH
-    LedgerReport AS(
-    SELECT
-        customer_name,
-        customer_phone,
-        '-' AS DATE,
-        '-' AS orderNumber,
-        CONCAT('BALANCE B/D') AS Narration,
-        COALESCE(SUM(balance_amount),
-        0) AS Debit,
-        0 AS Credit,
-        1 AS SortOrder
-    FROM
-        order_master
-    WHERE
-        DATE(created_at) <= '2023-08-23'
-    GROUP BY
-        customer_name,
-        customer_phone
-    UNION ALL
-SELECT
-    customer_name,
-    customer_phone,
-    DATE(created_at) AS DATE,
-    id AS orderNumber,
-    CONCAT(
-        'STITCHING ORDER OF ',
-        UPPER(item_master),
-        ' FOR ',
-        UPPER(customer_name)
-    ) AS Narration,
-    total_amount AS Debit,
-    0 AS Credit,
-    2 AS SortOrder
-FROM
-    order_master
-UNION ALL
-SELECT
-    customer_name,
-    customer_phone,
-    DATE(created_at) AS DATE,
-    id AS orderNumber,
-    CONCAT(
-        'DELIVERED STITCHING ORDER OF ',
-        UPPER(item_master),
-        ' FOR ',
-        UPPER(customer_name)
-    ) AS Narration,
-    0 AS Debit,
-    amount_received AS Credit,
-    3 AS SortOrder
-FROM
-    order_master
-UNION ALL
-SELECT
-    customer_name,
-    customer_phone,
-    DATE(created_at) AS DATE,
-    '-' AS orderNumber,
-    CONCAT(
-        'BALANCE PAYMENT COLLECTED THROUGH LEDGER'
-    ) AS Narration,
-    0 AS Debit,
-    SUM(collected_amount) AS Credit,
-    4 AS SortOrder
-FROM
-    customer_ledger
-GROUP BY
-    customer_name,
-    customer_phone,
-    DATE(created_at)
-)
-SELECT
-    DATE,
-    orderNumber,
-    Narration,
-    Debit,
-    Credit,
-    SUM(Debit - Credit) OVER(
-    PARTITION BY customer_name,
-    customer_phone
-ORDER BY
-    DATE,
-    orderNumber,
-    SortOrder
-) AS Balance
-FROM
-    LedgerReport
-WHERE
-    customer_name = 'jouind' AND customer_phone = '136132156163'
-ORDER BY
-    DATE,
-    orderNumber,
-    SortOrder`;
+      const sqlQuery = `WITH LedgerReport
+      AS (SELECT customer_name,
+                 customer_phone,
+                 '-' AS Date,
+                 '-' AS OrderNumber,
+                 CONCAT('BALANCE B/D') AS Narration,
+                 COALESCE(SUM(balance_amount), 0) AS Debit,
+                 0 AS Credit,
+                 1 AS SortOrder
+          FROM order_master
+          WHERE DATE(created_at) <= '${fromDate}'
+          GROUP BY customer_name,
+                   customer_phone
+          UNION ALL
+          SELECT customer_name,
+                 customer_phone,
+                 DATE(created_at) AS Date,
+                 id AS OrderNumber,
+                 CONCAT('STITCHING ORDER OF ', UPPER(item_master), ' FOR ', UPPER(customer_name)) AS Narration,
+                 total_amount AS Debit,
+                 0 AS Credit,
+                 2 AS SortOrder
+          FROM order_master
+          WHERE customer_name = '${customerName}'
+                AND customer_phone = '${customerMobile}'
+                AND DATE(created_at) >= '${fromDate}'
+                AND DATE(created_at) <= '  ${toDate}'
+          UNION ALL
+          SELECT customer_name,
+                 customer_phone,
+                 DATE(created_at) AS Date,
+                 id AS OrderNumber,
+                 CONCAT('DELIVERED STITCHING ORDER OF ', UPPER(item_master), ' FOR ', UPPER(customer_name)) AS Narration,
+                 0 AS Debit,
+                 amount_received AS Credit,
+                 3 AS SortOrder
+          FROM order_master
+          WHERE customer_name = '${customerName}'
+                AND customer_phone = '${customerMobile}'
+                AND DATE(created_at) >= '${fromDate}'
+                AND DATE(created_at) <= '  ${toDate}'
+          UNION ALL
+          SELECT customer_name,
+                 customer_phone,
+                 DATE(created_at) AS Date,
+                 '-' AS OrderNumber,
+                 CONCAT('BALANCE PAYMENT COLLECTED THROUGH LEDGER') AS Narration,
+                 0 AS Debit,
+                 SUM(collected_amount) AS Credit,
+                 4 AS SortOrder
+          FROM customer_ledger
+          WHERE customer_name = '${customerName}'
+                AND customer_phone = '${customerMobile}'
+                AND DATE(created_at) >= '${fromDate}'
+                AND DATE(created_at) <= '${toDate}'
+          GROUP BY customer_name,
+                   customer_phone,
+                   DATE(created_at)
+         )
+      SELECT Date,
+             OrderNumber,
+             Narration,
+             Debit,
+             Credit,
+             SUM(Debit - Credit) OVER (PARTITION BY customer_name,
+                                                    customer_phone
+                                       ORDER BY Date,
+                                                OrderNumber,
+                                                SortOrder
+                                      ) AS Balance
+      FROM LedgerReport
+      ORDER BY Date,OrderNumber,SortOrder`;
       await db.query(sqlQuery, (error, results) => {
         if (error) {
           res.status(500).send({
