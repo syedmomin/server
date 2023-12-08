@@ -101,7 +101,7 @@ const report = {
       });
     }
   },
-  OrderInvoiceReport: async function (req, res) {
+  orderInvoiceReport: async function (req, res) {
     try {
       await db.query(
         "SELECT o.*, c.city,c.email,c.address FROM order_master AS o INNER JOIN customer AS c ON o.customer_name = c.full_name and o.customer_phone = c.phone WHERE o.id = ?",
@@ -276,8 +276,70 @@ const report = {
             res.status(200).send({
               code: 200,
               status: true,
-              message: "Add Measurement Successfully",
-              data: results[0],
+              message: "Expenses detail Successfully",
+              data: results,
+            });
+          }
+        }
+      );
+    } catch (error) {
+      res.status(500).send({
+        status: false,
+        code: 500,
+        message: error.message,
+      });
+    }
+  },
+  expenseSummaryReport: async function (req, res) {
+    try {
+      const { businessType, fromDate, toDate } = req.body;
+      await db.query(
+        `SELECT * FROM expenses_ledger WHERE businessType = ? AND fromDate >= ?  AND toDate <= ?`,
+        [businessType, fromDate, toDate],
+        (error, results) => {
+          if (error) {
+            res.status(500).send({
+              code: 500,
+              status: false,
+              message: error,
+            });
+          } else {
+            res.status(200).send({
+              code: 200,
+              status: true,
+              message: "Expenses detail Successfully",
+              data: results,
+            });
+          }
+        }
+      );
+    } catch (error) {
+      res.status(500).send({
+        status: false,
+        code: 500,
+        message: error.message,
+      });
+    }
+  },
+  orderSummaryReport: async function (req, res) {
+    try {
+      const { customerName, customerMobile, fromDate, toDate } = req.body;
+      await db.query(
+        `SELECT * FROM order_master WHERE customer_name = ? AND customer_phone = ? AND DATE(created_at) >= ? AND DATE(created_at) <= ?`,
+        [customerName, customerMobile, fromDate, toDate],
+        (error, results) => {
+          if (error) {
+            res.status(500).send({
+              code: 500,
+              status: false,
+              message: error,
+            });
+          } else {
+            res.status(200).send({
+              code: 200,
+              status: true,
+              message: "Order Summary Successfully",
+              data: results,
             });
           }
         }

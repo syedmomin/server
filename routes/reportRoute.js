@@ -5,7 +5,7 @@ const verifyToken = require("../middleware/auth").verifyToken;
 
 router
   .route("/invoiceReport")
-  .post(verifyToken, (req, res) => controllerPath.OrderInvoiceReport(req, res));
+  .post(verifyToken, (req, res) => controllerPath.orderInvoiceReport(req, res));
 router
   .route("/ledgerReport")
   .post(verifyToken, (req, res) =>
@@ -31,4 +31,8 @@ router
   .post(verifyToken, (req, res) =>
     controllerPath.goodsReceivingReport(req, res)
   );
+router
+  .route("/orderSummary")
+  .post(verifyToken, (req, res) => controllerPath.orderSummaryReport(req, res));
+
 module.exports = router;
