@@ -324,9 +324,195 @@ const report = {
   orderSummaryReport: async function (req, res) {
     try {
       const { customerName, customerMobile, fromDate, toDate } = req.body;
+      let query = `SELECT * FROM order_master WHERE 1=1`;
+      const params = [];
+
+      if (customerName != "All") {
+        query += ` AND customer_name = ? AND customer_phone = ?`;
+        params.push(customerName, customerMobile);
+      }
+
+      query += ` AND DATE(created_at) >= ? AND DATE(created_at) <= ?`;
+      params.push(fromDate, toDate);
+      await db.query(query, params, (error, results) => {
+        if (error) {
+          res.status(500).send({
+            code: 500,
+            status: false,
+            message: error,
+          });
+        } else {
+          res.status(200).send({
+            code: 200,
+            status: true,
+            message: "Order Summary Successfully",
+            data: results,
+          });
+        }
+      });
+    } catch (error) {
+      res.status(500).send({
+        status: false,
+        code: 500,
+        message: error.message,
+      });
+    }
+  },
+  invoiceSummaryReport: async function (req, res) {
+    try {
+      const { customerName, customerMobile, fromDate, toDate } = req.body;
+      let query = `SELECT * FROM wholesale_master WHERE 1=1`;
+      const params = [];
+
+      if (customerName != "All") {
+        query += ` AND supplierName = ? AND supplierNumber = ?`;
+        params.push(customerName, customerMobile);
+      }
+
+      query += ` AND DATE(created_at) >= ? AND DATE(created_at) <= ?`;
+      params.push(fromDate, toDate);
+      await db.query(query, params, (error, results) => {
+        if (error) {
+          res.status(500).send({
+            code: 500,
+            status: false,
+            message: error,
+          });
+        } else {
+          res.status(200).send({
+            code: 200,
+            status: true,
+            message: "Order Summary Successfully",
+            data: results,
+          });
+        }
+      });
+    } catch (error) {
+      res.status(500).send({
+        status: false,
+        code: 500,
+        message: error.message,
+      });
+    }
+  },
+  karigarSummaryReport: async function (req, res) {
+    try {
+      const { karigarName, karigarNumber, fromDate, toDate } = req.body;
+      let query = `SELECT * FROM karigar_salary WHERE 1=1`;
+      const params = [];
+      if (customerName != "All") {
+        query += ` AND karigarName = ? AND karigarMobile = ?`;
+        params.push(customerName, customerMobile);
+      }
+
+      query += ` AND DATE(created_at) >= ? AND DATE(created_at) <= ?`;
+      params.push(fromDate, toDate);
+      await db.query(query, params, (error, results) => {
+        if (error) {
+          res.status(500).send({
+            code: 500,
+            status: false,
+            message: error,
+          });
+        } else {
+          res.status(200).send({
+            code: 200,
+            status: true,
+            message: "Order Summary Successfully",
+            data: results,
+          });
+        }
+      });
+    } catch (error) {
+      res.status(500).send({
+        status: false,
+        code: 500,
+        message: error.message,
+      });
+    }
+  },
+  inventoryActivityReport: async function (req, res) {
+    try {
+      const { itemMaster, itemUOM, fromDate, toDate } = req.body;
       await db.query(
-        `SELECT * FROM order_master WHERE customer_name = ? AND customer_phone = ? AND DATE(created_at) >= ? AND DATE(created_at) <= ?`,
-        [customerName, customerMobile, fromDate, toDate],
+        `WITH
+        InventoryActivity AS(
+        SELECT
+            itemMaster,
+            itemUOM,
+            '-' AS Date,
+            '-' AS DocNumber,
+            '-' DocType,
+            'BALANCE B/D' AS Description,
+            COALESCE(SUM(itemQuantity),
+            0) AS Opening,
+            0 AS StockIn,
+            0 AS StockOut,
+            1 AS SortOrder
+        FROM
+            grn_detail
+        WHERE
+            DATE(created_at) <= '2023-09-12'
+        GROUP BY
+            itemMaster,
+            itemUOM
+        UNION ALL
+    SELECT
+        itemMaster,
+        itemUOM,
+        DATE(created_at) AS Date,
+        masterId AS DocNumber,
+        'GRN Invoice' DocType,
+        'good receving customer' AS Description,
+        0 AS Opening,
+        itemQuantity AS StockIn,
+        0 AS StockOut,
+        2 AS SortOrder
+    FROM
+        grn_detail
+    WHERE
+       DATE(created_at) >= '2023-09-12' AND DATE(created_at) <= '2023-11-12'
+    UNION ALL
+    SELECT
+        itemMaster,
+        itemUOM,
+        DATE(created_at) AS Date,
+        masterId AS DocNumber,
+        'wholesale Invoice' DocType,
+        'wholse Customer' AS Description,
+        0 AS Opening,
+        0 AS StockIn,
+        itemQuantity AS StockOut,
+        3 AS SortOrder
+    FROM
+        wholesale_detail
+    WHERE
+        DATE(created_at) >= '2023-09-12' AND DATE(created_at) <= '2023-11-12'
+    )
+    SELECT
+        Date,
+        DocNumber,
+        DocType,
+        Opening,
+        StockIn,
+        StockOut,
+        SUM(StockIn - StockOut) OVER(
+        PARTITION BY itemMaster,
+        itemUOM
+    ORDER BY
+        Date,
+        SortOrder
+    ) AS Balance
+    FROM
+        InventoryActivity
+        WHERE
+        itemMaster = 'Kameez' AND itemUOM = 'MTR'
+    ORDER BY
+        Date,
+        SortOrder 
+    
+    `,
+        [karigarName, karigarNumber, fromDate, toDate],
         (error, results) => {
           if (error) {
             res.status(500).send({

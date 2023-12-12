@@ -35,4 +35,22 @@ router
   .route("/orderSummary")
   .post(verifyToken, (req, res) => controllerPath.orderSummaryReport(req, res));
 
+router
+  .route("/invoiceSummary")
+  .post(verifyToken, (req, res) =>
+    controllerPath.invoiceSummaryReport(req, res)
+  );
+
+router
+  .route("/karigarSummary")
+  .post(verifyToken, (req, res) =>
+    controllerPath.karigarSummaryReport(req, res)
+  );
+
+router
+  .route("/inventoryActivity")
+  .post(verifyToken, (req, res) =>
+    controllerPath.inventoryActivityReport(req, res)
+  );
+
 module.exports = router;
