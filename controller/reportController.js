@@ -433,102 +433,103 @@ const report = {
   },
   inventoryActivityReport: async function (req, res) {
     try {
-      const { itemMaster, itemUOM, fromDate, toDate } = req.body;
-      await db.query(
-        `WITH
-        InventoryActivity AS(
+      const { itemName, itemUOM, fromDate, toDate } = req.body;
+
+      const sqlQuery = `WITH InventoryActivity AS (
         SELECT
             itemMaster,
             itemUOM,
             '-' AS Date,
             '-' AS DocNumber,
-            '-' DocType,
+            '-' AS DocType,
             'BALANCE B/D' AS Description,
-            COALESCE(SUM(itemQuantity),
-            0) AS Opening,
+            COALESCE(SUM(itemQuantity), 0) AS Opening,
             0 AS StockIn,
             0 AS StockOut,
             1 AS SortOrder
         FROM
             grn_detail
         WHERE
-            DATE(created_at) <= '2023-09-12'
+            DATE(created_at) <= '${fromDate}'
         GROUP BY
             itemMaster,
             itemUOM
         UNION ALL
-    SELECT
-        itemMaster,
-        itemUOM,
-        DATE(created_at) AS Date,
-        masterId AS DocNumber,
-        'GRN Invoice' DocType,
-        'good receving customer' AS Description,
-        0 AS Opening,
-        itemQuantity AS StockIn,
-        0 AS StockOut,
-        2 AS SortOrder
-    FROM
-        grn_detail
-    WHERE
-       DATE(created_at) >= '2023-09-12' AND DATE(created_at) <= '2023-11-12'
-    UNION ALL
-    SELECT
-        itemMaster,
-        itemUOM,
-        DATE(created_at) AS Date,
-        masterId AS DocNumber,
-        'wholesale Invoice' DocType,
-        'wholse Customer' AS Description,
-        0 AS Opening,
-        0 AS StockIn,
-        itemQuantity AS StockOut,
-        3 AS SortOrder
-    FROM
-        wholesale_detail
-    WHERE
-        DATE(created_at) >= '2023-09-12' AND DATE(created_at) <= '2023-11-12'
+        SELECT
+            itemMaster,
+            itemUOM,
+            DATE(created_at) AS Date,
+            masterId AS DocNumber,
+            'GRN Invoice' AS DocType,
+            'good receiving customer' AS Description,
+            0 AS Opening,
+            SUM(itemQuantity) AS StockIn,
+            0 AS StockOut,
+            2 AS SortOrder
+        FROM
+            grn_detail
+        WHERE
+            DATE(created_at) >= '${fromDate}' AND DATE(created_at) <= '${toDate}'
+        GROUP BY
+            itemMaster,
+            itemUOM,
+            DATE(created_at),
+            masterId
+        UNION ALL
+        SELECT
+            itemMaster,
+            itemUOM,
+            DATE(created_at) AS Date,
+            masterId AS DocNumber,
+            'wholesale Invoice' AS DocType,
+            'wholesale Customer' AS Description,
+            0 AS Opening,
+            0 AS StockIn,
+            SUM(itemQuantity) AS StockOut,
+            3 AS SortOrder
+        FROM
+            wholesale_detail
+        WHERE
+            DATE(created_at) >= '${fromDate}' AND DATE(created_at) <= '${toDate}'
+        GROUP BY
+            itemMaster,
+            itemUOM,
+            DATE(created_at),
+            masterId
     )
     SELECT
         Date,
         DocNumber,
         DocType,
+        Description,
         Opening,
         StockIn,
         StockOut,
-        SUM(StockIn - StockOut) OVER(
-        PARTITION BY itemMaster,
-        itemUOM
-    ORDER BY
-        Date,
-        SortOrder
-    ) AS Balance
+        SUM(StockIn - StockOut) OVER (
+            PARTITION BY itemMaster, itemUOM
+        ) AS Balance
     FROM
         InventoryActivity
-        WHERE
-        itemMaster = 'Kameez' AND itemUOM = 'MTR'
+    WHERE
+        itemMaster = '${itemName}' AND itemUOM = '${itemUOM}'
     ORDER BY
-        Date,
-        SortOrder 
-    
-    `,
-        [karigarName, karigarNumber, fromDate, toDate],
-        (error, results) => {
-          if (error) {
-            res.status(500).send({
-              code: 500,
-              status: false,
-              message: error,
-            });
-          } else {
-            res.status(200).send({
-              code: 200,
-              status: true,
-              message: "Order Summary Successfully",
-              data: results,
-            });
-          }
+        DATE, SortOrder;`
+      await db.query(sqlQuery, (error, results) => {
+        if (error) {
+          res.status(500).send({
+            code: 500,
+            status: false,
+            message: error,
+          });
+        } else {
+          res.status(200).send({
+            code: 200,
+            status: true,
+            message: "Invoice Activity Summary Successfully",
+            data: results,
+          });
         }
+      }
       );
     } catch (error) {
       res.status(500).send({
