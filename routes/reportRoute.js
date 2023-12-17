@@ -53,4 +53,9 @@ router
     controllerPath.inventoryActivityReport(req, res)
   );
 
+router
+  .route("/inventoryReport")
+  .post(verifyToken, (req, res) =>
+    controllerPath.inventoryActivityReport(req, res)
+  );
 module.exports = router;

@@ -513,7 +513,7 @@ const report = {
     WHERE
         itemMaster = '${itemName}' AND itemUOM = '${itemUOM}'
     ORDER BY
-        DATE, SortOrder;`
+        DATE, SortOrder;`;
       await db.query(sqlQuery, (error, results) => {
         if (error) {
           res.status(500).send({
@@ -529,8 +529,33 @@ const report = {
             data: results,
           });
         }
-      }
-      );
+      });
+    } catch (error) {
+      res.status(500).send({
+        status: false,
+        code: 500,
+        message: error.message,
+      });
+    }
+  },
+  expenseDetailReport: async function (req, res) {
+    try {
+      await db.query("SELECT * FROM item_master", async (error, results) => {
+        if (error) {
+          res.status(500).send({
+            code: 500,
+            status: false,
+            message: error,
+          });
+        } else {
+          res.status(200).send({
+            code: 200,
+            status: true,
+            message: "Expenses detail Successfully",
+            data: results,
+          });
+        }
+      });
     } catch (error) {
       res.status(500).send({
         status: false,
@@ -542,3 +567,76 @@ const report = {
 };
 
 module.exports = report;
+// WITH
+// inventoryReport AS(
+//   SELECT
+//       itemMaster,
+//       itemUOM,
+//       '-' AS DATE,
+//       '-' AS DocNumber,
+//       'Opening Balnce' AS Description,
+//       SUM(itemQuantity) AS Opening,
+//       '-' AS StockOut,
+//       '-' AS StockIn,
+//       1 AS SortOrder
+//   FROM
+//       grn_detail
+//   WHERE
+//       DATE(created_at) <= '2023-09-19'
+//   GROUP BY
+//       itemMaster,
+//       itemUOM
+//   UNION ALL
+// SELECT
+//   itemMaster,
+//   itemUOM,
+//   DATE(created_at) AS DATE,
+//   id AS DocNumber,
+//   'GRN Custoner' AS Description,
+//   '-' AS Opening,
+//   itemQuantity AS StockOut,
+//   '-' AS StockIn,
+//   2 AS SortOrder
+// FROM
+//   grn_detail
+// WHERE
+//   DATE(created_at) >= '2023-08-19' AND DATE(created_at) <= '2023-11-19'
+// UNION ALL
+// SELECT
+//   itemMaster,
+//   itemUOM,
+//   DATE(created_at) AS DATE,
+//   id AS DocNumber,
+//   'WholeSale Customer' AS Description,
+//   '-' AS Opening,
+//   '-' AS StockOut,
+//   itemQuantity AS StockIn,
+//   3 AS SortOrder
+// FROM
+//   wholesale_detail
+// WHERE
+//   DATE(created_at) >= '2023-08-19' AND DATE(created_at) <= '2023-11-19'
+// )
+// SELECT
+//   DATE,
+//   DocNumber,
+//   Description,
+//   Opening,
+//   StockOut,
+//   StockIn,
+//   SUM(StockOut - StockIn) OVER(
+//   PARTITION BY itemMaster,
+//   itemUOM
+// ORDER BY
+//   DATE,
+//   DocNumber,
+//   SortOrder
+// ) AS Balance
+// FROM
+//   inventoryReport
+// WHERE
+//   itemMaster = 'Kameez' AND itemUOM = 'MTR'
+// ORDER BY
+//   DATE,
+//   DocNumber,
+//   SortOrder

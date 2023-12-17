@@ -212,6 +212,22 @@ const collection = {
                   FROM wholesale_detail GROUP BY itemMaster
               ) AS combined_data
               GROUP BY itemMaster`,
+
+        // get last item rate
+        //               SELECT
+        //     gd.`itemMaster`,
+        //     gd.`itemRate`
+        // FROM
+        //     `grn_detail` gd
+        // JOIN (
+        //     SELECT
+        //         `itemMaster`,
+        //         MAX(`created_at`) AS max_created_at
+        //     FROM
+        //         `grn_detail`
+        //     GROUP BY
+        //         `itemMaster`
+        // ) max_dates ON gd.`itemMaster` = max_dates.`itemMaster` AND gd.`created_at` = max_dates.`max_created_at`
         (error, results) => {
           if (error) {
             res.status(500).send({
