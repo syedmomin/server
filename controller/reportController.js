@@ -538,7 +538,7 @@ const report = {
       });
     }
   },
-  expenseDetailReport: async function (req, res) {
+  inventoryReport: async function (req, res) {
     try {
       await db.query("SELECT * FROM item_master", async (error, results) => {
         if (error) {

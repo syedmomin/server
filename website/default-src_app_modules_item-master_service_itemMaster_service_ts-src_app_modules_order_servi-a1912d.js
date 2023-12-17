@@ -11,8 +11,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "ItemMasterService": function() { return /* binding */ ItemMasterService; }
 /* harmony export */ });
-/* harmony import */ var E_tailor_angularApp_node_modules_babel_runtime_helpers_esm_classCallCheck__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./node_modules/@babel/runtime/helpers/esm/classCallCheck */ 65960);
-/* harmony import */ var E_tailor_angularApp_node_modules_babel_runtime_helpers_esm_createClass__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./node_modules/@babel/runtime/helpers/esm/createClass */ 59367);
+/* harmony import */ var F_project_development_node_modules_babel_runtime_helpers_esm_classCallCheck__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./node_modules/@babel/runtime/helpers/esm/classCallCheck */ 65960);
+/* harmony import */ var F_project_development_node_modules_babel_runtime_helpers_esm_createClass__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./node_modules/@babel/runtime/helpers/esm/createClass */ 59367);
 /* harmony import */ var environments_environment__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! environments/environment */ 18260);
 /* harmony import */ var rxjs_operators__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! rxjs/operators */ 85029);
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @angular/core */ 14001);
@@ -25,12 +25,12 @@ __webpack_require__.r(__webpack_exports__);
 
 var ItemMasterService = /*#__PURE__*/function () {
   function ItemMasterService(_http) {
-    (0,E_tailor_angularApp_node_modules_babel_runtime_helpers_esm_classCallCheck__WEBPACK_IMPORTED_MODULE_0__["default"])(this, ItemMasterService);
+    (0,F_project_development_node_modules_babel_runtime_helpers_esm_classCallCheck__WEBPACK_IMPORTED_MODULE_0__["default"])(this, ItemMasterService);
     this._http = _http;
     this.baseUrl = environments_environment__WEBPACK_IMPORTED_MODULE_2__.environment.apiUrl;
     this.path = 'item-master';
   }
-  (0,E_tailor_angularApp_node_modules_babel_runtime_helpers_esm_createClass__WEBPACK_IMPORTED_MODULE_1__["default"])(ItemMasterService, [{
+  (0,F_project_development_node_modules_babel_runtime_helpers_esm_createClass__WEBPACK_IMPORTED_MODULE_1__["default"])(ItemMasterService, [{
     key: "create",
     value: function create(addData) {
       return this._http.post("".concat(this.baseUrl, "/").concat(this.path, "/create"), addData).pipe((0,rxjs_operators__WEBPACK_IMPORTED_MODULE_3__.tap)(function (res) {
@@ -89,8 +89,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "OrderService": function() { return /* binding */ OrderService; }
 /* harmony export */ });
-/* harmony import */ var E_tailor_angularApp_node_modules_babel_runtime_helpers_esm_classCallCheck__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./node_modules/@babel/runtime/helpers/esm/classCallCheck */ 65960);
-/* harmony import */ var E_tailor_angularApp_node_modules_babel_runtime_helpers_esm_createClass__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./node_modules/@babel/runtime/helpers/esm/createClass */ 59367);
+/* harmony import */ var F_project_development_node_modules_babel_runtime_helpers_esm_classCallCheck__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./node_modules/@babel/runtime/helpers/esm/classCallCheck */ 65960);
+/* harmony import */ var F_project_development_node_modules_babel_runtime_helpers_esm_createClass__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./node_modules/@babel/runtime/helpers/esm/createClass */ 59367);
 /* harmony import */ var environments_environment__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! environments/environment */ 18260);
 /* harmony import */ var rxjs_operators__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! rxjs/operators */ 85029);
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @angular/core */ 14001);
@@ -103,12 +103,12 @@ __webpack_require__.r(__webpack_exports__);
 
 var OrderService = /*#__PURE__*/function () {
   function OrderService(_http) {
-    (0,E_tailor_angularApp_node_modules_babel_runtime_helpers_esm_classCallCheck__WEBPACK_IMPORTED_MODULE_0__["default"])(this, OrderService);
+    (0,F_project_development_node_modules_babel_runtime_helpers_esm_classCallCheck__WEBPACK_IMPORTED_MODULE_0__["default"])(this, OrderService);
     this._http = _http;
     this.baseUrl = environments_environment__WEBPACK_IMPORTED_MODULE_2__.environment.apiUrl;
     this.path = 'order';
   }
-  (0,E_tailor_angularApp_node_modules_babel_runtime_helpers_esm_createClass__WEBPACK_IMPORTED_MODULE_1__["default"])(OrderService, [{
+  (0,F_project_development_node_modules_babel_runtime_helpers_esm_createClass__WEBPACK_IMPORTED_MODULE_1__["default"])(OrderService, [{
     key: "create",
     value: function create(addData) {
       return this._http.post("".concat(this.baseUrl, "/").concat(this.path, "/create"), addData).pipe((0,rxjs_operators__WEBPACK_IMPORTED_MODULE_3__.tap)(function (res) {
@@ -202,8 +202,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "ReportService": function() { return /* binding */ ReportService; }
 /* harmony export */ });
-/* harmony import */ var E_tailor_angularApp_node_modules_babel_runtime_helpers_esm_classCallCheck__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./node_modules/@babel/runtime/helpers/esm/classCallCheck */ 65960);
-/* harmony import */ var E_tailor_angularApp_node_modules_babel_runtime_helpers_esm_createClass__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./node_modules/@babel/runtime/helpers/esm/createClass */ 59367);
+/* harmony import */ var F_project_development_node_modules_babel_runtime_helpers_esm_classCallCheck__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./node_modules/@babel/runtime/helpers/esm/classCallCheck */ 65960);
+/* harmony import */ var F_project_development_node_modules_babel_runtime_helpers_esm_createClass__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./node_modules/@babel/runtime/helpers/esm/createClass */ 59367);
 /* harmony import */ var environments_environment__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! environments/environment */ 18260);
 /* harmony import */ var rxjs_operators__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! rxjs/operators */ 85029);
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @angular/core */ 14001);
@@ -216,12 +216,12 @@ __webpack_require__.r(__webpack_exports__);
 
 var ReportService = /*#__PURE__*/function () {
   function ReportService(_http) {
-    (0,E_tailor_angularApp_node_modules_babel_runtime_helpers_esm_classCallCheck__WEBPACK_IMPORTED_MODULE_0__["default"])(this, ReportService);
+    (0,F_project_development_node_modules_babel_runtime_helpers_esm_classCallCheck__WEBPACK_IMPORTED_MODULE_0__["default"])(this, ReportService);
     this._http = _http;
     this.baseUrl = environments_environment__WEBPACK_IMPORTED_MODULE_2__.environment.apiUrl;
     this.path = "report";
   }
-  (0,E_tailor_angularApp_node_modules_babel_runtime_helpers_esm_createClass__WEBPACK_IMPORTED_MODULE_1__["default"])(ReportService, [{
+  (0,F_project_development_node_modules_babel_runtime_helpers_esm_createClass__WEBPACK_IMPORTED_MODULE_1__["default"])(ReportService, [{
     key: "customerInvoiceFabricReport",
     value: function customerInvoiceFabricReport(invoiceId) {
       return this._http.post("".concat(this.baseUrl, "/").concat(this.path, "/customerInvoice"), invoiceId).pipe((0,rxjs_operators__WEBPACK_IMPORTED_MODULE_3__.tap)(function (res) {
@@ -286,8 +286,8 @@ var ReportService = /*#__PURE__*/function () {
     }
   }, {
     key: "inventoryReport",
-    value: function inventoryReport(_inventoryReport) {
-      return this._http.post("".concat(this.baseUrl, "/").concat(this.path, "/inventoryReport"), _inventoryReport).pipe((0,rxjs_operators__WEBPACK_IMPORTED_MODULE_3__.tap)(function (res) {
+    value: function inventoryReport() {
+      return this._http.post("".concat(this.baseUrl, "/").concat(this.path, "/inventoryReport"), {}).pipe((0,rxjs_operators__WEBPACK_IMPORTED_MODULE_3__.tap)(function (res) {
         return res;
       }));
     }
@@ -363,8 +363,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "reportViewInHtmlReport": function() { return /* binding */ reportViewInHtmlReport; }
 /* harmony export */ });
-/* harmony import */ var E_tailor_angularApp_node_modules_babel_runtime_helpers_esm_classCallCheck__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./node_modules/@babel/runtime/helpers/esm/classCallCheck */ 65960);
-/* harmony import */ var E_tailor_angularApp_node_modules_babel_runtime_helpers_esm_createClass__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./node_modules/@babel/runtime/helpers/esm/createClass */ 59367);
+/* harmony import */ var F_project_development_node_modules_babel_runtime_helpers_esm_classCallCheck__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./node_modules/@babel/runtime/helpers/esm/classCallCheck */ 65960);
+/* harmony import */ var F_project_development_node_modules_babel_runtime_helpers_esm_createClass__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./node_modules/@babel/runtime/helpers/esm/createClass */ 59367);
 /* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! rxjs */ 41119);
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @angular/core */ 14001);
 
@@ -373,10 +373,10 @@ __webpack_require__.r(__webpack_exports__);
 
 var reportViewInHtmlReport = /*#__PURE__*/function () {
   function reportViewInHtmlReport() {
-    (0,E_tailor_angularApp_node_modules_babel_runtime_helpers_esm_classCallCheck__WEBPACK_IMPORTED_MODULE_0__["default"])(this, reportViewInHtmlReport);
+    (0,F_project_development_node_modules_babel_runtime_helpers_esm_classCallCheck__WEBPACK_IMPORTED_MODULE_0__["default"])(this, reportViewInHtmlReport);
     this.getPdfContent = new rxjs__WEBPACK_IMPORTED_MODULE_2__.BehaviorSubject("");
   }
-  (0,E_tailor_angularApp_node_modules_babel_runtime_helpers_esm_createClass__WEBPACK_IMPORTED_MODULE_1__["default"])(reportViewInHtmlReport, [{
+  (0,F_project_development_node_modules_babel_runtime_helpers_esm_createClass__WEBPACK_IMPORTED_MODULE_1__["default"])(reportViewInHtmlReport, [{
     key: "getData",
     value: function getData() {
       return this.getPdfContent.asObservable();
