@@ -435,85 +435,79 @@ const report = {
     try {
       const { itemName, itemUOM, fromDate, toDate } = req.body;
 
-      const sqlQuery = `WITH InventoryActivity AS (
-        SELECT
-            itemMaster,
-            itemUOM,
-            '-' AS Date,
-            '-' AS DocNumber,
-            '-' AS DocType,
-            'BALANCE B/D' AS Description,
-            COALESCE(SUM(itemQuantity), 0) AS Opening,
-            0 AS StockIn,
-            0 AS StockOut,
-            1 AS SortOrder
-        FROM
-            grn_detail
-        WHERE
-            DATE(created_at) <= '${fromDate}'
-        GROUP BY
-            itemMaster,
-            itemUOM
-        UNION ALL
-        SELECT
-            itemMaster,
-            itemUOM,
-            DATE(created_at) AS Date,
-            masterId AS DocNumber,
-            'GRN Invoice' AS DocType,
-            'good receiving customer' AS Description,
-            0 AS Opening,
-            SUM(itemQuantity) AS StockIn,
-            0 AS StockOut,
-            2 AS SortOrder
-        FROM
-            grn_detail
-        WHERE
-            DATE(created_at) >= '${fromDate}' AND DATE(created_at) <= '${toDate}'
-        GROUP BY
-            itemMaster,
-            itemUOM,
-            DATE(created_at),
-            masterId
-        UNION ALL
-        SELECT
-            itemMaster,
-            itemUOM,
-            DATE(created_at) AS Date,
-            masterId AS DocNumber,
-            'wholesale Invoice' AS DocType,
-            'wholesale Customer' AS Description,
-            0 AS Opening,
-            0 AS StockIn,
-            SUM(itemQuantity) AS StockOut,
-            3 AS SortOrder
-        FROM
-            wholesale_detail
-        WHERE
-            DATE(created_at) >= '${fromDate}' AND DATE(created_at) <= '${toDate}'
-        GROUP BY
-            itemMaster,
-            itemUOM,
-            DATE(created_at),
-            masterId
-    )
+      const sqlQuery = `WITH
+    inventoryReport AS(
     SELECT
-        Date,
-        DocNumber,
-        DocType,
-        Description,
-        Opening,
-        StockIn,
-        StockOut,
-        SUM(StockIn - StockOut) OVER (
-            PARTITION BY itemMaster, itemUOM
-        ) AS Balance
-    FROM
-        InventoryActivity
-    WHERE
-        itemMaster = '${itemName}' AND itemUOM = '${itemUOM}'
-    ORDER BY
-        DATE, SortOrder;`;
+    COALESCE(itemMaster, '-') AS itemMaster,
+    COALESCE(itemUOM, '-') AS itemUOM,
+    COALESCE('-', '-') AS Date,
+    COALESCE('-', '-') AS DocNumber,
+    'Opening Balance' AS Description,
+    COALESCE(SUM(itemQuantity), 0) AS Opening,
+    '-' AS StockIn,
+    '-' AS StockOut,
+    1 AS SortOrder
+FROM
+    grn_detail
+WHERE
+    DATE(created_at) < '${fromDate}' OR created_at IS NULL
+    GROUP BY
+        itemMaster,
+        itemUOM
+    UNION ALL
+SELECT
+    itemMaster,
+    itemUOM,
+    DATE(created_at) AS Date,
+    id AS DocNumber,
+    'GRN Custoner' AS Description,
+    '-' AS Opening,
+    itemQuantity AS StockIn,
+    '-' AS StockOut,
+    2 AS SortOrder
+FROM
+    grn_detail
+WHERE
+    DATE(created_at) >= '${fromDate}' AND DATE(created_at) <= '${toDate}'
+UNION ALL
+SELECT
+    itemMaster,
+    itemUOM,
+    DATE(created_at) AS Date,
+    id AS DocNumber,
+    'WholeSale Customer' AS Description,
+    '-' AS Opening,
+    '-' AS StockIn,
+    itemQuantity AS StockOut,
+    3 AS SortOrder
+FROM
+    wholesale_detail
+WHERE
+    DATE(created_at) >= '${fromDate}' AND DATE(created_at) <= '${toDate}'
+)
+SELECT
+    Date,
+    DocNumber,
+    Description,
+    Opening,
+    StockIn,
+    StockOut,
+    SUM(StockIn + Opening - StockOut) OVER(
+    PARTITION BY itemMaster,
+    itemUOM
+ORDER BY
+    Date,
+    DocNumber,
+    SortOrder
+) AS Balance
+FROM
+    inventoryReport
+WHERE
+    itemMaster = '${itemName}' AND itemUOM = '${itemUOM}'
+ORDER BY
+    Date,
+    DocNumber,
+    SortOrder`;
       await db.query(sqlQuery, (error, results) => {
         if (error) {
           res.status(500).send({
@@ -567,76 +561,3 @@ const report = {
 };
 
 module.exports = report;
-// WITH
-// inventoryReport AS(
-//   SELECT
-//       itemMaster,
-//       itemUOM,
-//       '-' AS DATE,
-//       '-' AS DocNumber,
-//       'Opening Balnce' AS Description,
-//       SUM(itemQuantity) AS Opening,
-//       '-' AS StockOut,
-//       '-' AS StockIn,
-//       1 AS SortOrder
-//   FROM
-//       grn_detail
-//   WHERE
-//       DATE(created_at) <= '2023-09-19'
-//   GROUP BY
-//       itemMaster,
-//       itemUOM
-//   UNION ALL
-// SELECT
-//   itemMaster,
-//   itemUOM,
-//   DATE(created_at) AS DATE,
-//   id AS DocNumber,
-//   'GRN Custoner' AS Description,
-//   '-' AS Opening,
-//   itemQuantity AS StockOut,
-//   '-' AS StockIn,
-//   2 AS SortOrder
-// FROM
-//   grn_detail
-// WHERE
-//   DATE(created_at) >= '2023-08-19' AND DATE(created_at) <= '2023-11-19'
-// UNION ALL
-// SELECT
-//   itemMaster,
-//   itemUOM,
-//   DATE(created_at) AS DATE,
-//   id AS DocNumber,
-//   'WholeSale Customer' AS Description,
-//   '-' AS Opening,
-//   '-' AS StockOut,
-//   itemQuantity AS StockIn,
-//   3 AS SortOrder
-// FROM
-//   wholesale_detail
-// WHERE
-//   DATE(created_at) >= '2023-08-19' AND DATE(created_at) <= '2023-11-19'
-// )
-// SELECT
-//   DATE,
-//   DocNumber,
-//   Description,
-//   Opening,
-//   StockOut,
-//   StockIn,
-//   SUM(StockOut - StockIn) OVER(
-//   PARTITION BY itemMaster,
-//   itemUOM
-// ORDER BY
-//   DATE,
-//   DocNumber,
-//   SortOrder
-// ) AS Balance
-// FROM
-//   inventoryReport
-// WHERE
-//   itemMaster = 'Kameez' AND itemUOM = 'MTR'
-// ORDER BY
-//   DATE,
-//   DocNumber,
-//   SortOrder
