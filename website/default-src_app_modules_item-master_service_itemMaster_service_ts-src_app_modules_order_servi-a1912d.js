@@ -286,8 +286,8 @@ var ReportService = /*#__PURE__*/function () {
     }
   }, {
     key: "inventoryReport",
-    value: function inventoryReport(_inventoryReport) {
-      return this._http.post("".concat(this.baseUrl, "/").concat(this.path, "/inventoryReport"), _inventoryReport).pipe((0,rxjs_operators__WEBPACK_IMPORTED_MODULE_3__.tap)(function (res) {
+    value: function inventoryReport() {
+      return this._http.post("".concat(this.baseUrl, "/").concat(this.path, "/inventoryReport"), {}).pipe((0,rxjs_operators__WEBPACK_IMPORTED_MODULE_3__.tap)(function (res) {
         return res;
       }));
     }
