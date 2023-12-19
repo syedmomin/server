@@ -515,8 +515,8 @@ var DetailItemMasterComponent = /*#__PURE__*/function () {
       this.ItemMasterForm = this.fb.group({
         name: ["", [_angular_forms__WEBPACK_IMPORTED_MODULE_8__.Validators.required]],
         shortName: [""],
-        itemType: [null, [_angular_forms__WEBPACK_IMPORTED_MODULE_8__.Validators.required]],
-        UOM: [, [_angular_forms__WEBPACK_IMPORTED_MODULE_8__.Validators.required]],
+        itemType: ["Stich", [_angular_forms__WEBPACK_IMPORTED_MODULE_8__.Validators.required]],
+        UOM: [],
         article: [""],
         color: [],
         closingQuantity: [],

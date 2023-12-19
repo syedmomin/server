@@ -8264,26 +8264,28 @@ __webpack_require__.r(__webpack_exports__);
 
 function ModalAddCustomerComponent_option_36_Template(rf, ctx) {
   if (rf & 1) {
-    _angular_core__WEBPACK_IMPORTED_MODULE_5__["ɵɵelementStart"](0, "option");
+    _angular_core__WEBPACK_IMPORTED_MODULE_5__["ɵɵelementStart"](0, "option", 29);
     _angular_core__WEBPACK_IMPORTED_MODULE_5__["ɵɵtext"](1);
     _angular_core__WEBPACK_IMPORTED_MODULE_5__["ɵɵelementEnd"]();
   }
   if (rf & 2) {
     var item_r3 = ctx.$implicit;
+    _angular_core__WEBPACK_IMPORTED_MODULE_5__["ɵɵproperty"]("value", item_r3);
     _angular_core__WEBPACK_IMPORTED_MODULE_5__["ɵɵadvance"](1);
-    _angular_core__WEBPACK_IMPORTED_MODULE_5__["ɵɵtextInterpolate"](item_r3);
+    _angular_core__WEBPACK_IMPORTED_MODULE_5__["ɵɵtextInterpolate1"](" ", item_r3, " ");
   }
 }
 function ModalAddCustomerComponent_option_44_Template(rf, ctx) {
   if (rf & 1) {
-    _angular_core__WEBPACK_IMPORTED_MODULE_5__["ɵɵelementStart"](0, "option");
+    _angular_core__WEBPACK_IMPORTED_MODULE_5__["ɵɵelementStart"](0, "option", 29);
     _angular_core__WEBPACK_IMPORTED_MODULE_5__["ɵɵtext"](1);
     _angular_core__WEBPACK_IMPORTED_MODULE_5__["ɵɵelementEnd"]();
   }
   if (rf & 2) {
-    var item_r4 = ctx.$implicit;
+    var city_r4 = ctx.$implicit;
+    _angular_core__WEBPACK_IMPORTED_MODULE_5__["ɵɵproperty"]("value", city_r4);
     _angular_core__WEBPACK_IMPORTED_MODULE_5__["ɵɵadvance"](1);
-    _angular_core__WEBPACK_IMPORTED_MODULE_5__["ɵɵtextInterpolate"](item_r4);
+    _angular_core__WEBPACK_IMPORTED_MODULE_5__["ɵɵtextInterpolate1"](" ", city_r4, " ");
   }
 }
 function ModalAddCustomerComponent_option_52_Template(rf, ctx) {
@@ -8316,11 +8318,24 @@ var ModalAddCustomerComponent = /*#__PURE__*/function () {
       address: [""]
     });
     this.submitted = false;
-    this.country = ["Pakistan", "India", "Canada", "UK", "USA"];
-    this.city = ["Karachi", "Islamabad", "Lahore", "Multan"];
+    this.selectedCountry = null;
+    this.selectedCity = '';
+    this.country = ['pakistan', 'india', 'usa', 'uk', 'canada'];
+    this.cityData = {
+      pakistan: ['Karachi', 'Lahore', 'Islamabad', 'Rawalpindi'],
+      india: ['Mumbai', 'Delhi', 'Bangalore', 'Hyderabad'],
+      usa: ['New York', 'Los Angeles', 'Chicago', 'Houston'],
+      uk: ['London', 'Manchester', 'Birmingham', 'Glasgow'],
+      canada: ['Toronto', 'Vancouver', 'Montreal', 'Calgary']
+    };
     this.customerType = ["Stitching", "Wholesale Fabric Customer", "Wholesale Fabric Supplier"];
   }
   (0,F_project_development_node_modules_babel_runtime_helpers_esm_createClass__WEBPACK_IMPORTED_MODULE_1__["default"])(ModalAddCustomerComponent, [{
+    key: "updateCityDropdown",
+    value: function updateCityDropdown() {
+      this.selectedCity = ''; // Clear selected city when country changes
+    }
+  }, {
     key: "onSubmit",
     value: function onSubmit(fromValue) {
       var _this = this;
@@ -8359,8 +8374,8 @@ ModalAddCustomerComponent.ɵcmp = /*@__PURE__*/_angular_core__WEBPACK_IMPORTED_M
   type: ModalAddCustomerComponent,
   selectors: [["app-modal-add-customer"]],
   decls: 62,
-  vars: 9,
-  consts: [[1, "modal-header"], ["id", "myModalLabel1", 1, "modal-title"], ["type", "button", "aria-label", "Close", 1, "close", 3, "click"], ["aria-hidden", "true"], ["tabindex", "0", "ngbAutofocus", "", 1, "modal-body"], [1, "form", "form-vertical", 3, "formGroup"], [1, "row"], [1, "col-12", "col-md-3"], [1, "form-group"], ["for", "full_name"], ["type", "text", "id", "full_name", "formControlName", "full_name", "placeholder", "Enter full name", "required", "", 1, "form-control", 3, "ngClass"], ["for", "email"], ["type", "text", "id", "email", "formControlName", "email", "placeholder", "Email", 1, "form-control"], ["for", "phone"], ["type", "text", "id", "phone", "formControlName", "phone", "placeholder", "Phone number", "required", "", 1, "form-control", 3, "ngClass"], ["for", "alternateNumber"], ["type", "text", "id", "alternateNumber", "formControlName", "alternateNumber", "placeholder", "Alternate Mobile Number", 1, "form-control"], [1, "col-12", "col-md-2"], ["formControlName", "country", "required", "", 1, "form-control", 3, "ngClass"], ["hidden", ""], [4, "ngFor", "ngForOf"], ["formControlName", "city", "required", "", 1, "form-control", 3, "ngClass"], ["formControlName", "customerType", "required", "", 1, "form-control", 3, "ngClass"], [1, "col-12", "col-md-6"], ["formControlName", "address", "placeholder", "Enter Your Full Address", 1, "form-control"], [1, "col-12"], [1, "float-right"], ["type", "submit", "rippleEffect", "", 1, "btn", "btn-primary", "mr-1", 3, "click"]],
+  vars: 11,
+  consts: [[1, "modal-header"], ["id", "myModalLabel1", 1, "modal-title"], ["type", "button", "aria-label", "Close", 1, "close", 3, "click"], ["aria-hidden", "true"], ["tabindex", "0", "ngbAutofocus", "", 1, "modal-body"], [1, "form", "form-vertical", 3, "formGroup"], [1, "row"], [1, "col-12", "col-md-3"], [1, "form-group"], ["for", "full_name"], ["type", "text", "id", "full_name", "formControlName", "full_name", "placeholder", "Enter full name", "required", "", 1, "form-control", 3, "ngClass"], ["for", "email"], ["type", "text", "id", "email", "formControlName", "email", "placeholder", "Email", 1, "form-control"], ["for", "phone"], ["type", "text", "id", "phone", "formControlName", "phone", "placeholder", "Phone number", "required", "", 1, "form-control", 3, "ngClass"], ["for", "alternateNumber"], ["type", "text", "id", "alternateNumber", "formControlName", "alternateNumber", "placeholder", "Alternate Mobile Number", 1, "form-control"], [1, "col-12", "col-md-2"], ["formControlName", "country", "required", "", 1, "form-control", 3, "ngModel", "ngClass", "ngModelChange", "change"], ["hidden", ""], [3, "value", 4, "ngFor", "ngForOf"], ["formControlName", "city", "required", "", 1, "form-control", 3, "ngModel", "ngClass", "ngModelChange"], ["formControlName", "customerType", "required", "", 1, "form-control", 3, "ngClass"], [4, "ngFor", "ngForOf"], [1, "col-12", "col-md-6"], ["formControlName", "address", "placeholder", "Enter Your Full Address", 1, "form-control"], [1, "col-12"], [1, "float-right"], ["type", "submit", "rippleEffect", "", 1, "btn", "btn-primary", "mr-1", 3, "click"], [3, "value"]],
   template: function ModalAddCustomerComponent_Template(rf, ctx) {
     if (rf & 1) {
       _angular_core__WEBPACK_IMPORTED_MODULE_5__["ɵɵelementStart"](0, "div", 0);
@@ -8417,10 +8432,15 @@ ModalAddCustomerComponent.ɵcmp = /*@__PURE__*/_angular_core__WEBPACK_IMPORTED_M
       _angular_core__WEBPACK_IMPORTED_MODULE_5__["ɵɵtext"](32, "Country");
       _angular_core__WEBPACK_IMPORTED_MODULE_5__["ɵɵelementEnd"]();
       _angular_core__WEBPACK_IMPORTED_MODULE_5__["ɵɵelementStart"](33, "select", 18);
+      _angular_core__WEBPACK_IMPORTED_MODULE_5__["ɵɵlistener"]("ngModelChange", function ModalAddCustomerComponent_Template_select_ngModelChange_33_listener($event) {
+        return ctx.selectedCountry = $event;
+      })("change", function ModalAddCustomerComponent_Template_select_change_33_listener() {
+        return ctx.updateCityDropdown();
+      });
       _angular_core__WEBPACK_IMPORTED_MODULE_5__["ɵɵelementStart"](34, "option", 19);
       _angular_core__WEBPACK_IMPORTED_MODULE_5__["ɵɵtext"](35, "Select Country");
       _angular_core__WEBPACK_IMPORTED_MODULE_5__["ɵɵelementEnd"]();
-      _angular_core__WEBPACK_IMPORTED_MODULE_5__["ɵɵtemplate"](36, ModalAddCustomerComponent_option_36_Template, 2, 1, "option", 20);
+      _angular_core__WEBPACK_IMPORTED_MODULE_5__["ɵɵtemplate"](36, ModalAddCustomerComponent_option_36_Template, 2, 2, "option", 20);
       _angular_core__WEBPACK_IMPORTED_MODULE_5__["ɵɵelementEnd"]();
       _angular_core__WEBPACK_IMPORTED_MODULE_5__["ɵɵelementEnd"]();
       _angular_core__WEBPACK_IMPORTED_MODULE_5__["ɵɵelementEnd"]();
@@ -8430,10 +8450,13 @@ ModalAddCustomerComponent.ɵcmp = /*@__PURE__*/_angular_core__WEBPACK_IMPORTED_M
       _angular_core__WEBPACK_IMPORTED_MODULE_5__["ɵɵtext"](40, "City");
       _angular_core__WEBPACK_IMPORTED_MODULE_5__["ɵɵelementEnd"]();
       _angular_core__WEBPACK_IMPORTED_MODULE_5__["ɵɵelementStart"](41, "select", 21);
+      _angular_core__WEBPACK_IMPORTED_MODULE_5__["ɵɵlistener"]("ngModelChange", function ModalAddCustomerComponent_Template_select_ngModelChange_41_listener($event) {
+        return ctx.selectedCity = $event;
+      });
       _angular_core__WEBPACK_IMPORTED_MODULE_5__["ɵɵelementStart"](42, "option", 19);
       _angular_core__WEBPACK_IMPORTED_MODULE_5__["ɵɵtext"](43, "Select City");
       _angular_core__WEBPACK_IMPORTED_MODULE_5__["ɵɵelementEnd"]();
-      _angular_core__WEBPACK_IMPORTED_MODULE_5__["ɵɵtemplate"](44, ModalAddCustomerComponent_option_44_Template, 2, 1, "option", 20);
+      _angular_core__WEBPACK_IMPORTED_MODULE_5__["ɵɵtemplate"](44, ModalAddCustomerComponent_option_44_Template, 2, 2, "option", 20);
       _angular_core__WEBPACK_IMPORTED_MODULE_5__["ɵɵelementEnd"]();
       _angular_core__WEBPACK_IMPORTED_MODULE_5__["ɵɵelementEnd"]();
       _angular_core__WEBPACK_IMPORTED_MODULE_5__["ɵɵelementEnd"]();
@@ -8446,21 +8469,21 @@ ModalAddCustomerComponent.ɵcmp = /*@__PURE__*/_angular_core__WEBPACK_IMPORTED_M
       _angular_core__WEBPACK_IMPORTED_MODULE_5__["ɵɵelementStart"](50, "option", 19);
       _angular_core__WEBPACK_IMPORTED_MODULE_5__["ɵɵtext"](51, "Customer Type");
       _angular_core__WEBPACK_IMPORTED_MODULE_5__["ɵɵelementEnd"]();
-      _angular_core__WEBPACK_IMPORTED_MODULE_5__["ɵɵtemplate"](52, ModalAddCustomerComponent_option_52_Template, 2, 1, "option", 20);
+      _angular_core__WEBPACK_IMPORTED_MODULE_5__["ɵɵtemplate"](52, ModalAddCustomerComponent_option_52_Template, 2, 1, "option", 23);
       _angular_core__WEBPACK_IMPORTED_MODULE_5__["ɵɵelementEnd"]();
       _angular_core__WEBPACK_IMPORTED_MODULE_5__["ɵɵelementEnd"]();
       _angular_core__WEBPACK_IMPORTED_MODULE_5__["ɵɵelementEnd"]();
-      _angular_core__WEBPACK_IMPORTED_MODULE_5__["ɵɵelementStart"](53, "div", 23);
+      _angular_core__WEBPACK_IMPORTED_MODULE_5__["ɵɵelementStart"](53, "div", 24);
       _angular_core__WEBPACK_IMPORTED_MODULE_5__["ɵɵelementStart"](54, "div", 8);
       _angular_core__WEBPACK_IMPORTED_MODULE_5__["ɵɵelementStart"](55, "label");
       _angular_core__WEBPACK_IMPORTED_MODULE_5__["ɵɵtext"](56, "Address");
       _angular_core__WEBPACK_IMPORTED_MODULE_5__["ɵɵelementEnd"]();
-      _angular_core__WEBPACK_IMPORTED_MODULE_5__["ɵɵelement"](57, "input", 24);
+      _angular_core__WEBPACK_IMPORTED_MODULE_5__["ɵɵelement"](57, "input", 25);
       _angular_core__WEBPACK_IMPORTED_MODULE_5__["ɵɵelementEnd"]();
       _angular_core__WEBPACK_IMPORTED_MODULE_5__["ɵɵelementEnd"]();
-      _angular_core__WEBPACK_IMPORTED_MODULE_5__["ɵɵelementStart"](58, "div", 25);
-      _angular_core__WEBPACK_IMPORTED_MODULE_5__["ɵɵelementStart"](59, "div", 26);
-      _angular_core__WEBPACK_IMPORTED_MODULE_5__["ɵɵelementStart"](60, "button", 27);
+      _angular_core__WEBPACK_IMPORTED_MODULE_5__["ɵɵelementStart"](58, "div", 26);
+      _angular_core__WEBPACK_IMPORTED_MODULE_5__["ɵɵelementStart"](59, "div", 27);
+      _angular_core__WEBPACK_IMPORTED_MODULE_5__["ɵɵelementStart"](60, "button", 28);
       _angular_core__WEBPACK_IMPORTED_MODULE_5__["ɵɵlistener"]("click", function ModalAddCustomerComponent_Template_button_click_60_listener() {
         return ctx.onSubmit(ctx.customerFrom.value);
       });
@@ -8480,13 +8503,13 @@ ModalAddCustomerComponent.ɵcmp = /*@__PURE__*/_angular_core__WEBPACK_IMPORTED_M
       _angular_core__WEBPACK_IMPORTED_MODULE_5__["ɵɵadvance"](10);
       _angular_core__WEBPACK_IMPORTED_MODULE_5__["ɵɵproperty"]("ngClass", ctx.submitted && ctx.f.phone.errors ? "is-invalid" : ctx.f.phone.errors ? " " : "is-valid");
       _angular_core__WEBPACK_IMPORTED_MODULE_5__["ɵɵadvance"](10);
-      _angular_core__WEBPACK_IMPORTED_MODULE_5__["ɵɵproperty"]("ngClass", ctx.submitted && ctx.f.country.errors ? "is-invalid" : ctx.f.country.errors ? " " : "is-valid");
+      _angular_core__WEBPACK_IMPORTED_MODULE_5__["ɵɵproperty"]("ngModel", ctx.selectedCountry)("ngClass", ctx.submitted && ctx.f.country.errors ? "is-invalid" : ctx.f.country.errors ? " " : "is-valid");
       _angular_core__WEBPACK_IMPORTED_MODULE_5__["ɵɵadvance"](3);
       _angular_core__WEBPACK_IMPORTED_MODULE_5__["ɵɵproperty"]("ngForOf", ctx.country);
       _angular_core__WEBPACK_IMPORTED_MODULE_5__["ɵɵadvance"](5);
-      _angular_core__WEBPACK_IMPORTED_MODULE_5__["ɵɵproperty"]("ngClass", ctx.submitted && ctx.f.city.errors ? "is-invalid" : ctx.f.city.errors ? " " : "is-valid");
+      _angular_core__WEBPACK_IMPORTED_MODULE_5__["ɵɵproperty"]("ngModel", ctx.selectedCity)("ngClass", ctx.submitted && ctx.f.city.errors ? "is-invalid" : ctx.f.city.errors ? " " : "is-valid");
       _angular_core__WEBPACK_IMPORTED_MODULE_5__["ɵɵadvance"](3);
-      _angular_core__WEBPACK_IMPORTED_MODULE_5__["ɵɵproperty"]("ngForOf", ctx.city);
+      _angular_core__WEBPACK_IMPORTED_MODULE_5__["ɵɵproperty"]("ngForOf", ctx.cityData[ctx.selectedCountry]);
       _angular_core__WEBPACK_IMPORTED_MODULE_5__["ɵɵadvance"](5);
       _angular_core__WEBPACK_IMPORTED_MODULE_5__["ɵɵproperty"]("ngClass", ctx.submitted && ctx.f.customerType.errors ? "is-invalid" : ctx.f.customerType.errors ? " " : "is-valid");
       _angular_core__WEBPACK_IMPORTED_MODULE_5__["ɵɵadvance"](3);
