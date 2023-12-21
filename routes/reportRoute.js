@@ -56,4 +56,10 @@ router
 router
   .route("/inventoryReport")
   .post(verifyToken, (req, res) => controllerPath.inventoryReport(req, res));
+
+router
+  .route("/karigarLedger")
+  .post(verifyToken, (req, res) =>
+    controllerPath.karigarLedgerReport(req, res)
+  );
 module.exports = router;

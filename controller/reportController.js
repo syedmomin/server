@@ -558,6 +558,40 @@ ORDER BY
       });
     }
   },
+  karigarLedgerReport: async function (req, res) {
+    try {
+      const { karigarName, karigarNumber, fromDate, toDate } = req.body;
+
+      query += ` AND DATE(created_at) >= ? AND DATE(created_at) <= ?`;
+      params.push(fromDate, toDate);
+      await db.query(
+        query,
+        [karigarName, karigarNumber, fromDate, toDate],
+        (error, results) => {
+          if (error) {
+            res.status(500).send({
+              code: 500,
+              status: false,
+              message: error,
+            });
+          } else {
+            res.status(200).send({
+              code: 200,
+              status: true,
+              message: "Karigar Summary Successfully",
+              data: results,
+            });
+          }
+        }
+      );
+    } catch (error) {
+      res.status(500).send({
+        status: false,
+        code: 500,
+        message: error.message,
+      });
+    }
+  },
 };
 
 module.exports = report;
