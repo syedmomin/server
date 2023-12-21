@@ -561,12 +561,23 @@ ORDER BY
   karigarLedgerReport: async function (req, res) {
     try {
       const { karigarName, karigarNumber, fromDate, toDate } = req.body;
-
-      query += ` AND DATE(created_at) >= ? AND DATE(created_at) <= ?`;
-      params.push(fromDate, toDate);
       await db.query(
-        query,
-        [karigarName, karigarNumber, fromDate, toDate],
+            `SELECT
+          toDate,
+          paymentType,
+          remarks,
+          CASE WHEN amount >= 0 THEN amount ELSE 0 END AS credit,
+          CASE WHEN amount < 0 THEN -amount ELSE 0 END AS debit,
+          SUM(amount) OVER (ORDER BY toDate) AS balance
+      FROM
+          karigar_salary
+      WHERE
+          karigarName = '${karigarName}'
+          AND karigarMobile = '${karigarNumber}'
+          AND toDate >= '${fromDate}'
+          AND toDate <= '${toDate}'
+      ORDER BY
+          toDate;`,
         (error, results) => {
           if (error) {
             res.status(500).send({
@@ -578,7 +589,7 @@ ORDER BY
             res.status(200).send({
               code: 200,
               status: true,
-              message: "Karigar Summary Successfully",
+              message: "Karigar Ledger Successfully",
               data: results,
             });
           }
