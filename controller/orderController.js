@@ -56,7 +56,7 @@ const collection = {
         [
           customer_name,
           customer_phone,
-          order_type,
+          "Processing",
           item_master,
           previous_balance,
           person_name,
@@ -107,7 +107,6 @@ const collection = {
               message: error,
             });
           }
-          // console.log("results", results);
           await customerLedger.create(req, res);
           const orderId = results.insertId;
           try {

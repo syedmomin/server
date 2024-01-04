@@ -46,7 +46,7 @@ const user = {
             });
           } else {
             db.query(
-              "INSERT INTO users (fullName, phone, email, password, role, is_active, is_verify) VALUES ( ?, ?, ?, ?, ?, ?, ?)",
+              "INSERT INTO users (fullName, phone, email, password, role, isActive, isVerify) VALUES ( ?, ?, ?, ?, ?, ?, ?)",
               [fullName, phone, email, encryptedPassword, role, 1, 0]
             );
             res.status(200).send({

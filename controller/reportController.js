@@ -4,7 +4,7 @@ const report = {
   customerInvoiceReport: async function (req, res) {
     try {
       await db.query(
-        "SELECT o.*, c.city,c.email,c.address FROM wholesale_master AS o INNER JOIN customer AS c ON o.supplierName = c.full_name and o.supplierNumber = c.phone WHERE o.id = ?",
+        "SELECT o.*, c.city,c.email,c.address FROM wholesale_master AS o INNER JOIN customer AS c ON o.supplierName = c.fullName and o.supplierNumber = c.phone WHERE o.id = ?",
         [req.body.invoiceId],
         async (error, results) => {
           if (error) {
@@ -54,7 +54,7 @@ const report = {
   goodsReceivingReport: async function (req, res) {
     try {
       await db.query(
-        "SELECT o.*, c.city,c.email,c.address FROM grn_master AS o INNER JOIN customer AS c ON o.supplierName = c.full_name and o.supplierNumber = c.phone WHERE o.id = ?",
+        "SELECT o.*, c.city,c.email,c.address FROM grn_master AS o INNER JOIN customer AS c ON o.supplierName = c.fullName and o.supplierNumber = c.phone WHERE o.id = ?",
         [req.body.orderId],
         async (error, results) => {
           if (error) {
@@ -104,7 +104,7 @@ const report = {
   orderInvoiceReport: async function (req, res) {
     try {
       await db.query(
-        "SELECT o.*, c.city,c.email,c.address FROM order_master AS o INNER JOIN customer AS c ON o.customer_name = c.full_name and o.customer_phone = c.phone WHERE o.id = ?",
+        "SELECT o.*, c.city,c.email,c.address FROM order_master AS o INNER JOIN customer AS c ON o.customer_name = c.fullName and o.customer_phone = c.phone WHERE o.id = ?",
         [req.body.orderId],
         async (error, results) => {
           if (error) {
@@ -165,13 +165,13 @@ const report = {
                  0 AS Credit,
                  1 AS SortOrder
           FROM order_master
-          WHERE DATE(created_at) <= '${fromDate}'
+          WHERE DATE(createdAt) <= '${fromDate}'
           GROUP BY customer_name,
                    customer_phone
           UNION ALL
           SELECT customer_name,
                  customer_phone,
-                 DATE(created_at) AS Date,
+                 DATE(createdAt) AS Date,
                  id AS OrderNumber,
                  CONCAT('STITCHING ORDER OF ', UPPER(item_master), ' FOR ', UPPER(customer_name)) AS Narration,
                  total_amount AS Debit,
@@ -180,12 +180,12 @@ const report = {
           FROM order_master
           WHERE customer_name = '${customerName}'
                 AND customer_phone = '${customerMobile}'
-                AND DATE(created_at) >= '${fromDate}'
-                AND DATE(created_at) <= '  ${toDate}'
+                AND DATE(createdAt) >= '${fromDate}'
+                AND DATE(createdAt) <= '  ${toDate}'
           UNION ALL
           SELECT customer_name,
                  customer_phone,
-                 DATE(created_at) AS Date,
+                 DATE(createdAt) AS Date,
                  id AS OrderNumber,
                  CONCAT('DELIVERED STITCHING ORDER OF ', UPPER(item_master), ' FOR ', UPPER(customer_name)) AS Narration,
                  0 AS Debit,
@@ -194,12 +194,12 @@ const report = {
           FROM order_master
           WHERE customer_name = '${customerName}'
                 AND customer_phone = '${customerMobile}'
-                AND DATE(created_at) >= '${fromDate}'
-                AND DATE(created_at) <= '  ${toDate}'
+                AND DATE(createdAt) >= '${fromDate}'
+                AND DATE(createdAt) <= '  ${toDate}'
           UNION ALL
           SELECT customer_name,
                  customer_phone,
-                 DATE(created_at) AS Date,
+                 DATE(createdAt) AS Date,
                  '-' AS OrderNumber,
                  CONCAT('BALANCE PAYMENT COLLECTED THROUGH LEDGER') AS Narration,
                  0 AS Debit,
@@ -208,11 +208,11 @@ const report = {
           FROM customer_ledger
           WHERE customer_name = '${customerName}'
                 AND customer_phone = '${customerMobile}'
-                AND DATE(created_at) >= '${fromDate}'
-                AND DATE(created_at) <= '${toDate}'
+                AND DATE(createdAt) >= '${fromDate}'
+                AND DATE(createdAt) <= '${toDate}'
           GROUP BY customer_name,
                    customer_phone,
-                   DATE(created_at)
+                   DATE(createdAt)
          )
       SELECT Date,
              OrderNumber,
@@ -332,7 +332,7 @@ const report = {
         params.push(customerName, customerMobile);
       }
 
-      query += ` AND DATE(created_at) >= ? AND DATE(created_at) <= ?`;
+      query += ` AND DATE(createdAt) >= ? AND DATE(createdAt) <= ?`;
       params.push(fromDate, toDate);
       await db.query(query, params, (error, results) => {
         if (error) {
@@ -369,7 +369,7 @@ const report = {
         params.push(customerName, customerMobile);
       }
 
-      query += ` AND DATE(created_at) >= ? AND DATE(created_at) <= ?`;
+      query += ` AND DATE(createdAt) >= ? AND DATE(createdAt) <= ?`;
       params.push(fromDate, toDate);
       await db.query(query, params, (error, results) => {
         if (error) {
@@ -405,7 +405,7 @@ const report = {
         params.push(customerName, customerMobile);
       }
 
-      query += ` AND DATE(created_at) >= ? AND DATE(created_at) <= ?`;
+      query += ` AND DATE(createdAt) >= ? AND DATE(createdAt) <= ?`;
       params.push(fromDate, toDate);
       await db.query(query, params, (error, results) => {
         if (error) {
@@ -450,7 +450,7 @@ const report = {
 FROM
     grn_detail
 WHERE
-    DATE(created_at) < '${fromDate}' OR created_at IS NULL
+    DATE(createdAt) < '${fromDate}' OR createdAt IS NULL
     GROUP BY
         itemMaster,
         itemUOM
@@ -458,7 +458,7 @@ WHERE
 SELECT
     itemMaster,
     itemUOM,
-    DATE(created_at) AS Date,
+    DATE(createdAt) AS Date,
     id AS DocNumber,
     'GRN Custoner' AS Description,
     '-' AS Opening,
@@ -468,12 +468,12 @@ SELECT
 FROM
     grn_detail
 WHERE
-    DATE(created_at) >= '${fromDate}' AND DATE(created_at) <= '${toDate}'
+    DATE(createdAt) >= '${fromDate}' AND DATE(createdAt) <= '${toDate}'
 UNION ALL
 SELECT
     itemMaster,
     itemUOM,
-    DATE(created_at) AS Date,
+    DATE(createdAt) AS Date,
     id AS DocNumber,
     'WholeSale Customer' AS Description,
     '-' AS Opening,
@@ -483,7 +483,7 @@ SELECT
 FROM
     wholesale_detail
 WHERE
-    DATE(created_at) >= '${fromDate}' AND DATE(created_at) <= '${toDate}'
+    DATE(createdAt) >= '${fromDate}' AND DATE(createdAt) <= '${toDate}'
 )
 SELECT
     Date,

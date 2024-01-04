@@ -222,12 +222,12 @@ const collection = {
         // JOIN (
         //     SELECT
         //         `itemMaster`,
-        //         MAX(`created_at`) AS max_created_at
+        //         MAX(`createdAt`) AS max_createdAt
         //     FROM
         //         `grn_detail`
         //     GROUP BY
         //         `itemMaster`
-        // ) max_dates ON gd.`itemMaster` = max_dates.`itemMaster` AND gd.`created_at` = max_dates.`max_created_at`
+        // ) max_dates ON gd.`itemMaster` = max_dates.`itemMaster` AND gd.`createdAt` = max_dates.`max_createdAt`
         (error, results) => {
           if (error) {
             res.status(500).send({
