@@ -62,6 +62,7 @@ const collection = {
               })
             );
             updateQuantity.getQuantityByLedger();
+            updateQuantity.updateLastSalePrice();
             return res.status(200).send({
               code: 200,
               status: true,

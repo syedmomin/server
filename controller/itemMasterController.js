@@ -202,7 +202,7 @@ const collection = {
     try {
       await db.query(
         `SELECT itemMaster,itemUOM,
-              SUM(grn_total) - SUM(wholesale_total) AS total_quantity
+        COALESCE(SUM(grn_total), 0) - COALESCE(SUM(wholesale_total), 0) AS totalQuantity
               FROM
               (
                   SELECT itemMaster,itemUOM,SUM(itemQuantity) AS grn_total,NULL AS wholesale_total
@@ -212,22 +212,6 @@ const collection = {
                   FROM wholesale_detail GROUP BY itemMaster
               ) AS combined_data
               GROUP BY itemMaster`,
-
-        // get last item rate
-        //               SELECT
-        //     gd.`itemMaster`,
-        //     gd.`itemRate`
-        // FROM
-        //     `grn_detail` gd
-        // JOIN (
-        //     SELECT
-        //         `itemMaster`,
-        //         MAX(`createdAt`) AS max_createdAt
-        //     FROM
-        //         `grn_detail`
-        //     GROUP BY
-        //         `itemMaster`
-        // ) max_dates ON gd.`itemMaster` = max_dates.`itemMaster` AND gd.`createdAt` = max_dates.`max_createdAt`
         (error, results) => {
           if (error) {
             res.status(500).send({
@@ -239,7 +223,40 @@ const collection = {
           results.forEach(async (element) => {
             await db.query(
               "UPDATE item_master SET closingQuantity = ? where name = ? and UOM = ?",
-              [element.total_quantity, element.itemMaster, element.itemUOM]
+              [element.totalQuantity, element.itemMaster, element.itemUOM]
+            );
+          });
+        }
+      );
+    } catch (error) {
+      res.status(500).send({
+        status: false,
+        code: 500,
+        message: error.message,
+      });
+    }
+  },
+  updateLastSalePrice: async function (res) {
+    try {
+      await db.query(
+        `SELECT gd.itemMaster,gd.itemUOM,gd.itemRate AS lastSalePrice FROM grn_detail gd
+        JOIN(
+            SELECT itemMaster,MAX(createdAt) AS max_createdAt FROM grn_detail GROUP BY itemMaster
+        ) max_dates
+        ON
+            gd.itemMaster = max_dates.itemMaster AND gd.createdAt = max_dates.max_createdAt`,
+        (error, results) => {
+          if (error) {
+            res.status(500).send({
+              code: 500,
+              status: false,
+              message: error,
+            });
+          }
+          results.forEach(async (element) => {
+            await db.query(
+              "UPDATE item_master SET lastPrice = ? where name = ? and UOM = ?",
+              [element.lastSalePrice, element.itemMaster, element.itemUOM]
             );
           });
         }
