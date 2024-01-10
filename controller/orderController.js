@@ -175,23 +175,38 @@ const collection = {
 
         await Promise.all(
           detail.map(async (update) => {
-            await db.query(
-              `UPDATE order_detail SET stich_type = ?, quantity = ?, price = ?, amount = ?, note = ?, imageName = ? WHERE id = ?`,
-              [
-                update.itemName,
-                update.itemQuantity,
-                update.itemPrice,
-                update.itemAmount,
-                update.itemNote,
-                update.itemImage,
-                update.id,
-              ],
-              (error) => {
-                if (error) {
-                  console.log("-->", error);
+            if (update.id) {
+              await db.query(
+                `UPDATE order_detail SET stich_type = ?, quantity = ?, price = ?, amount = ?, note = ?, imageName = ? WHERE id = ?`,
+                [
+                  update.itemName,
+                  update.itemQuantity,
+                  update.itemPrice,
+                  update.itemAmount,
+                  update.itemNote,
+                  update.itemImage,
+                  update.id,
+                ],
+                (error) => {
+                  if (error) {
+                    console.log("-->", error);
+                  }
                 }
-              }
-            );
+              );
+            } else {
+              await db.query(
+                "INSERT INTO order_detail (master_id, stich_type, quantity, price, amount, note, imageName) VALUES (?,?,?,?,?,?,?)",
+                [
+                  id,
+                  detail.itemName,
+                  detail.itemQuantity,
+                  detail.itemPrice,
+                  detail.itemAmount,
+                  detail.itemNote,
+                  detail.itemImage,
+                ]
+                )
+             }
           })
         );
         if (results.affectedRows > 0) {

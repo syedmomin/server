@@ -202,32 +202,16 @@ const collection = {
     try {
       await db.query(
         `SELECT itemMaster,itemUOM,
-              SUM(grn_total) - SUM(wholesale_total) AS total_quantity
-              FROM
-              (
-                  SELECT itemMaster,itemUOM,SUM(itemQuantity) AS grn_total,NULL AS wholesale_total
-                  FROM grn_detail GROUP BY itemMaster
-                  UNION ALL
-                  SELECT itemMaster,itemUOM,NULL AS grn_total,SUM(itemQuantity) AS wholesale_total
-                  FROM wholesale_detail GROUP BY itemMaster
-              ) AS combined_data
-              GROUP BY itemMaster`,
-
-        // get last item rate
-        //               SELECT
-        //     gd.`itemMaster`,
-        //     gd.`itemRate`
-        // FROM
-        //     `grn_detail` gd
-        // JOIN (
-        //     SELECT
-        //         `itemMaster`,
-        //         MAX(`created_at`) AS max_created_at
-        //     FROM
-        //         `grn_detail`
-        //     GROUP BY
-        //         `itemMaster`
-        // ) max_dates ON gd.`itemMaster` = max_dates.`itemMaster` AND gd.`created_at` = max_dates.`max_created_at`
+        COALESCE(SUM(grn_total),0) - COALESCE(SUM(wholesale_total),0) AS total_quantity
+        FROM
+        (
+            SELECT itemMaster,itemUOM,SUM(itemQuantity) AS grn_total,NULL AS wholesale_total
+            FROM grn_detail GROUP BY itemMaster
+            UNION ALL
+            SELECT itemMaster,itemUOM,NULL AS grn_total,SUM(itemQuantity) AS wholesale_total
+            FROM wholesale_detail GROUP BY itemMaster
+        ) AS combined_data
+        GROUP BY itemMaster`,
         (error, results) => {
           if (error) {
             res.status(500).send({

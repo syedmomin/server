@@ -106,24 +106,44 @@ const collection = {
         }
         await Promise.all(
           detail.map(async (update) => {
-            await db.query(
-              `UPDATE grn_detail SET itemMaster = ?, itemUOM = ?, itemArticle = ?, itemColor = ?,itemQuantity = ?,itemRate = ?,itemAmount = ?,itemShipment = ?,itemMiscCost = ?,itemNetRate = ?,itemNetAmount = ?,itemImage = ? WHERE id = ?`,
-              [
-                update.itemMaster,
-                update.itemUOM,
-                update.itemArticle,
-                update.itemColor,
-                update.itemQuantity,
-                update.itemRate,
-                update.itemAmount,
-                update.itemShipment,
-                update.itemMiscCost,
-                update.itemNetRate,
-                update.itemNetAmount,
-                update.itemImage,
-                update.id,
-              ]
-            );
+            if (update.id) {
+              await db.query(
+                `UPDATE grn_detail SET itemMaster = ?, itemUOM = ?, itemArticle = ?, itemColor = ?,itemQuantity = ?,itemRate = ?,itemAmount = ?,itemShipment = ?,itemMiscCost = ?,itemNetRate = ?,itemNetAmount = ?,itemImage = ? WHERE id = ?`,
+                [
+                  update.itemMaster,
+                  update.itemUOM,
+                  update.itemArticle,
+                  update.itemColor,
+                  update.itemQuantity,
+                  update.itemRate,
+                  update.itemAmount,
+                  update.itemShipment,
+                  update.itemMiscCost,
+                  update.itemNetRate,
+                  update.itemNetAmount,
+                  update.itemImage,
+                  update.id,
+                ]
+              );
+            } else {
+              await db.query(
+                `INSERT INTO grn_detail (masterId,itemMaster, itemUOM, itemArticle, itemColor, itemQuantity, itemRate, itemAmount, itemShipment, itemMiscCost, itemNetRate, itemNetAmount, itemImage) VALUES (?,?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+                [id,
+                  update.itemMaster,
+                  update.itemUOM,
+                  update.itemArticle,
+                  update.itemColor,
+                  update.itemQuantity,
+                  update.itemRate,
+                  update.itemAmount,
+                  update.itemShipment,
+                  update.itemMiscCost,
+                  update.itemNetRate,
+                  update.itemNetAmount,
+                  update.itemImage,
+                ]
+              );
+            }
           })
         );
         if (results.affectedRows > 0) {
@@ -140,21 +160,6 @@ const collection = {
             message: "This Id Not Exist!",
           });
         }
-        // else {
-        //   if (results.affectedRows > 0) {
-        //     res.status(200).send({
-        //       code: 200,
-        //       status: true,
-        //       message: "Update record successfully",
-        //     });
-        //   } else {
-        //     res.status(206).send({
-        //       code: 206,
-        //       status: false,
-        //       message: "This Id Not Exist!",
-        //     });
-        //   }
-        // }
       });
     } catch (error) {
       res.status(500).send({

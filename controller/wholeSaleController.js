@@ -113,23 +113,42 @@ const collection = {
         }
         await Promise.all(
           detail.map(async (update) => {
-            await db.query(
-              `UPDATE wholesale_detail SET itemMaster = ?, itemUOM = ?, itemArticle = ?, itemColor = ?,itemQuantity = ?,itemPrice = ?,itemAmount = ?,itemDelivery = ?,itemNetSalePrice = ?,itemNetAmount = ?,itemImage = ? WHERE id = ?`,
-              [
-                update.itemMaster,
-                update.itemUOM,
-                update.itemArticle,
-                update.itemColor,
-                update.itemQuantity,
-                update.itemPrice,
-                update.itemAmount,
-                update.itemDelivery,
-                update.itemNetSalePrice,
-                update.itemNetAmount,
-                update.itemImage,
-                update.id,
-              ]
-            );
+            if (update.id) {
+              await db.query(
+                `UPDATE wholesale_detail SET itemMaster = ?, itemUOM = ?, itemArticle = ?, itemColor = ?,itemQuantity = ?,itemPrice = ?,itemAmount = ?,itemDelivery = ?,itemNetSalePrice = ?,itemNetAmount = ?,itemImage = ? WHERE id = ?`,
+                [
+                  update.itemMaster,
+                  update.itemUOM,
+                  update.itemArticle,
+                  update.itemColor,
+                  update.itemQuantity,
+                  update.itemPrice,
+                  update.itemAmount,
+                  update.itemDelivery,
+                  update.itemNetSalePrice,
+                  update.itemNetAmount,
+                  update.itemImage,
+                  update.id,
+                ]
+              );
+            } else {
+              await db.query(
+                `INSERT INTO wholesale_detail (masterId,itemMaster,itemUOM,itemArticle,itemColor,itemQuantity,itemPrice,itemAmount,itemDelivery,itemNetSalePrice,itemNetAmount,itemImage) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)`,
+                [id,
+                  update.itemMaster,
+                  update.itemUOM,
+                  update.itemArticle,
+                  update.itemColor,
+                  update.itemQuantity,
+                  update.itemPrice,
+                  update.itemAmount,
+                  update.itemDelivery,
+                  update.itemNetSalePrice,
+                  update.itemNetAmount,
+                  update.itemImage,
+                ]
+              );
+            }
           })
         );
         if (results.affectedRows > 0) {
