@@ -154,7 +154,7 @@ const customerLedger = {
             ledger_total_balance,
           } = result[0];
           updateAmount =
-            ledger_total_amount - wholesale_totalAmount + req.body.total_amount;
+            ledger_total_amount - wholesale_totalAmount + req.body.totalNetAmount;
           updateReceived =
             ledger_total_received -
             wholesale_amountReceived +
