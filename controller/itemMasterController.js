@@ -206,12 +206,12 @@ const collection = {
         FROM
         (
             SELECT itemMaster,itemUOM,SUM(itemQuantity) AS grn_total,NULL AS wholesale_total
-            FROM grn_detail GROUP BY itemMaster
+            FROM grn_detail GROUP BY itemMaster,itemUOM
             UNION ALL
             SELECT itemMaster,itemUOM,NULL AS grn_total,SUM(itemQuantity) AS wholesale_total
-            FROM wholesale_detail GROUP BY itemMaster
+            FROM wholesale_detail GROUP BY itemMaster,itemUOM
         ) AS combined_data
-        GROUP BY itemMaster`,
+        GROUP BY itemMaster,itemUOM`,
         (error, results) => {
           if (error) {
             res.status(500).send({

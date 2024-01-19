@@ -455,35 +455,35 @@ WHERE
         itemMaster,
         itemUOM
     UNION ALL
-SELECT
-    itemMaster,
-    itemUOM,
-    DATE(created_at) AS Date,
-    id AS DocNumber,
-    'GRN Custoner' AS Description,
+    SELECT
+    gd.itemMaster,
+    gd.itemUOM,
+    DATE(gd.created_at) AS Date,
+    gd.masterId AS DocNumber,
+    gm.supplierName AS Description,
     '-' AS Opening,
-    itemQuantity AS StockIn,
+    gd.itemQuantity AS StockIn,
     '-' AS StockOut,
     2 AS SortOrder
 FROM
-    grn_detail
+    grn_detail as gd INNER JOIN grn_master as gm ON  gd.masterId = gm.id
 WHERE
-    DATE(created_at) >= '${fromDate}' AND DATE(created_at) <= '${toDate}'
+    DATE(gd.created_at) >= '${fromDate}' AND DATE(gd.created_at) <= '${toDate}'
 UNION ALL
 SELECT
-    itemMaster,
-    itemUOM,
-    DATE(created_at) AS Date,
-    id AS DocNumber,
-    'WholeSale Customer' AS Description,
+    wd.itemMaster,
+    wd.itemUOM,
+    DATE(wd.created_at) AS Date,
+    wd.masterId AS DocNumber,
+    wm.supplierName AS Description,
     '-' AS Opening,
     '-' AS StockIn,
-    itemQuantity AS StockOut,
+    wd.itemQuantity AS StockOut,
     3 AS SortOrder
 FROM
-    wholesale_detail
+    wholesale_detail as wd INNER JOIN grn_master as wm ON  wd.masterId = wm.id
 WHERE
-    DATE(created_at) >= '${fromDate}' AND DATE(created_at) <= '${toDate}'
+    DATE(wd.created_at) >= '${fromDate}' AND DATE(wd.created_at) <= '${toDate}'
 )
 SELECT
     Date,
@@ -562,7 +562,7 @@ ORDER BY
     try {
       const { karigarName, karigarNumber, fromDate, toDate } = req.body;
       await db.query(
-            `SELECT
+        `SELECT
           toDate,
           paymentType,
           remarks,
