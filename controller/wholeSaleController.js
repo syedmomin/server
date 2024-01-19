@@ -113,42 +113,35 @@ const collection = {
         }
         await Promise.all(
           detail.map(async (update) => {
-            if (update.id) {
-              await db.query(
-                `UPDATE wholesale_detail SET itemMaster = ?, itemUOM = ?, itemArticle = ?, itemColor = ?,itemQuantity = ?,itemPrice = ?,itemAmount = ?,itemDelivery = ?,itemNetSalePrice = ?,itemNetAmount = ?,itemImage = ? WHERE id = ?`,
-                [
-                  update.itemMaster,
-                  update.itemUOM,
-                  update.itemArticle,
-                  update.itemColor,
-                  update.itemQuantity,
-                  update.itemPrice,
-                  update.itemAmount,
-                  update.itemDelivery,
-                  update.itemNetSalePrice,
-                  update.itemNetAmount,
-                  update.itemImage,
-                  update.id,
-                ]
-              );
-            } else {
-              await db.query(
-                `INSERT INTO wholesale_detail (masterId,itemMaster,itemUOM,itemArticle,itemColor,itemQuantity,itemPrice,itemAmount,itemDelivery,itemNetSalePrice,itemNetAmount,itemImage) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)`,
-                [id,
-                  update.itemMaster,
-                  update.itemUOM,
-                  update.itemArticle,
-                  update.itemColor,
-                  update.itemQuantity,
-                  update.itemPrice,
-                  update.itemAmount,
-                  update.itemDelivery,
-                  update.itemNetSalePrice,
-                  update.itemNetAmount,
-                  update.itemImage,
-                ]
-              );
-            }
+            await db.query(
+              "DELETE FROM wholesale_detail WHERE masterId = ?",
+              [id],
+              async (error, results) => {
+                if (error) {
+                  res.status(500).send({
+                    code: 500,
+                    status: false,
+                    message: error,
+                  });
+                }
+              }
+            )
+            await db.query(
+              `INSERT INTO wholesale_detail (masterId,itemMaster,itemUOM,itemArticle,itemColor,itemQuantity,itemPrice,itemAmount,itemDelivery,itemNetSalePrice,itemNetAmount,itemImage) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)`,
+              [id,
+                update.itemMaster,
+                update.itemUOM,
+                update.itemArticle,
+                update.itemColor,
+                update.itemQuantity,
+                update.itemPrice,
+                update.itemAmount,
+                update.itemDelivery,
+                update.itemNetSalePrice,
+                update.itemNetAmount,
+                update.itemImage,
+              ]
+            );
           })
         );
         if (results.affectedRows > 0) {

@@ -175,38 +175,31 @@ const collection = {
 
         await Promise.all(
           detail.map(async (update) => {
-            if (update.id) {
-              await db.query(
-                `UPDATE order_detail SET stich_type = ?, quantity = ?, price = ?, amount = ?, note = ?, imageName = ? WHERE id = ?`,
-                [
-                  update.itemName,
-                  update.itemQuantity,
-                  update.itemPrice,
-                  update.itemAmount,
-                  update.itemNote,
-                  update.itemImage,
-                  update.id,
-                ],
-                (error) => {
-                  if (error) {
-                    console.log("-->", error);
-                  }
+            await db.query(
+              "DELETE FROM order_detail WHERE master_id = ?",
+              [id],
+              async (error, results) => {
+                if (error) {
+                  res.status(500).send({
+                    code: 500,
+                    status: false,
+                    message: error,
+                  });
                 }
-              );
-            } else {
-              await db.query(
-                "INSERT INTO order_detail (master_id, stich_type, quantity, price, amount, note, imageName) VALUES (?,?,?,?,?,?,?)",
-                [
-                  id,
-                  detail.itemName,
-                  detail.itemQuantity,
-                  detail.itemPrice,
-                  detail.itemAmount,
-                  detail.itemNote,
-                  detail.itemImage,
-                ]
-                )
-             }
+              }
+            )
+            await db.query(
+              "INSERT INTO order_detail (master_id, stich_type, quantity, price, amount, note, imageName) VALUES (?,?,?,?,?,?,?)",
+              [
+                id,
+                detail.itemName,
+                detail.itemQuantity,
+                detail.itemPrice,
+                detail.itemAmount,
+                detail.itemNote,
+                detail.itemImage,
+              ]
+            )
           })
         );
         if (results.affectedRows > 0) {

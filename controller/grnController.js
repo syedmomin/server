@@ -106,44 +106,36 @@ const collection = {
         }
         await Promise.all(
           detail.map(async (update) => {
-            if (update.id) {
-              await db.query(
-                `UPDATE grn_detail SET itemMaster = ?, itemUOM = ?, itemArticle = ?, itemColor = ?,itemQuantity = ?,itemRate = ?,itemAmount = ?,itemShipment = ?,itemMiscCost = ?,itemNetRate = ?,itemNetAmount = ?,itemImage = ? WHERE id = ?`,
-                [
-                  update.itemMaster,
-                  update.itemUOM,
-                  update.itemArticle,
-                  update.itemColor,
-                  update.itemQuantity,
-                  update.itemRate,
-                  update.itemAmount,
-                  update.itemShipment,
-                  update.itemMiscCost,
-                  update.itemNetRate,
-                  update.itemNetAmount,
-                  update.itemImage,
-                  update.id,
-                ]
-              );
-            } else {
-              await db.query(
-                `INSERT INTO grn_detail (masterId,itemMaster, itemUOM, itemArticle, itemColor, itemQuantity, itemRate, itemAmount, itemShipment, itemMiscCost, itemNetRate, itemNetAmount, itemImage) VALUES (?,?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
-                [id,
-                  update.itemMaster,
-                  update.itemUOM,
-                  update.itemArticle,
-                  update.itemColor,
-                  update.itemQuantity,
-                  update.itemRate,
-                  update.itemAmount,
-                  update.itemShipment,
-                  update.itemMiscCost,
-                  update.itemNetRate,
-                  update.itemNetAmount,
-                  update.itemImage,
-                ]
-              );
-            }
+            await db.query(
+              "DELETE FROM grn_detail WHERE masterId = ?",
+              [id],
+              async (error, results) => {
+                if (error) {
+                  res.status(500).send({
+                    code: 500,
+                    status: false,
+                    message: error,
+                  });
+                }
+              }
+            )
+            await db.query(
+              `INSERT INTO grn_detail (masterId,itemMaster, itemUOM, itemArticle, itemColor, itemQuantity, itemRate, itemAmount, itemShipment, itemMiscCost, itemNetRate, itemNetAmount, itemImage) VALUES (?,?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+              [id,
+                update.itemMaster,
+                update.itemUOM,
+                update.itemArticle,
+                update.itemColor,
+                update.itemQuantity,
+                update.itemRate,
+                update.itemAmount,
+                update.itemShipment,
+                update.itemMiscCost,
+                update.itemNetRate,
+                update.itemNetAmount,
+                update.itemImage,
+              ]
+            );
           })
         );
         if (results.affectedRows > 0) {
