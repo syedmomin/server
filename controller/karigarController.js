@@ -3,8 +3,15 @@ const db = require("../config/dbConnection");
 const collection = {
   create: async function (req, res) {
     try {
-      const { karigar_image, name, phone, cnic, address, designation } =
-        req.body;
+      const {
+        karigar_image,
+        name,
+        phone,
+        cnic,
+        joinDate,
+        address,
+        designation,
+      } = req.body;
       await db.query(
         "SELECT COUNT(*) AS count FROM karigar WHERE phone = ?",
         [phone],
@@ -18,8 +25,17 @@ const collection = {
             });
           } else {
             db.query(
-              "INSERT INTO karigar (karigar_image,name, phone, cnic,address,status,designation ) VALUES (?,?,?,?,?,?,?)",
-              [karigar_image, name, phone, cnic, address, 1, designation],
+              "INSERT INTO karigar (karigar_image,name, phone, cnic,joinDate,address,status,designation ) VALUES (?,?,?,?,?,?,?,?)",
+              [
+                karigar_image,
+                name,
+                phone,
+                cnic,
+                joinDate,
+                address,
+                1,
+                designation,
+              ],
               (error, results) => {
                 if (error) {
                   res.status(500).send({
