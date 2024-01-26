@@ -334,6 +334,8 @@ const report = {
 
       query += ` AND DATE(created_at) >= ? AND DATE(created_at) <= ?`;
       params.push(fromDate, toDate);
+
+      console.log("-->", params);
       await db.query(query, params, (error, results) => {
         if (error) {
           res.status(500).send({
@@ -400,9 +402,9 @@ const report = {
       const { karigarName, karigarNumber, fromDate, toDate } = req.body;
       let query = `SELECT * FROM karigar_salary WHERE 1=1`;
       const params = [];
-      if (customerName != "All") {
+      if (karigarName != "All") {
         query += ` AND karigarName = ? AND karigarMobile = ?`;
-        params.push(customerName, customerMobile);
+        params.push(karigarName, karigarNumber);
       }
 
       query += ` AND DATE(created_at) >= ? AND DATE(created_at) <= ?`;
