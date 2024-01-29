@@ -64,13 +64,13 @@ router
   );
 
 router
-  .route("/WholeSalePurchase")
+  .route("/wholeSalePurchase")
   .post(verifyToken, (req, res) =>
     controllerPath.wholeSalePurchaseReport(req, res)
   );
 
 router
-  .route("/WholeSaleSale")
+  .route("/wholeSaleSale")
   .post(verifyToken, (req, res) =>
     controllerPath.wholeSalePurchaseReport(req, res)
   );
