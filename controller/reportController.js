@@ -444,6 +444,7 @@ const report = {
     COALESCE(itemUOM, '-') AS itemUOM,
     COALESCE('-', '-') AS Date,
     COALESCE('-', '-') AS DocNumber,
+    COALESCE('-', '-') AS DocType,
     'Opening Balance' AS Description,
     COALESCE(SUM(itemQuantity), 0) AS Opening,
     '-' AS StockIn,
@@ -462,10 +463,11 @@ WHERE
     gd.itemUOM,
     DATE(gd.created_at) AS Date,
     gd.masterId AS DocNumber,
+    'GRN' AS DocType,
     gm.supplierName AS Description,
     '-' AS Opening,
     gd.itemQuantity AS StockIn,
-    '-' AS StockOut,
+    0 AS StockOut,
     2 AS SortOrder
 FROM
     grn_detail as gd INNER JOIN grn_master as gm ON  gd.masterId = gm.id
@@ -477,19 +479,21 @@ SELECT
     wd.itemUOM,
     DATE(wd.created_at) AS Date,
     wd.masterId AS DocNumber,
+    'Wholesale' AS DocType,
     wm.supplierName AS Description,
     '-' AS Opening,
-    '-' AS StockIn,
+    0 AS StockIn,
     wd.itemQuantity AS StockOut,
     3 AS SortOrder
 FROM
-    wholesale_detail as wd INNER JOIN grn_master as wm ON  wd.masterId = wm.id
+    wholesale_detail as wd INNER JOIN	wholesale_master as wm ON  wd.masterId = wm.id
 WHERE
     DATE(wd.created_at) >= '${fromDate}' AND DATE(wd.created_at) <= '${toDate}'
 )
 SELECT
     Date,
     DocNumber,
+    DocType,
     Description,
     Opening,
     StockIn,

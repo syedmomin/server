@@ -125,10 +125,11 @@ const collection = {
                   });
                 }
               }
-            )
+            );
             await db.query(
               `INSERT INTO wholesale_detail (masterId,itemMaster,itemUOM,itemArticle,itemColor,itemQuantity,itemPrice,itemAmount,itemDelivery,itemNetSalePrice,itemNetAmount,itemImage) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)`,
-              [id,
+              [
+                id,
                 update.itemMaster,
                 update.itemUOM,
                 update.itemArticle,
@@ -222,7 +223,7 @@ const collection = {
   getAll: async function (req, res) {
     try {
       await db.query(
-        "SELECT * FROM wholesale_master",
+        "SELECT * FROM wholesale_master ORDER BY id DESC",
         async (error, results) => {
           if (error) {
             res.status(500).send({
