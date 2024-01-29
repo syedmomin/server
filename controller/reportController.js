@@ -641,7 +641,7 @@ ORDER BY
       });
     }
   },
-  wholeSalePurchaseReport: async function (req, res) {
+  wholeSaleSalesReport: async function (req, res) {
     try {
       const { fromDate, toDate } = req.body;
       await db.query(

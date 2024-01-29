@@ -72,6 +72,6 @@ router
 router
   .route("/wholeSaleSale")
   .post(verifyToken, (req, res) =>
-    controllerPath.wholeSalePurchaseReport(req, res)
+    controllerPath.wholeSaleSalesReport(req, res)
   );
 module.exports = router;
