@@ -194,12 +194,12 @@ const collection = {
               "INSERT INTO order_detail (master_id, stich_type, quantity, price, amount, note, imageName) VALUES (?,?,?,?,?,?,?)",
               [
                 id,
-                detail.itemName,
-                detail.itemQuantity,
-                detail.itemPrice,
-                detail.itemAmount,
-                detail.itemNote,
-                detail.itemImage,
+                update.itemName,
+                update.itemQuantity,
+                update.itemPrice,
+                update.itemAmount,
+                update.itemNote,
+                update.itemImage,
               ]
             );
           })
