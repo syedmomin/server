@@ -62,4 +62,16 @@ router
   .post(verifyToken, (req, res) =>
     controllerPath.karigarLedgerReport(req, res)
   );
+
+router
+  .route("/WholeSalePurchase")
+  .post(verifyToken, (req, res) =>
+    controllerPath.wholeSalePurchaseReport(req, res)
+  );
+
+router
+  .route("/WholeSaleSale")
+  .post(verifyToken, (req, res) =>
+    controllerPath.wholeSalePurchaseReport(req, res)
+  );
 module.exports = router;

@@ -609,6 +609,70 @@ ORDER BY
       });
     }
   },
+  wholeSalePurchaseReport: async function (req, res) {
+    try {
+      const { fromDate, toDate } = req.body;
+      await db.query(
+        `SELECT gd.* ,gm.supplierName AS supplierName,gm.created_at AS date, gm.id AS grnNo FROM
+         grn_detail as gd INNER JOIN grn_master as gm ON gd.masterId = gm.id WHERE
+         gd.created_at >= '${fromDate}' AND gd.created_at <= '${toDate}'`,
+        (error, results) => {
+          if (error) {
+            res.status(500).send({
+              code: 500,
+              status: false,
+              message: error,
+            });
+          } else {
+            res.status(200).send({
+              code: 200,
+              status: true,
+              message: "Wholesale Fabric Purchase Report Successfully",
+              data: results,
+            });
+          }
+        }
+      );
+    } catch (error) {
+      res.status(500).send({
+        status: false,
+        code: 500,
+        message: error.message,
+      });
+    }
+  },
+  wholeSalePurchaseReport: async function (req, res) {
+    try {
+      const { fromDate, toDate } = req.body;
+      await db.query(
+        `SELECT wd.* ,wm.supplierName AS customerName,wm.created_at AS date, wm.id AS invoiceNumber 
+         FROM wholesale_detail as wd INNER JOIN wholesale_master as wm ON wd.masterId = wm.id
+         wd.created_at >= '${fromDate}' AND wd.created_at <= '${toDate}'`,
+        (error, results) => {
+          if (error) {
+            res.status(500).send({
+              code: 500,
+              status: false,
+              message: error,
+            });
+          } else {
+            res.status(200).send({
+              code: 200,
+              status: true,
+              message: "Wholesale Fabric Sale Report Successfully",
+              data: results,
+            });
+          }
+        }
+      );
+    } catch (error) {
+      res.status(500).send({
+        status: false,
+        code: 500,
+        message: error.message,
+      });
+    }
+  },
 };
 
 module.exports = report;

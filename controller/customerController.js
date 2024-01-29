@@ -145,30 +145,33 @@ const collection = {
   },
   getAll: async function (req, res) {
     try {
-      await db.query("SELECT * FROM customer", async (error, results) => {
-        if (error) {
-          res.status(500).send({
-            code: 500,
-            status: false,
-            message: error,
-          });
-        } else {
-          if (results.length > 0) {
-            res.status(200).send({
-              code: 200,
-              status: true,
-              message: "Get all customer",
-              data: results,
+      await db.query(
+        "SELECT * FROM customer ORDER BY id DESC",
+        async (error, results) => {
+          if (error) {
+            res.status(500).send({
+              code: 500,
+              status: false,
+              message: error,
             });
           } else {
-            res.status(206).send({
-              code: 206,
-              status: false,
-              message: "customer Not Exist!",
-            });
+            if (results.length > 0) {
+              res.status(200).send({
+                code: 200,
+                status: true,
+                message: "Get all customer",
+                data: results,
+              });
+            } else {
+              res.status(206).send({
+                code: 206,
+                status: false,
+                message: "customer Not Exist!",
+              });
+            }
           }
         }
-      });
+      );
     } catch (error) {
       res.status(500).send({
         status: false,
