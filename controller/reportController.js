@@ -437,83 +437,278 @@ const report = {
     try {
       const { itemName, itemUOM, fromDate, toDate } = req.body;
 
-      const sqlQuery = `WITH
-    inventoryReport AS(
+      const sqlQuery = ` WITH inventoryReport AS (
+        -- Opening Balance
+        SELECT
+            COALESCE(itemMaster, '-') AS itemMaster,
+            COALESCE(itemUOM, '-') AS itemUOM,
+            DATE(created_at) AS TransactionDate,
+            '-' AS DocNumber,
+            '-' AS DocType,
+            'Opening Balance' AS Description,
+             COALESCE(SUM(itemQuantity), 0) AS Opening,
+            0 AS StockIn,
+            0 AS StockOut,
+            1 AS SortOrder
+        FROM
+            grn_detail
+        WHERE
+            DATE(created_at) < '2024-01-12' OR created_at IS NULL
+        GROUP BY
+            itemMaster,
+            itemUOM
+        
+        UNION ALL
+        
+        -- GRN
+        SELECT
+            gd.itemMaster,
+            gd.itemUOM,
+            DATE(gd.created_at) AS TransactionDate,
+            CONCAT('GN-00', gd.masterId) AS DocNumber,
+            'GRN' AS DocType,
+            gm.supplierName AS Description,
+            0 AS Opening,
+            SUM(gd.itemQuantity) AS StockIn,
+            0 AS StockOut,
+            2 AS SortOrder
+        FROM
+            grn_detail AS gd
+        INNER JOIN grn_master AS gm ON gd.masterId = gm.id
+        WHERE
+            DATE(gd.created_at) BETWEEN '2024-01-12' AND '2024-01-31'
+        GROUP BY
+            gd.itemMaster,
+            gd.itemUOM,
+            TransactionDate,
+            DocNumber,
+            DocType,
+            Description
+        
+        UNION ALL
+        
+        -- Wholesale
+        SELECT
+            wd.itemMaster,
+            wd.itemUOM,
+            DATE(wd.created_at) AS TransactionDate,
+            CONCAT('WN-00', wd.masterId) AS DocNumber,
+            'Wholesale' AS DocType,
+            wm.supplierName AS Description,
+            0 AS Opening,
+            0 AS StockIn,
+            SUM(wd.itemQuantity) AS StockOut,
+            3 AS SortOrder
+        FROM
+            wholesale_detail AS wd
+        INNER JOIN wholesale_master AS wm ON wd.masterId = wm.id
+        WHERE
+            DATE(wd.created_at) BETWEEN '2024-01-12' AND '2024-01-31'
+        GROUP BY
+            wd.itemMaster,
+            wd.itemUOM,
+            TransactionDate,
+            DocNumber,
+            DocType,
+            Description
+    )
     SELECT
-    COALESCE(itemMaster, '-') AS itemMaster,
-    COALESCE(itemUOM, '-') AS itemUOM,
-    COALESCE('-', '-') AS Date,
-    COALESCE('-', '-') AS DocNumber,
-    COALESCE('-', '-') AS DocType,
-    'Opening Balance' AS Description,
-    COALESCE(SUM(itemQuantity), 0) AS Opening,
-    '-' AS StockIn,
-    '-' AS StockOut,
-    1 AS SortOrder
-FROM
-    grn_detail
-WHERE
-    DATE(created_at) < '${fromDate}' OR created_at IS NULL
-    GROUP BY
-        itemMaster,
-        itemUOM
-    UNION ALL
+        TransactionDate AS Date,
+        DocNumber,
+        DocType,
+        Description,
+        Opening,
+        StockIn,
+        StockOut,
+        SUM(Opening + StockIn - StockOut) OVER (
+            PARTITION BY itemMaster, itemUOM
+            ORDER BY TransactionDate, DocNumber, SortOrder
+        ) AS Balance
+    FROM
+        inventoryReport
+    WHERE
+        itemMaster = 'st2' AND itemUOM = 'No'
+    ORDER BY
+        TransactionDate,
+        DocNumber,
+        SortOrder;
+    WITH inventoryReport AS (
+        -- Opening Balance
+        SELECT
+            COALESCE(itemMaster, '-') AS itemMaster,
+            COALESCE(itemUOM, '-') AS itemUOM,
+            DATE(created_at) AS TransactionDate,
+            '-' AS DocNumber,
+            '-' AS DocType,
+            'Opening Balance' AS Description,
+            0 AS Opening,
+            0 AS StockIn,
+            0 AS StockOut,
+            1 AS SortOrder
+        FROM
+            grn_detail
+        WHERE
+            DATE(created_at) < '2023-11-01' OR created_at IS NULL
+        GROUP BY
+            itemMaster,
+            itemUOM
+    
+        UNION ALL
+    
+        -- GRN
+        SELECT
+            gd.itemMaster,
+            gd.itemUOM,
+            DATE(gd.created_at) AS TransactionDate,
+            CONCAT('GN-00', gd.masterId) AS DocNumber,
+            'GRN' AS DocType,
+            gm.supplierName AS Description,
+            0 AS Opening,
+            SUM(gd.itemQuantity) AS StockIn,
+            0 AS StockOut,
+            2 AS SortOrder
+        FROM
+            grn_detail AS gd
+        INNER JOIN grn_master AS gm ON gd.masterId = gm.id
+        WHERE
+            DATE(gd.created_at) BETWEEN '2023-11-01' AND '2024-01-31'
+        GROUP BY
+            gd.itemMaster,
+            gd.itemUOM,
+            TransactionDate,
+            DocNumber,
+            DocType,
+            Description
+    
+        UNION ALL
+    
+        -- Wholesale
+        SELECT
+            wd.itemMaster,
+            wd.itemUOM,
+            DATE(wd.created_at) AS TransactionDate,
+            CONCAT('WN-00', wd.masterId) AS DocNumber,
+            'Wholesale' AS DocType,
+            wm.supplierName AS Description,
+            0 AS Opening,
+            0 AS StockIn,
+            SUM(wd.itemQuantity) AS StockOut,
+            3 AS SortOrder
+        FROM
+            wholesale_detail AS wd
+        INNER JOIN wholesale_master AS wm ON wd.masterId = wm.id
+        WHERE
+            DATE(wd.created_at) BETWEEN '2023-11-01' AND '2024-01-31'
+        GROUP BY
+            wd.itemMaster,
+            wd.itemUOM,
+            TransactionDate,
+            DocNumber,
+            DocType,
+            Description
+    )
     SELECT
-    gd.itemMaster,
-    gd.itemUOM,
-    DATE(gd.created_at) AS Date,
-    gd.masterId AS DocNumber,
-    'GRN' AS DocType,
-    gm.supplierName AS Description,
-    '-' AS Opening,
-    gd.itemQuantity AS StockIn,
-    0 AS StockOut,
-    2 AS SortOrder
-FROM
-    grn_detail as gd INNER JOIN grn_master as gm ON  gd.masterId = gm.id
-WHERE
-    DATE(gd.created_at) >= '${fromDate}' AND DATE(gd.created_at) <= '${toDate}'
-UNION ALL
-SELECT
-    wd.itemMaster,
-    wd.itemUOM,
-    DATE(wd.created_at) AS Date,
-    wd.masterId AS DocNumber,
-    'Wholesale' AS DocType,
-    wm.supplierName AS Description,
-    '-' AS Opening,
-    0 AS StockIn,
-    wd.itemQuantity AS StockOut,
-    3 AS SortOrder
-FROM
-    wholesale_detail as wd INNER JOIN	wholesale_master as wm ON  wd.masterId = wm.id
-WHERE
-    DATE(wd.created_at) >= '${fromDate}' AND DATE(wd.created_at) <= '${toDate}'
-)
-SELECT
-    Date,
-    DocNumber,
-    DocType,
-    Description,
-    Opening,
-    StockIn,
-    StockOut,
-    SUM(StockIn + Opening - StockOut) OVER(
-    PARTITION BY itemMaster,
-    itemUOM
-ORDER BY
-    Date,
-    DocNumber,
-    SortOrder
-) AS Balance
-FROM
-    inventoryReport
-WHERE
-    itemMaster = '${itemName}' AND itemUOM = '${itemUOM}'
-ORDER BY
-    Date,
-    DocNumber,
-    SortOrder`;
+        TransactionDate AS Date,
+        DocNumber,
+        DocType,
+        Description,
+        Opening,
+        StockIn,
+        StockOut,
+        SUM(Opening + StockIn - StockOut) OVER (
+            PARTITION BY itemMaster, itemUOM
+            ORDER BY TransactionDate, DocNumber, SortOrder
+        ) AS Balance
+    FROM
+        inventoryReport
+    WHERE
+        itemMaster = 'st2' AND itemUOM = 'No'
+    ORDER BY
+        TransactionDate,
+        DocNumber,
+        SortOrder;`;
+
+      //       const sqlQuery = `WITH
+      //     inventoryReport AS(
+      //     SELECT
+      //     COALESCE(itemMaster, '-') AS itemMaster,
+      //     COALESCE(itemUOM, '-') AS itemUOM,
+      //     COALESCE('-', '-') AS Date,
+      //     COALESCE('-', '-') AS DocNumber,
+      //     COALESCE('-', '-') AS DocType,
+      //     'Opening Balance' AS Description,
+      //     COALESCE(SUM(itemQuantity), 0) AS Opening,
+      //     '-' AS StockIn,
+      //     '-' AS StockOut,
+      //     1 AS SortOrder
+      // FROM
+      //     grn_detail
+      // WHERE
+      //     DATE(created_at) < '${fromDate}' OR created_at IS NULL
+      //     GROUP BY
+      //         itemMaster,
+      //         itemUOM
+      //     UNION ALL
+      //     SELECT
+      //     gd.itemMaster,
+      //     gd.itemUOM,
+      //     DATE(gd.created_at) AS Date,
+      //     CONCAT('GN-00', gd.masterId) AS DocNumber,
+      //     'GRN' AS DocType,
+      //     gm.supplierName AS Description,
+      //     '-' AS Opening,
+      //     SUM(gd.itemQuantity) AS StockIn,
+      //     0 AS StockOut,
+      //     2 AS SortOrder
+      // FROM
+      //     grn_detail as gd INNER JOIN grn_master as gm ON  gd.masterId = gm.id
+      // WHERE
+      //     DATE(gd.created_at) >= '${fromDate}' AND DATE(gd.created_at) <= '${toDate}'
+      // GROUP BY
+      //     DocNumber
+      // UNION ALL
+      // SELECT
+      //     wd.itemMaster,
+      //     wd.itemUOM,
+      //     DATE(wd.created_at) AS Date,
+      //     wd.masterId AS DocNumber,
+      //     'Wholesale' AS DocType,
+      //     wm.supplierName AS Description,
+      //     '-' AS Opening,
+      //     0 AS StockIn,
+      //     SUM(wd.itemQuantity) AS StockOut,
+      //     3 AS SortOrder
+      // FROM
+      //     wholesale_detail as wd INNER JOIN	wholesale_master as wm ON  wd.masterId = wm.id
+      // WHERE
+      //     DATE(wd.created_at) >= '${fromDate}' AND DATE(wd.created_at) <= '${toDate}'
+      // GROUP BY
+      //     DocNumber
+      // )
+      // SELECT
+      //     Date,
+      //     DocNumber,
+      //     DocType,
+      //     Description,
+      //     Opening,
+      //     StockIn,
+      //     StockOut,
+      //     SUM(StockIn + Opening - StockOut) OVER(
+      //     PARTITION BY itemMaster,
+      //     itemUOM
+      // ORDER BY
+      //     Date,
+      //     DocNumber,
+      //     SortOrder
+      // ) AS Balance
+      // FROM
+      //     inventoryReport
+      // WHERE
+      //     itemMaster = '${itemName}' AND itemUOM = '${itemUOM}'
+      // ORDER BY
+      //     Date,
+      //     DocNumber,
+      //     SortOrder`;
       await db.query(sqlQuery, (error, results) => {
         if (error) {
           res.status(500).send({
