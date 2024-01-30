@@ -646,7 +646,7 @@ ORDER BY
       const { fromDate, toDate } = req.body;
       await db.query(
         `SELECT wd.* ,wm.supplierName AS customerName,wm.created_at AS date, wm.id AS invoiceNumber 
-         FROM wholesale_detail as wd INNER JOIN wholesale_master as wm ON wd.masterId = wm.id
+         FROM wholesale_detail as wd INNER JOIN wholesale_master as wm ON wd.masterId = wm.id WHERE
          wd.created_at >= '${fromDate}' AND wd.created_at <= '${toDate}'`,
         (error, results) => {
           if (error) {
