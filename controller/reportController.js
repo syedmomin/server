@@ -673,6 +673,37 @@ ORDER BY
       });
     }
   },
+  stichCustomerOrderReport: async function (req, res) {
+    try {
+      const { fromDate, toDate } = req.body;
+      await db.query(
+        `SELECT * FROM order_master WHERE
+         created_at >= '${fromDate}' AND created_at <= '${toDate}'`,
+        (error, results) => {
+          if (error) {
+            res.status(500).send({
+              code: 500,
+              status: false,
+              message: error,
+            });
+          } else {
+            res.status(200).send({
+              code: 200,
+              status: true,
+              message: " Stiching Customer Orders Report Successfully",
+              data: results,
+            });
+          }
+        }
+      );
+    } catch (error) {
+      res.status(500).send({
+        status: false,
+        code: 500,
+        message: error.message,
+      });
+    }
+  },
 };
 
 module.exports = report;
