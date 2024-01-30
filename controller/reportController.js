@@ -247,7 +247,7 @@ const report = {
             code: 206,
             status: false,
             message: "This Id Not Exist!",
-            data: sqlQuery,
+            data: error,
           });
         }
       });
