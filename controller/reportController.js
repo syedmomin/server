@@ -446,109 +446,14 @@ const report = {
             '-' AS DocNumber,
             '-' AS DocType,
             'Opening Balance' AS Description,
-             COALESCE(SUM(itemQuantity), 0) AS Opening,
+            COALESCE(SUM(itemQuantity), 0) AS Opening,
             0 AS StockIn,
             0 AS StockOut,
             1 AS SortOrder
         FROM
             grn_detail
         WHERE
-            DATE(created_at) < '2024-01-12' OR created_at IS NULL
-        GROUP BY
-            itemMaster,
-            itemUOM
-        
-        UNION ALL
-        
-        -- GRN
-        SELECT
-            gd.itemMaster,
-            gd.itemUOM,
-            DATE(gd.created_at) AS TransactionDate,
-            CONCAT('GN-00', gd.masterId) AS DocNumber,
-            'GRN' AS DocType,
-            gm.supplierName AS Description,
-            0 AS Opening,
-            SUM(gd.itemQuantity) AS StockIn,
-            0 AS StockOut,
-            2 AS SortOrder
-        FROM
-            grn_detail AS gd
-        INNER JOIN grn_master AS gm ON gd.masterId = gm.id
-        WHERE
-            DATE(gd.created_at) BETWEEN '2024-01-12' AND '2024-01-31'
-        GROUP BY
-            gd.itemMaster,
-            gd.itemUOM,
-            TransactionDate,
-            DocNumber,
-            DocType,
-            Description
-        
-        UNION ALL
-        
-        -- Wholesale
-        SELECT
-            wd.itemMaster,
-            wd.itemUOM,
-            DATE(wd.created_at) AS TransactionDate,
-            CONCAT('WN-00', wd.masterId) AS DocNumber,
-            'Wholesale' AS DocType,
-            wm.supplierName AS Description,
-            0 AS Opening,
-            0 AS StockIn,
-            SUM(wd.itemQuantity) AS StockOut,
-            3 AS SortOrder
-        FROM
-            wholesale_detail AS wd
-        INNER JOIN wholesale_master AS wm ON wd.masterId = wm.id
-        WHERE
-            DATE(wd.created_at) BETWEEN '2024-01-12' AND '2024-01-31'
-        GROUP BY
-            wd.itemMaster,
-            wd.itemUOM,
-            TransactionDate,
-            DocNumber,
-            DocType,
-            Description
-    )
-    SELECT
-        TransactionDate AS Date,
-        DocNumber,
-        DocType,
-        Description,
-        Opening,
-        StockIn,
-        StockOut,
-        SUM(Opening + StockIn - StockOut) OVER (
-            PARTITION BY itemMaster, itemUOM
-            ORDER BY TransactionDate, DocNumber, SortOrder
-        ) AS Balance
-    FROM
-        inventoryReport
-    WHERE
-        itemMaster = 'st2' AND itemUOM = 'No'
-    ORDER BY
-        TransactionDate,
-        DocNumber,
-        SortOrder;
-    WITH inventoryReport AS (
-        -- Opening Balance
-        SELECT
-            COALESCE(itemMaster, '-') AS itemMaster,
-            COALESCE(itemUOM, '-') AS itemUOM,
-            DATE(created_at) AS TransactionDate,
-            '-' AS DocNumber,
-            '-' AS DocType,
-            'Opening Balance' AS Description,
-            0 AS Opening,
-            0 AS StockIn,
-            0 AS StockOut,
-            1 AS SortOrder
-        FROM
-            grn_detail
-        WHERE
-            DATE(created_at) < '2023-11-01' OR created_at IS NULL
+            DATE(created_at) < '${fromDate}' OR created_at IS NULL
         GROUP BY
             itemMaster,
             itemUOM
@@ -571,7 +476,7 @@ const report = {
             grn_detail AS gd
         INNER JOIN grn_master AS gm ON gd.masterId = gm.id
         WHERE
-            DATE(gd.created_at) BETWEEN '2023-11-01' AND '2024-01-31'
+            DATE(gd.created_at) BETWEEN '${fromDate}' AND '${toDate}'
         GROUP BY
             gd.itemMaster,
             gd.itemUOM,
@@ -598,7 +503,7 @@ const report = {
             wholesale_detail AS wd
         INNER JOIN wholesale_master AS wm ON wd.masterId = wm.id
         WHERE
-            DATE(wd.created_at) BETWEEN '2023-11-01' AND '2024-01-31'
+            DATE(wd.created_at) BETWEEN '${fromDate}' AND '${toDate}'
         GROUP BY
             wd.itemMaster,
             wd.itemUOM,
@@ -622,11 +527,12 @@ const report = {
     FROM
         inventoryReport
     WHERE
-        itemMaster = 'st2' AND itemUOM = 'No'
+        itemMaster = '${itemName}' AND itemUOM = '${itemUOM}'
     ORDER BY
         TransactionDate,
         DocNumber,
-        SortOrder;`;
+        SortOrder
+   `;
 
       //       const sqlQuery = `WITH
       //     inventoryReport AS(
