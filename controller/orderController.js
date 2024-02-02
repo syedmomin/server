@@ -161,6 +161,7 @@ const collection = {
       const updateColumns = req.body;
       delete updateColumns.id;
       delete updateColumns.details;
+
       const updateSql = `UPDATE order_master SET ${Object.keys(updateColumns)
         .map((key) => `${key} = ?`)
         .join(", ")} WHERE id = ?`;

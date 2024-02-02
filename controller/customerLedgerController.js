@@ -135,6 +135,7 @@ const customerLedger = {
       ON om.customer_name = cl.customer_name AND om.customer_phone = cl.customer_phone
       WHERE om.id = ? AND om.customer_name = ? AND om.customer_phone = ?
   `;
+  console.log(req.body.id, req.body.customer_name, req.body.customer_phone);
       await db.query(
         query,
         [req.body.id, req.body.customer_name, req.body.customer_phone],
@@ -146,6 +147,7 @@ const customerLedger = {
               message: error.message,
             });
           }
+          console.log(result[0]);
           const {
             order_total_amount,
             order_amount_received,
@@ -154,6 +156,7 @@ const customerLedger = {
             ledger_total_received,
             ledger_total_balance,
           } = result[0];
+        
           updateAmount =
             ledger_total_amount - order_total_amount + req.body.total_amount;
           updateReceived =

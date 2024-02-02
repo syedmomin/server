@@ -161,7 +161,7 @@ const report = {
             customer_phone,
             '-' AS Date,
             '-' AS OrderNumber,
-            CONCAT('BALANCE B/D') AS Narration,
+            'BALANCE B/D' AS Narration,
             COALESCE(SUM(balance_amount), 0) AS Debit,
             0 AS Credit,
             1 AS SortOrder
@@ -172,26 +172,24 @@ const report = {
         GROUP BY
             customer_name,
             customer_phone
-        UNION ALL
-        ( SELECT
-            customer_name,
-            customer_phone,
+            UNION ALL
+  ( SELECT
+			'-' customer_name,
+            '-' customer_phone,
             '-' AS Date,
             '-' AS OrderNumber,
-            CONCAT('BALANCE B/D') AS Narration,
+            'BALANCE B/D' AS Narration,
             0 AS Debit,
             0 AS Credit,
             1 AS SortOrder
         FROM
             order_master
         WHERE NOT EXISTS (
-            SELECT 1
-            FROM order_master
-            WHERE DATE(created_at) < '${fromDate}' OR created_at IS NULL
-        )
-        LIMIT 1
-        )
-        
+                SELECT 1
+                FROM order_master
+                WHERE DATE(created_at) < '${fromDate}' OR created_at IS NULL
+            )
+  limit 1)
         UNION ALL
         SELECT
             customer_name,
@@ -219,25 +217,25 @@ const report = {
         FROM
             order_master
         WHERE
-            customer_name = '${customerName}' AND customer_phone = '${customerMobile}' AND DATE(created_at) >= '${fromDate}' AND DATE(created_at) <= '${toDate}'
+          amount_received > 0 AND customer_name = '${customerName}' AND customer_phone = '${customerMobile}' AND DATE(created_at) >= '${fromDate}' AND DATE(created_at) <= '${toDate}'
         UNION ALL
         SELECT
             customer_name,
             customer_phone,
-            DATE(created_at) AS Date,
+            DATE(createdAt) AS Date,
             '-' AS OrderNumber,
             CONCAT('BALANCE PAYMENT COLLECTED THROUGH LEDGER') AS Narration,
             0 AS Debit,
-            SUM(collected_amount) AS Credit,
+            SUM(collectedAmount) AS Credit,
             4 AS SortOrder
         FROM
-            customer_ledger
+           customer_ledger_history
         WHERE
-            customer_name = '${customerName}' AND customer_phone = '${customerMobile}' AND DATE(created_at) >= '${fromDate}' AND DATE(created_at) <= '${toDate}'
+            customer_name = '${customerName}' AND customer_phone = '${customerMobile}' AND DATE(createdAt) >= '${fromDate}' AND DATE(createdAt) <= '${toDate}'
         GROUP BY
             customer_name,
             customer_phone,
-            DATE(created_at)
+            DATE(createdAt)
     )
     SELECT
         Date,
@@ -245,13 +243,14 @@ const report = {
         Narration,
         Debit,
         Credit,
-        SUM(Debit - Credit) OVER (PARTITION BY customer_name, customer_phone ORDER BY Date, OrderNumber, SortOrder) AS Balance
+        SUM(Debit - Credit) OVER (PARTITION BY customer_name, customer_phone ORDER BY Date,  SortOrder) AS Balance
     FROM
         LedgerReport
     ORDER BY
         Date,
-        OrderNumber,
-        SortOrder`;
+        SortOrder,
+        OrderNumber
+        `;
       await db.query(sqlQuery, (error, results) => {
         if (error) {
           res.status(500).send({
