@@ -168,7 +168,7 @@ const report = {
         FROM
             order_master
         WHERE
-            DATE(created_at) <= '${fromDate}' AND customer_name = '${customerName}' AND customer_phone = '${customerMobile}'
+            DATE(created_at) < '${fromDate}' AND customer_name = '${customerName}' AND customer_phone = '${customerMobile}'
         GROUP BY
             customer_name,
             customer_phone
@@ -187,7 +187,7 @@ const report = {
         WHERE NOT EXISTS (
                 SELECT 1
                 FROM order_master
-                WHERE DATE(created_at) < '${fromDate}' OR created_at IS NULL
+                WHERE customer_name = '${customerName}' AND customer_phone = '${customerMobile}' AND DATE(created_at) < '${fromDate}' OR created_at IS NULL
             )
   limit 1)
         UNION ALL
@@ -359,7 +359,6 @@ const report = {
       query += ` AND DATE(created_at) >= ? AND DATE(created_at) <= ?`;
       params.push(fromDate, toDate);
 
-      console.log("-->", params);
       await db.query(query, params, (error, results) => {
         if (error) {
           res.status(500).send({
