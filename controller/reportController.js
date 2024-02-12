@@ -764,39 +764,47 @@ const report = {
   },
   wholesaleProfitAndLoss: async function (req, res) {
     try {
-      const { fromDate, toDate } = req.body;
-      await db.query(
-        `SELECT item_master,SUM(net_amount) from order_master where 
-        DATE(created_at) >= '${fromDate}' AND DATE(created_at) <= '${toDate}' GROUP BY item_master`,
-        `SELECT expensesType,SUM(amount) FROM expenses_ledger WHERE businessType = 'Needlework Fabric Wholesale' 
-         AND fromDate  >= '${fromDate}'  AND toDate <= '${toDate}' GROUP BY expensesType`,
-        `SELECT 'COST OF GOODS SOLD' as expenses,SUM(totalNetAmount) from grn_master WHERE
-         DATE(created_at) >= '${fromDate}' AND DATE(created_at) <= '${toDate}'`,
-        (error, results) => {
-          if (error) {
-            res.status(500).send({
-              code: 500,
-              status: false,
-              message: error,
+        const { fromDate, toDate } = req.body;
+        const query1 = `SELECT item_master,SUM(net_amount) as total_amount from order_master where 
+                        DATE(created_at) >= '${fromDate}' AND DATE(created_at) <= '${toDate}' GROUP BY item_master`;
+        const query2 = `SELECT expensesType,SUM(amount) as total_amount FROM expenses_ledger WHERE businessType = 'Needlework Fabric Wholesale' 
+                        AND fromDate  >= '${fromDate}'  AND toDate <= '${toDate}' GROUP BY expensesType`;
+        const query3 = `SELECT 'COST OF GOODS SOLD' as expenses,SUM(totalNetAmount) as total_amount from grn_master WHERE
+                        DATE(created_at) >= '${fromDate}' AND DATE(created_at) <= '${toDate}'`;
+
+        let results = [];
+
+        const executeQuery = (query) => {
+            return new Promise((resolve, reject) => {
+                db.query(query, (error, result) => {
+                    if (error) {
+                        reject(error);
+                    } else {
+                        resolve(result);
+                    }
+                });
             });
-          } else {
-            res.status(200).send({
-              code: 200,
-              status: true,
-              message: " Stiching Customer Orders Report Successfully",
-              data: results,
-            });
-          }
-        }
-      );
+        };
+
+        results.push(await executeQuery(query1));
+        results.push(await executeQuery(query2));
+        results.push(await executeQuery(query3));
+
+        res.status(200).send({
+            code: 200,
+            status: true,
+            message: "Fetch Result",
+            data: results,
+        });
+
     } catch (error) {
-      res.status(500).send({
-        status: false,
-        code: 500,
-        message: error.message,
-      });
+        res.status(500).send({
+            status: false,
+            code: 500,
+            message: error.message,
+        });
     }
-  },
+},
 };
 
 module.exports = report;
