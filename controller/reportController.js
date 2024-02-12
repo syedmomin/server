@@ -736,7 +736,42 @@ const report = {
       const { fromDate, toDate } = req.body;
       await db.query(
         `SELECT * FROM order_master WHERE
-         created_at >= '${fromDate}' AND created_at <= '${toDate}'`,
+        DATE(created_at) >= '${fromDate}' AND DATE(created_at) <= '${toDate}'`,
+        (error, results) => {
+          if (error) {
+            res.status(500).send({
+              code: 500,
+              status: false,
+              message: error,
+            });
+          } else {
+            res.status(200).send({
+              code: 200,
+              status: true,
+              message: " Stiching Customer Orders Report Successfully",
+              data: results,
+            });
+          }
+        }
+      );
+    } catch (error) {
+      res.status(500).send({
+        status: false,
+        code: 500,
+        message: error.message,
+      });
+    }
+  },
+  wholesaleProfitAndLoss: async function (req, res) {
+    try {
+      const { fromDate, toDate } = req.body;
+      await db.query(
+        `SELECT item_master,SUM(net_amount) from order_master where 
+        DATE(created_at) >= '${fromDate}' AND DATE(created_at) <= '${toDate}' GROUP BY item_master`,
+        `SELECT expensesType,SUM(amount) FROM expenses_ledger WHERE businessType = 'Needlework Fabric Wholesale' 
+         AND fromDate  >= '${fromDate}'  AND toDate <= '${toDate}' GROUP BY expensesType`,
+        `SELECT 'COST OF GOODS SOLD' as expenses,SUM(totalNetAmount) from grn_master WHERE
+         DATE(created_at) >= '${fromDate}' AND DATE(created_at) <= '${toDate}'`,
         (error, results) => {
           if (error) {
             res.status(500).send({

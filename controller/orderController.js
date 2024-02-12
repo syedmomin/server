@@ -15,6 +15,8 @@ const collection = {
         plan_date,
         actual_date,
         total_amount,
+        discount,
+        net_amount,
         amount_received,
         balance_amount,
         length,
@@ -53,7 +55,7 @@ const collection = {
         details,
       } = req.body;
       await db.query(
-        "INSERT INTO order_master (customer_name,customer_phone,order_type,item_master,previous_balance,person_name,order_date,plan_date,actual_date,total_amount,amount_received,balance_amount,length,shoulder,sleeve,chest,chest_loosing,middle,middle_loosing,west,west_loosing,hip,hip_loosing,daman,daman_loosing,daman_type,cuff_type,cuff_type_size,collar,collar_type,collar_type_size,placket_type,placket_type_size,front_pocket,side_pocket,right_length,right_west,right_hip,thai,knee,calf,bottom,rightZip,rightBottom,note) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
+        "INSERT INTO order_master (customer_name,customer_phone,order_type,item_master,previous_balance,person_name,order_date,plan_date,actual_date,total_amount,discount,net_amount,amount_received,balance_amount,length,shoulder,sleeve,chest,chest_loosing,middle,middle_loosing,west,west_loosing,hip,hip_loosing,daman,daman_loosing,daman_type,cuff_type,cuff_type_size,collar,collar_type,collar_type_size,placket_type,placket_type_size,front_pocket,side_pocket,right_length,right_west,right_hip,thai,knee,calf,bottom,rightZip,rightBottom,note) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
         [
           customer_name,
           customer_phone,
@@ -65,6 +67,8 @@ const collection = {
           plan_date,
           actual_date,
           total_amount,
+          discount,
+          net_amount,
           amount_received,
           balance_amount,
           length,
