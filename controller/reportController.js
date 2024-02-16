@@ -769,7 +769,7 @@ const report = {
                         DATE(created_at) >= '${fromDate}' AND DATE(created_at) <= '${toDate}' GROUP BY item_master`;
       const query2 = `SELECT expensesType as name ,SUM(amount) as amount FROM expenses_ledger WHERE businessType = 'Needlework Fabric Wholesale' 
                         AND fromDate  >= '${fromDate}'  AND toDate <= '${toDate}' GROUP BY expensesType`;
-      const query3 = `SELECT 'COST OF GOODS SOLD' as name,SUM(totalNetAmount) as amount from grn_master WHERE
+      const query3 = `SELECT 'COST OF GOODS SOLD' as name,SUM(totalNetAmount) as amount  from grn_master WHERE
                         DATE(created_at) >= '${fromDate}' AND DATE(created_at) <= '${toDate}'`;
 
       let results = [];
