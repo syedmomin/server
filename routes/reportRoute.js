@@ -75,9 +75,15 @@ router
     controllerPath.wholeSaleSalesReport(req, res)
   );
 
-  router
+router
   .route("/stichCustomerOrder")
   .post(verifyToken, (req, res) =>
     controllerPath.stichCustomerOrderReport(req, res)
+  );
+
+router
+  .route("/wholesaleProfitAndLoss")
+  .post(verifyToken, (req, res) =>
+    controllerPath.wholesaleProfitAndLoss(req, res)
   );
 module.exports = router;

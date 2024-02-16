@@ -736,7 +736,7 @@ const report = {
       const { fromDate, toDate } = req.body;
       await db.query(
         `SELECT * FROM order_master WHERE
-         created_at >= '${fromDate}' AND created_at <= '${toDate}'`,
+        DATE(created_at) >= '${fromDate}' AND DATE(created_at) <= '${toDate}'`,
         (error, results) => {
           if (error) {
             res.status(500).send({
@@ -754,6 +754,48 @@ const report = {
           }
         }
       );
+    } catch (error) {
+      res.status(500).send({
+        status: false,
+        code: 500,
+        message: error.message,
+      });
+    }
+  },
+  wholesaleProfitAndLoss: async function (req, res) {
+    try {
+      const { fromDate, toDate } = req.body;
+      const query1 = `SELECT item_master as name,SUM(net_amount) as amount from order_master where 
+                        DATE(created_at) >= '${fromDate}' AND DATE(created_at) <= '${toDate}' GROUP BY item_master`;
+      const query2 = `SELECT expensesType as name ,SUM(amount) as amount FROM expenses_ledger WHERE businessType = 'Needlework Fabric Wholesale' 
+                        AND fromDate  >= '${fromDate}'  AND toDate <= '${toDate}' GROUP BY expensesType`;
+      const query3 = `SELECT 'COST OF GOODS SOLD' as name,SUM(totalNetAmount) as amount from grn_master WHERE
+                        DATE(created_at) >= '${fromDate}' AND DATE(created_at) <= '${toDate}'`;
+
+      let results = [];
+
+      const executeQuery = (query) => {
+        return new Promise((resolve, reject) => {
+          db.query(query, (error, result) => {
+            if (error) {
+              reject(error);
+            } else {
+              resolve(result);
+            }
+          });
+        });
+      };
+
+      results.push(await executeQuery(query1));
+      results.push(await executeQuery(query2));
+      results.push(await executeQuery(query3));
+
+      res.status(200).send({
+        code: 200,
+        status: true,
+        message: "Fetch Result",
+        data: results,
+      });
     } catch (error) {
       res.status(500).send({
         status: false,
