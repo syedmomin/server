@@ -18,8 +18,8 @@ const collection = {
             });
           } else {
             db.query(
-              "INSERT INTO item_master (name,shortName,itemType,UOM,article,color,status) VALUES (?,?,?,?,?,?,?)",
-              [name, shortName, itemType, UOM, article, color, 1],
+              "INSERT INTO item_master (name,shortName,itemType,UOM,article,color,closingQuantity,status) VALUES (?,?,?,?,?,?,?,?)",
+              [name, shortName, itemType, UOM, article, color,0, 1],
               (error, results) => {
                 if (error) {
                   res.status(500).send({
