@@ -765,11 +765,11 @@ const report = {
   wholesaleProfitAndLoss: async function (req, res) {
     try {
       const { fromDate, toDate } = req.body;
-      const query1 = `SELECT item_master,SUM(net_amount) as total_amount from order_master where 
+      const query1 = `SELECT item_master as name,SUM(net_amount) as amount from order_master where 
                         DATE(created_at) >= '${fromDate}' AND DATE(created_at) <= '${toDate}' GROUP BY item_master`;
-      const query2 = `SELECT expensesType,SUM(amount) as total_amount FROM expenses_ledger WHERE businessType = 'Needlework Fabric Wholesale' 
+      const query2 = `SELECT expensesType as name ,SUM(amount) as amount FROM expenses_ledger WHERE businessType = 'Needlework Fabric Wholesale' 
                         AND fromDate  >= '${fromDate}'  AND toDate <= '${toDate}' GROUP BY expensesType`;
-      const query3 = `SELECT 'COST OF GOODS SOLD' as expenses,SUM(totalNetAmount) as total_amount from grn_master WHERE
+      const query3 = `SELECT 'COST OF GOODS SOLD' as name,SUM(totalNetAmount) as amount  from grn_master WHERE
                         DATE(created_at) >= '${fromDate}' AND DATE(created_at) <= '${toDate}'`;
 
       let results = [];
@@ -789,11 +789,12 @@ const report = {
       results.push(await executeQuery(query1));
       results.push(await executeQuery(query2));
       results.push(await executeQuery(query3));
+      results = this.checkEmptyArrays(results);
 
       res.status(200).send({
         code: 200,
         status: true,
-        message: "Fetch Result",
+        message: "Result",
         data: results,
       });
     } catch (error) {
@@ -803,6 +804,14 @@ const report = {
         message: error.message,
       });
     }
+  },
+  checkEmptyArrays(data) {
+    for (let i = 0; i < data.length; i++) {
+      if (data[i].length === 0) {
+        return [];
+      }
+    }
+    return data;
   },
 };
 
