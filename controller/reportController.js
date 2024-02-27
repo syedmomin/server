@@ -632,7 +632,7 @@ const report = {
           remarks,
           CASE WHEN paymentType = 'Recovery us' THEN amount ELSE 0 END AS credit,
           CASE WHEN paymentType <> 'Recovery us' THEN amount ELSE 0 END AS debit,
-          SUM(IF(paymentType = 'Recovery us', amount, -amount)) OVER (ORDER BY toDate) AS balance  
+          SUM(IF(paymentType = 'Recovery us', -amount, amount)) OVER (ORDER BY toDate,id) AS balance  
       FROM
           karigar_salary
       WHERE
