@@ -630,9 +630,9 @@ const report = {
           toDate,
           paymentType,
           remarks,
-          CASE WHEN amount >= 0 THEN amount ELSE 0 END AS credit,
-          CASE WHEN amount < 0 THEN -amount ELSE 0 END AS debit,
-          SUM(amount) OVER (ORDER BY toDate) AS balance
+          CASE WHEN paymentType = 'Recovery us' THEN amount ELSE 0 END AS credit,
+          CASE WHEN paymentType <> 'Recovery us' THEN amount ELSE 0 END AS debit,
+          SUM(amount) OVER (ORDER BY toDate) AS balance   
       FROM
           karigar_salary
       WHERE
