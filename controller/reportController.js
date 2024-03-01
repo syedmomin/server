@@ -430,7 +430,7 @@ const report = {
         params.push(karigarName, karigarNumber);
       }
 
-      query += ` AND DATE(created_at) >= ? AND DATE(created_at) <= ?`;
+      query += ` AND toDate >= ? AND toDate <= ?`;
       params.push(fromDate, toDate);
       await db.query(query, params, (error, results) => {
         if (error) {
