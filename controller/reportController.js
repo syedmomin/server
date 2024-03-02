@@ -430,7 +430,7 @@ const report = {
         params.push(karigarName, karigarNumber);
       }
 
-      query += ` AND DATE(created_at) >= ? AND DATE(created_at) <= ?`;
+      query += ` AND toDate >= ? AND toDate <= ?`;
       params.push(fromDate, toDate);
       await db.query(query, params, (error, results) => {
         if (error) {
@@ -630,9 +630,9 @@ const report = {
           toDate,
           paymentType,
           remarks,
-          CASE WHEN amount >= 0 THEN amount ELSE 0 END AS credit,
-          CASE WHEN amount < 0 THEN -amount ELSE 0 END AS debit,
-          SUM(amount) OVER (ORDER BY toDate) AS balance
+          CASE WHEN paymentType = 'Recovery us' THEN amount ELSE 0 END AS credit,
+          CASE WHEN paymentType <> 'Recovery us' THEN amount ELSE 0 END AS debit,
+          SUM(IF(paymentType = 'Recovery us', -amount, amount)) OVER (ORDER BY toDate,id) AS balance  
       FROM
           karigar_salary
       WHERE
