@@ -197,7 +197,7 @@ const report = {
             DATE(created_at) AS Date,
             id AS OrderNumber,
             CONCAT('STITCHING ORDER OF ', UPPER(item_master), ' FOR ', UPPER(customer_name)) AS Narration,
-            total_amount AS Debit,
+            net_amount AS Debit,
             0 AS Credit,
             2 AS SortOrder
         FROM
